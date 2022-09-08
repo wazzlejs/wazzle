@@ -1,0 +1,10 @@
+{
+    "commit": false,
+    "updateInternalDependencies": "minor",
+    "linked": [],
+    "fixed": [["babel-preset-dazzle","create-dazzle-app","dazzle", "dazzle-*"]],
+    "access": "public",
+    "baseBranch": "main",
+    "ignore": [],
+    "changelog": ["@changesets/changelog-github", { "repo": "elzzad/dazzle" }]
+  }

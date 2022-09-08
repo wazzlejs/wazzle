@@ -1,0 +1,28 @@
+{
+  "projectName": "dazzle",
+  "projectOwner": "fivethreeo",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "fivethreeo",
+      "name": "Øyvind Saltvik",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/410?v=4",
+      "profile": "https://github.com/fivethreeo/",
+      "contributions": [
+        "question",
+        "code",
+        "example",
+        "ideas",
+        "review",
+        "test",
+        "tool"
+      ]
+    }
+  ],
+  "repoType": "github",
+  "commitConvention": "none"
+}

@@ -1,0 +1,18 @@
+examples:
+  - examples/*
+  - examples/**/*
+
+dazzle: 
+  - packages/dazzle/*
+  - packages/dazzle/**/*
+
+webpack: 
+  - packages/dazzle/*
+  - packages/dazzle/**/*
+
+plugins: 
+  - packages/dazzle-plugin-*/*
+  - packages/dazzle-plugin-*/**/*
+
+repo:
+  - ./*

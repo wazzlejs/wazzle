@@ -1,0 +1,58 @@
+{
+  "private": true,
+  "homepage": "https://github.com/elzzad/dazzle#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elzzad/dazzle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/elzzad/dazzle/issues"
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "test": "yarn test:e2e",
+    "test:packages": "lerna run test --stream --scope dazzle-* --ignore dazzle-examples-* -- --passWithNoTests --verbose --no-cache",
+    "test:e2e": "jest --config ./test/jest.e2e.config.json --verbose --no-cache",
+    "test:examples": "jest --config ./test/jest.examples.config.js --verbose --no-cache",
+    "test:examples:simple": "jest --config ./test/jest.examples.config.js --verbose --no-cache -t simple",
+    "test:examples:complex": "cross-env COMPLEX=true jest --config ./test/jest.examples.config.js --verbose --no-cache -t complex",
+    "clean": "",
+    "format": "prettier --write 'packages/*/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx)' 'packages/*/!(node_modules)/**/*.js'",
+    "git-reset": "git reset --hard HEAD",
+    "git-clean": "git clean -d -x -e node_modules -e packages -f"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx}": [
+      "yarn format"
+    ]
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/coverage/",
+      "<rootDir>/node_modules/",
+      "<rootDir>/examples/"
+    ],
+    "collectCoverageFrom": [
+      "**/*.js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/packages/*/node_modules/",
+      "<rootDir>/examples/",
+      "<rootDir>/coverage/"
+    ]
+  },
+  "workspaces": [
+    "packages/dazzle",
+    "packages/babel-preset-dazzle",
+    "packages/create-dazzle-app",
+    "packages/dazzle-plugin-*"
+  ],
+  "version": "0.1-alpha"
+}
