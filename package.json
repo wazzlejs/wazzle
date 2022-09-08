@@ -9,10 +9,13 @@
     "url": "https://github.com/elzzad/dazzle/issues"
   },
   "devDependencies": {
+    "turbo": "^1.4.6"
   },
-  "scripts": {
-    "test": "yarn test:e2e",
-    "test:packages": "lerna run test --stream --scope dazzle-* --ignore dazzle-examples-* -- --passWithNoTests --verbose --no-cache",
+  "scripts": {{
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test:e2e",
+    "test:packages": "turbo run test --stream --scope dazzle-* --ignore dazzle-examples-* -- --passWithNoTests --verbose --no-cache",
     "test:e2e": "jest --config ./test/jest.e2e.config.json --verbose --no-cache",
     "test:examples": "jest --config ./test/jest.examples.config.js --verbose --no-cache",
     "test:examples:simple": "jest --config ./test/jest.examples.config.js --verbose --no-cache -t simple",
