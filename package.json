@@ -51,11 +51,5 @@
       "<rootDir>/coverage/"
     ]
   },
-  "workspaces": [
-    "packages/dazzle",
-    "packages/babel-preset-dazzle",
-    "packages/create-dazzle-app",
-    "packages/dazzle-plugin-*"
-  ],
   "version": "0.1-alpha"
 }
