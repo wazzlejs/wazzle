@@ -1,20 +1,33 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Default",
   "compilerOptions": {
-    "composite": false,
-    "declaration": true,
-    "declarationMap": true,
+    "noEmit": true,
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "experimentalDecorators": false,
     "forceConsistentCasingInFileNames": true,
-    "inlineSources": false,
     "isolatedModules": true,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "module": "commonjs",
     "moduleResolution": "node",
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "preserveWatchOutput": true,
-    "skipLibCheck": true,
-    "strict": true
-  },
-  "exclude": ["node_modules"]
+    "noEmitOnError": false,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "pretty": true,
+    "removeComments": false,
+    "resolveJsonModule": false,
+    "skipLibCheck": false,
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2019",
+    "composite": true,
+    "typeRoots": [],
+    "types": [
+      "vitest/globals"
+    ]
+  }
 }
