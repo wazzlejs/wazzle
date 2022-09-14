@@ -1,6 +1,6 @@
 {
     "name": "@elzzad/dazzle",
-    "version": "0.1-alpha",
+    "version": "0.1-alpha1",
     "description": "Dazzle (formerly Razzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
     "main": "./lib/index.js",
     "types": "./dts/index.d.ts",
