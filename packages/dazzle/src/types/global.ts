@@ -1,13 +1,14 @@
 declare global {
     export namespace RazzleTypes {
-        export interface RazzleConfig {
-            modifyRazzleContext: (context: RazzleTypes.RazzleContext) => RazzleTypes.RazzleContext;
+        export interface Plugins {
         }
-        export interface RazzleContext {
-            razzleOptions: unknown;
+
+        export interface Config {
+            modifyContext: (context: RazzleTypes.Context) => RazzleTypes.Context
         }
-        export interface RazzleWebpack5Options {
-            
+        
+        export interface Context {
+            plugins: Plugins
         }
     }
 }

@@ -1,2 +1,3 @@
-export interface Webpack5Options {
+export interface Webpack5Plugin {
+    options: {}
 }
