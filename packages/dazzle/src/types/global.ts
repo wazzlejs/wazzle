@@ -1,11 +1,10 @@
 declare global {
     export namespace RazzleTypes {
         export interface RazzleConfig {
-            modifyWebpack5Options: (options: RazzleTypes.RazzleWebpack5Options) => RazzleTypes.RazzleWebpack5Options;
-            modifyWebpack5Config: (config: ̧unknown, options: RazzleTypes.RazzleWebpack5Options) => RazzleTypes.RazzleWebpack5Options;
+            modifyRazzleContext: (context: RazzleTypes.RazzleContext) => RazzleTypes.RazzleContext;
         }
         export interface RazzleContext {
-            
+            razzleOptions: unknown;
         }
         export interface RazzleWebpack5Options {
             
