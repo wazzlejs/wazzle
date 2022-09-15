@@ -10,6 +10,9 @@
       "import": "./esm/index.js",
       "require": "./lib/index.js"
     },
+    "bin": {
+      "dazzle": "./bin/dazzle.js"
+    },
     "scripts": {
       "type": "tsc --project tsconfig.type.json",
       "build": "pnpm build:clean && pnpm build:cjs && pnpm build:esm && pnpm build:dts",
