@@ -1,12 +1,12 @@
 declare global {
-    export namespace RazzleTypes {
+    export namespace DazzleTypes {
         export interface Plugins {
         }
 
         export interface Config {
-            modifyContext: (context: RazzleTypes.Context) => RazzleTypes.Context
+            modifyContext: (context: DazzleTypes.Context) => DazzleTypes.Context
         }
-        
+
         export interface Context {
             plugins: Plugins
         }

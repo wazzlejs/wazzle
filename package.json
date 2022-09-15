@@ -9,9 +9,14 @@
     "url": "https://github.com/elzzad/dazzle/issues"
   },
   "devDependencies": {
-    "turbo": "^1.4.6"
+    "turbo": "^1.4.6",
+    "@swc-node/register": "^1.5.1",
+    "@swc/cli": "^0.1.57",
+    "jest": "^29.0.1",
+    "prettier": "^2.7.1",
+    "typescript": "4.8.2"
   },
-  "scripts": {{
+  "scripts": {
     "build": "turbo run build",
     "lint": "turbo run lint",
     "test": "turbo run test:e2e",
@@ -51,5 +56,14 @@
       "<rootDir>/coverage/"
     ]
   },
-  "version": "0.1-alpha"
-}
+  "version": "0.1-alpha.1",
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "webpack"
+      ],
+      "allowedVersions": {
+        "jest": "^28.1.0"
+      }
+    }
+  },

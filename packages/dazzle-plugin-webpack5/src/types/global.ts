@@ -1,14 +1,14 @@
 import { Webpack5Plugin } from "./types";
 
 declare global {
-    export namespace RazzleTypes {
+    export namespace DazzleTypes {
         export interface Plugins {
           webpack5: Webpack5Plugin;
         }
 
         export interface Config {
-            modifyWebpack5Context: (webpack5Context: RazzleTypes.Webpack5Context, razzleContext: RazzleTypes.Context) => RazzleTypes.Webpack5Context;
-            modifyWebpack5Config: (config: unknown, webpack5Context: RazzleTypes.Webpack5Context) => RazzleTypes.Webpack5Context;
+            modifyWebpack5Context: (webpack5Context: DazzleTypes.Webpack5Context, DazzleContext: DazzleTypes.Context) => DazzleTypes.Webpack5Context;
+            modifyWebpack5Config: (config: unknown, webpack5Context: DazzleTypes.Webpack5Context) => DazzleTypes.Webpack5Context;
         }
         export interface Context {
         }
