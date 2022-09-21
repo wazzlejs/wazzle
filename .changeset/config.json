@@ -5,6 +5,6 @@
     "fixed": [["babel-preset-dazzle","create-dazzle-app","dazzle", "dazzle-*"]],
     "access": "public",
     "baseBranch": "main",
-    "ignore": [],
+    "ignore": ["tsconfig"],
     "changelog": ["@changesets/changelog-github", { "repo": "elzzad/dazzle" }]
   }
