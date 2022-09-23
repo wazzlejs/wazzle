@@ -1,2 +1,1 @@
-import './types/global';
-
+export * from './plugin';

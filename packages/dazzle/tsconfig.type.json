@@ -2,7 +2,7 @@
   "compilerOptions": {
     "skipLibCheck": false
   },
-  "extends": "tsconfig/base.json",
+  "extends": "../tsconfig/base.json",
   "include": [
     "src/**/*",
     "tests/**/*"

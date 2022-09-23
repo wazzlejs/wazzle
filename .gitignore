@@ -48,3 +48,9 @@ build
 **/.idea
 
 .vercel
+
+packages/*/lib
+packages/*/esm
+packages/*/dts
+
+*.tsbuildinfo

@@ -12,7 +12,7 @@
       "esnext",
       "dom"
     ],
-    "module": "commonjs",
+    "module": "ESNext",
     "moduleResolution": "node",
     "noEmitOnError": false,
     "noImplicitOverride": true,
@@ -20,7 +20,7 @@
     "pretty": true,
     "removeComments": false,
     "resolveJsonModule": false,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "target": "es2019",

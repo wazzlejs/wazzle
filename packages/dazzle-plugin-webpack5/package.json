@@ -1,52 +1,57 @@
 {
-    "name": "@elzzad/dazzle-plugin-webpack5",
-    "version": "0.1.0-alpha.1",
-    "description": "Dazzle (formerly Razzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
-    "main": "./lib/index.js",
+  "name": "@elzzad/dazzle-plugin-webpack5",
+  "version": "0.1.0-alpha.1",
+  "type": "module",
+  "description": "Dazzle (formerly Razzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
+  "main": "./lib/index.js",
+  "types": "./dts/index.d.ts",
+  "module": "./esm/index.js",
+  "exports": {
     "types": "./dts/index.d.ts",
-    "module": "./esm/index.js",
-    "exports": {
-      "types": "./dts/index.d.ts",
-      "import": "./esm/index.js",
-      "require": "./lib/index.js"
-    },
-    "scripts": {
-      "type": "tsc --project tsconfig.type.json",
-      "build": "pnpm build:clean && pnpm build:cjs && pnpm build:esm && pnpm build:dts",
-      "build:clean": "git clean -dfX esm lib",
-      "build:cjs": "swc src -d lib --config-file ../../.swcrc -C module.type=commonjs",
-      "build:esm": "swc src -d esm --config-file ../../.swcrc -C module.type=es6 && pnpm esm:extensions",
-      "build:dts": "tsc",
-      "esm:extensions": "TS_NODE_PROJECT=../../tsconfig.json node -r @swc-node/register ../../.config/esm-transformer.ts",
-      "test": "pnpm vitest --run"
-    },
-    "repository": {
-      "type": "git",
-      "url": "git+https://github.com/elzzad/dazzle.git"
-    },
-    "author": "Øyvind Saltvik",
-    "license": "MIT",
-    "keywords": [
-
-        "inferno",
-        "isomorphic",
-        "preact",
-        "dazzle",
-        "react",
-        "reason",
-        "reasonml",
-        "ssr",
-        "universal",
-        "webpack"
-    ],
-    "publishConfig": {
-      "access": "public"
-    },
-    "peerDependencies": {
-      "@elzzad/dazzle": "0.1.0-alpha.1"
-    },
-    "devDependencies": {
-      "@elzzad/dazzle": "workspace:*"
-    }
+    "import": "./esm/index.js",
+    "require": "./lib/index.js"
+  },
+  "scripts": {
+    "type": "tsc --project tsconfig.type.json",
+    "build": "pnpm build:clean && pnpm build:cjs && pnpm build:esm && pnpm build:dts",
+    "build:clean": "git clean -dfX esm lib",
+    "build:cjs": "swc src -d lib --config-file ../../.swcrc -C module.type=commonjs",
+    "build:esm": "swc src -d esm --config-file ../../.swcrc -C module.type=es6 && pnpm esm:extensions",
+    "build:dts": "tsc",
+    "esm:extensions": "TS_NODE_PROJECT=../../tsconfig.json node -r @swc-node/register ../../.config/esm-transformer.ts",
+    "test": "pnpm vitest --run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elzzad/dazzle.git"
+  },
+  "author": "Øyvind Saltvik",
+  "license": "MIT",
+  "keywords": [
+    "inferno",
+    "isomorphic",
+    "preact",
+    "dazzle",
+    "react",
+    "reason",
+    "reasonml",
+    "ssr",
+    "universal",
+    "webpack"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@elzzad/dazzle": "0.1.0-alpha.1"
+  },
+  "devDependencies": {
+    "@elzzad/dazzle": "workspace:*",
+    "@types/yargs": "^17.0.7"
+  },
+  "dependencies": {
+    "esm-resolve": "^1.0.5",
+    "webpack": "^5.64.4",
+    "webpack-dev-server": "^4.6.0"
   }
-  
+}
