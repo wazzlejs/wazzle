@@ -1,5 +1,5 @@
 import { Argv } from 'yargs';
-import { ApplyHookFunction, ConfigurationHooks } from './configuration-hooks';
+import { ApplyHookFunction } from './configuration-hooks';
 
 export type DazzleOptions = {
   verbose: boolean;
@@ -22,6 +22,10 @@ export interface DazzlePaths {
 export interface DazzleConfig extends ConfigurationHooks {
   options?: Partial<DazzleOptions>;
   plugins: DazzlePlugin[];
+}
+
+export interface ConfigurationHooks {
+  modifyContext?: (context: DazzleContext) => DazzleContext;
 }
 
 export type ConfigHook<TPluginContext, TConfig> = (

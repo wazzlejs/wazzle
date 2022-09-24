@@ -2,7 +2,7 @@ import { ConfigHook, NoPluginContextConfigHook } from '@elzzad/dazzle';
 import Webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
-declare module '@elzzad/dazzle' {
+declare module '@elzzad/dazzle/types' {
   export interface DazzlePaths {
     appSrc: string;
     appBuild: string;
@@ -10,16 +10,6 @@ declare module '@elzzad/dazzle' {
     appServerIndex: string;
     appServerPath: string;
     appClientPath: string;
-  }
-
-  interface Webpack5PluginHook {
-    webpackContext: WebpackContext;
-  }
-
-  interface ScopedWebpackContext {
-    matrixName: string;
-    buildTarget: string;
-    webpackContext: WebpackContext;
   }
 
   export interface ConfigurationHooks {

@@ -3,7 +3,7 @@ import path from 'path';
 import { Webpack5ExternalsPluginOptions } from './types';
 import Webpack from 'webpack';
 import { resolveExternal } from './utils.js';
-import { ConfigurationHooks, DazzleContext, DazzlePlugin } from '@elzzad/dazzle';
+import { DazzleContext, DazzlePlugin } from '@elzzad/dazzle';
 import { WebpackContext } from '@elzzad/dazzle-plugin-webpack5';
 
 class Webpack5ExternalsPlugin implements DazzlePlugin {
@@ -14,6 +14,11 @@ class Webpack5ExternalsPlugin implements DazzlePlugin {
 
   constructor(options: Partial<Webpack5ExternalsPluginOptions> = {}) {
     this.options = Object.assign(this.options, options);
+  }
+
+  modifyContext(dazzleContext: DazzleContext) {
+    dazzleContext.pluginOptions.webpack5Externals = Object.assign({}, this.options);
+    return dazzleContext;
   }
 
   modifyWebpackConfig(

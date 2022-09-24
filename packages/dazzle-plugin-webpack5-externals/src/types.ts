@@ -1,15 +1,7 @@
 import '@elzzad/dazzle-plugin-webpack5';
+import { DazzlePluginOptions } from '@elzzad/dazzle';
 
-declare module '@elzzad/dazzle' {
-  export interface DazzlePaths {
-    appSrc: string;
-    appBuild: string;
-    appBuildPublic: string;
-    appServerIndex: string;
-    appServerPath: string;
-    appClientPath: string;
-  }
-
+declare module '@elzzad/dazzle/types' {
   export interface DazzlePluginOptions {
     webpack5Externals: Readonly<Webpack5ExternalsPluginOptions>;
   }

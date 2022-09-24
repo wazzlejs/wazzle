@@ -1,9 +1,5 @@
-import { DazzleContext } from './types';
+import { ConfigurationHooks, DazzleContext } from './types';
 import { logger } from './logger';
-
-export interface ConfigurationHooks {
-  modifyContext?: (context: DazzleContext) => DazzleContext;
-}
 
 export type ApplyHookFunction = <THook extends keyof ConfigurationHooks>(
   hook: THook,
