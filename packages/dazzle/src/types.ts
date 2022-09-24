@@ -24,7 +24,16 @@ export interface DazzleConfig extends ConfigurationHooks {
   plugins: DazzlePlugin[];
 }
 
-export type ConfigHook<T> = (config: T) => T | Promise<T>;
+export type ConfigHook<TPluginContext, TConfig> = (
+  dazzleContext: Readonly<DazzleContext>,
+  pluginContext: TPluginContext,
+  config: TConfig
+) => TConfig | Promise<TConfig>;
+
+export type NoPluginContextConfigHook<TConfig> = (
+  dazzleContext: Readonly<DazzleContext>,
+  config: TConfig
+) => TConfig | Promise<TConfig>;
 
 export interface DazzleContext extends ConfigurationHooks {
   name: string;

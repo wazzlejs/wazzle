@@ -1,4 +1,4 @@
-import { ConfigHook } from '@elzzad/dazzle';
+import { ConfigHook, NoPluginContextConfigHook } from '@elzzad/dazzle';
 import Webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
@@ -12,10 +12,20 @@ declare module '@elzzad/dazzle' {
     appClientPath: string;
   }
 
+  interface Webpack5PluginHook {
+    webpackContext: WebpackContext;
+  }
+
+  interface ScopedWebpackContext {
+    matrixName: string;
+    buildTarget: string;
+    webpackContext: WebpackContext;
+  }
+
   export interface ConfigurationHooks {
-    modifyWebpackOptions?: ConfigHook<WebpackOptions & DefineOptions>;
-    modifyWebpackConfig?: ConfigHook<Webpack.Configuration>;
-    modifyDevServerConfig?: ConfigHook<WebpackDevServer.Configuration>;
+    modifyWebpackContext?: NoPluginContextConfigHook<WebpackContext>;
+    modifyWebpackConfig?: ConfigHook<WebpackContext, Webpack.Configuration>;
+    modifyDevServerConfig?: NoPluginContextConfigHook<WebpackDevServer.Configuration>;
   }
 
   export interface DazzleContext {
@@ -28,7 +38,7 @@ declare module '@elzzad/dazzle' {
   }
 }
 
-export interface WebpackOptions {
+export interface WebpackContext {
   matrixName: string;
   buildTargets: string[];
   buildTarget: string;
@@ -40,13 +50,14 @@ export interface WebpackOptions {
   isClient: boolean;
   isServer: boolean;
   outputEsm: boolean;
+  definePluginOptions: DefinePluginDefines;
 }
 
 export type BuildOptions = Record<string, unknown>;
 
 export interface BuildConfig {
   targets: string[];
-  depends?: Record<string, string[] | string>;
+  depends?: Record<string, string[]>;
   buildOptions?: BuildOptions;
 }
 
@@ -58,8 +69,4 @@ export interface Webpack5PluginOptions {
 
 export interface DefinePluginDefines {
   'process.env.NODE_ENV': string;
-}
-
-export interface DefineOptions {
-  definePluginOptions: DefinePluginDefines;
 }

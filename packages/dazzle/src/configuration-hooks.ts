@@ -10,7 +10,7 @@ export type ApplyHookFunction = <THook extends keyof ConfigurationHooks>(
   action: (plugin: PluginSupportingHook<THook>) => Promise<unknown>
 ) => Promise<void>;
 
-export type PluginSupportingHook<THook extends keyof ConfigurationHooks> = Required<Pick<ConfigurationHooks, THook>>;
+type PluginSupportingHook<THook extends keyof ConfigurationHooks> = Required<Pick<ConfigurationHooks, THook>>;
 
 type NamedThingWithHooks = ConfigurationHooks & { name: string };
 

@@ -14,7 +14,7 @@ class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
     buildMatrix: {
       default: {
         targets: ['client', 'serverWeb'],
-        depends: { serverWeb: 'client' },
+        depends: { serverWeb: ['client'] },
       },
     },
     outputEsm: false,
@@ -48,14 +48,9 @@ class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
   }
 
   async start(dazzleContext: DazzleContext) {
-    if (typeof process.env['NODE_ENV'] === 'undefined') {
-      process.env['NODE_ENV'] = 'development';
-    } else if (process.env['NODE_ENV'] === 'production') {
-      logger.warn('Cannot run devserver with NODE_ENV production, setting to development');
-      process.env['NODE_ENV'] = 'development';
-    }
+    this.ensureNodeDevelopmentEnvironmet();
     const configs = await createWebpackConfig(this.options, dazzleContext, true, true, true);
-    const compiler = Webpack(configs.configurations.map((config) => config[0]));
+    const compiler = Webpack(configs.configurations.map((x) => x.webpackConfig));
 
     if (configs.devServerConfiguration) {
       const server = new WebpackDevServer(configs.devServerConfiguration, compiler);
@@ -96,7 +91,7 @@ class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
       process.env['NODE_ENV'] === 'development',
       false
     );
-    const compiler = Webpack(configs.configurations.map((config) => config[0]));
+    const compiler = Webpack(configs.configurations.map((x) => x.webpackConfig));
     compiler.run((err, stats) => {
       // [Stats Object](#stats-object)
       // Print watch/build result here...
@@ -130,6 +125,15 @@ class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
       },
       () => this.build(dazzleContext)
     );
+  }
+
+  private ensureNodeDevelopmentEnvironmet() {
+    if (typeof process.env['NODE_ENV'] === 'undefined') {
+      process.env['NODE_ENV'] = 'development';
+    } else if (process.env['NODE_ENV'] === 'production') {
+      logger.warn('Cannot run devserver with NODE_ENV production, setting to development');
+      process.env['NODE_ENV'] = 'development';
+    }
   }
 }
 

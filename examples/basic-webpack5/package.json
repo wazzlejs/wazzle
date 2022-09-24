@@ -2,6 +2,13 @@
   "private": true,
   "name": "basic-webpack5-example",
   "version": "5.0.0-alpha.0",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "types": "lib/index.d.ts",
+  "type": "module",
   "description": "basic webpack5 example",
   "scripts": {
     "test": "dazzle jest",
@@ -10,7 +17,6 @@
     "dev": "NODE_ENV=development dazzle start",
     "start": "node build/server.cjs"
   },
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jaredpalmer/razzle.git"
@@ -32,6 +38,7 @@
   "devDependencies": {
     "@elzzad/dazzle": "workspace:*",
     "@elzzad/dazzle-plugin-webpack5": "workspace:*",
+    "@elzzad/dazzle-plugin-webpack5-externals": "workspace:*",
     "yargs": "^17.2.1"
   }
 }

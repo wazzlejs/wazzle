@@ -1,8 +1,14 @@
 {
-  "name": "@elzzad/dazzle-plugin-webpack5",
-  "version": "0.1.0-alpha.1",
-  "type": "module",
+  "name": "@elzzad/dazzle-plugin-webpack5-externals",
   "description": "Dazzle (formerly Razzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
+  "license": "MIT",
+  "author": "Øyvind Saltvik",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elzzad/dazzle.git",
+    "directory": "packages/dazzle-plugin-webpack5-externals"
+  },
+  "version": "5.0.0-alpha.0",
   "main": "./lib/index.js",
   "types": "./dts/index.d.ts",
   "module": "./esm/index.js",
@@ -11,6 +17,7 @@
     "import": "./esm/index.js",
     "require": "./lib/index.js"
   },
+  "type": "module",
   "scripts": {
     "type": "tsc --project tsconfig.type.json",
     "build": "pnpm build:clean && pnpm build:cjs && pnpm build:esm && pnpm build:dts",
@@ -21,18 +28,11 @@
     "esm:extensions": "TS_NODE_PROJECT=../../tsconfig.json node -r @swc-node/register ../../.config/esm-transformer.ts",
     "test": "pnpm vitest --run"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/elzzad/dazzle.git",
-    "directory": "packages/dazlle-plugin-webpack5"
-  },
-  "author": "Øyvind Saltvik",
-  "license": "MIT",
   "keywords": [
     "inferno",
     "isomorphic",
     "preact",
-    "dazzle",
+    "razzle",
     "react",
     "reason",
     "reasonml",
@@ -40,19 +40,15 @@
     "universal",
     "webpack"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "peerDependencies": {
-    "@elzzad/dazzle": "0.1.0-alpha.1"
-  },
   "devDependencies": {
     "@elzzad/dazzle": "workspace:*",
-    "@types/yargs": "^17.0.7"
+    "@elzzad/dazzle-plugin-webpack5": "workspace:*",
+    "@types/yargs": "^17.0.7",
+    "webpack": "^5.64.4"
+    
   },
-  "dependencies": {
-    "esm-resolve": "^1.0.5",
-    "webpack": "^5.64.4",
-    "webpack-dev-server": "^4.6.0"
+  "peerDependencies": {
+    "@elzzad/dazzle-plugin-webpack5": "0.1.0-alpha.1",
+    "@elzzad/dazzle": "0.1.0-alpha.1"
   }
 }

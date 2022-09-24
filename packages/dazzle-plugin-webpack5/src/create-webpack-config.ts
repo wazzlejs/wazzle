@@ -1,17 +1,22 @@
 import path from 'path';
 
 import buildResolver from 'esm-resolve';
-import { Configuration } from 'webpack';
+import Webpack, { Configuration } from 'webpack';
 import { Configuration as DevServerConfiguration } from 'webpack-dev-server';
 import { logger, DazzleContext, applyHook } from '@elzzad/dazzle';
 
-import { DefineOptions, Webpack5PluginOptions, WebpackOptions } from './types';
+import { Webpack5PluginOptions, WebpackContext } from './types';
 import { devNull, type } from 'os';
 
 function resolveRequest(req: string, issuer: string) {
   const basedir = issuer.endsWith(path.posix.sep) || issuer.endsWith(path.win32.sep) ? issuer : path.dirname(issuer);
   const resolve = buildResolver(basedir);
   return resolve(req);
+}
+
+interface WebpackConfigurationWithContext {
+  webpackConfig: Webpack.Configuration;
+  webpackContext: WebpackContext;
 }
 
 export async function createWebpackConfig(
@@ -21,12 +26,12 @@ export async function createWebpackConfig(
   isDevEnv: boolean = false,
   isDev: boolean = false
 ): Promise<{
-  configurations: Array<[Configuration, WebpackOptions]>;
+  configurations: WebpackConfigurationWithContext[];
   devServerConfiguration?: DevServerConfiguration;
 }> {
   const devMatrixName = dazzleContext.devMatrixName;
   let shouldUseDevserver = isDevServer;
-  const webpackConfigs: Array<[Configuration, WebpackOptions]> = [];
+  const webpackConfigs: WebpackConfigurationWithContext[] = [];
 
   const matrixNames = isDevEnv ? [devMatrixName] : Object.keys(dazzleContext.buildMatrix);
 
@@ -43,12 +48,12 @@ export async function createWebpackConfig(
 
     for (const buildTarget of allTargets) {
       const isServer = /server/.test(buildTarget);
-      let webpackOptions: WebpackOptions & DefineOptions = {
-        matrixName: devMatrixName,
+      let webpackContext: WebpackContext = {
+        matrixName: matrixName,
         buildTarget: buildTarget,
         buildTargets: allTargets,
         buildOptions: buildConfig.buildOptions,
-        buildName: `${devMatrixName}-${buildTarget}`,
+        buildName: `${matrixName}-${buildTarget}`,
         isDevEnv: isDevEnv,
         isDev: isDev,
         isProd: !isDev,
@@ -63,16 +68,16 @@ export async function createWebpackConfig(
         definePluginOptions: { 'process.env.NODE_ENV': 'development' },
       };
 
-      dazzleContext.applyHook('modifyWebpackOptions', async (plugin) => {
-        webpackOptions = await plugin.modifyWebpackOptions(webpackOptions);
+      await dazzleContext.applyHook('modifyWebpackContext', async (plugin) => {
+        webpackContext = await plugin.modifyWebpackContext(dazzleContext, webpackContext);
       });
 
       let webpackConfig: Configuration = {
-        name: webpackOptions.buildName,
-        target: isServer ? 'node' : webpackOptions.outputEsm ? ['web', 'es2015'] : 'web',
+        name: webpackContext.buildName,
+        target: isServer ? 'node' : webpackContext.outputEsm ? ['web', 'es2015'] : 'web',
         // Path to your entry point. From this file Webpack will begin its work
         entry: isServer
-          ? webpackOptions.isDevEnv
+          ? webpackContext.isDevEnv
             ? dazzleContext.paths.appServerIndex
             : dazzleContext.paths.appServerPath
           : dazzleContext.paths.appClientPath,
@@ -83,16 +88,16 @@ export async function createWebpackConfig(
           path: isServer ? dazzleContext.paths.appBuild : dazzleContext.paths.appBuildPublic,
           publicPath: '',
           filename: isServer ? 'server.cjs' : 'client.js',
-          module: webpackOptions.outputEsm,
-          chunkFormat: webpackOptions.outputEsm ? 'module' : 'commonjs',
+          module: webpackContext.outputEsm,
+          chunkFormat: webpackContext.outputEsm ? 'module' : 'commonjs',
           environment: {
-            module: webpackOptions.outputEsm,
-            dynamicImport: webpackOptions.outputEsm,
+            module: webpackContext.outputEsm,
+            dynamicImport: webpackContext.outputEsm,
           },
         },
 
         experiments: {
-          outputModule: webpackOptions.outputEsm,
+          outputModule: webpackContext.outputEsm,
         },
         // Default mode for Webpack is production.
         // Depending on mode Webpack will apply different things
@@ -107,19 +112,15 @@ export async function createWebpackConfig(
         console.log(buildConfig.depends);
         console.log(buildConfig.depends[buildTarget]);
         if (buildConfig.depends[buildTarget]) {
-          const depends = (<Array<string>>[
-            typeof buildConfig.depends[buildTarget] === 'string'
-              ? [buildConfig.depends[buildTarget]]
-              : buildConfig.depends[buildTarget],
-          ]).map((dep) => (/-/.test(dep) ? dep : `${matrixName}-${dep}`));
+          const depends = buildConfig.depends[buildTarget].map((dep) => (/-/.test(dep) ? dep : `${matrixName}-${dep}`));
           console.log(depends);
           webpackConfig.dependencies = depends;
         }
       }
-      dazzleContext.applyHook('modifyWebpackConfig', async (plugin) => {
-        webpackConfig = await plugin.modifyWebpackConfig(webpackConfig);
+      await dazzleContext.applyHook('modifyWebpackConfig', async (plugin) => {
+        webpackConfig = await plugin.modifyWebpackConfig(dazzleContext, webpackContext, webpackConfig);
       });
-      webpackConfigs.push([webpackConfig, webpackOptions]);
+      webpackConfigs.push({ webpackConfig, webpackContext });
     }
   }
 
@@ -135,8 +136,8 @@ export async function createWebpackConfig(
       port: 9000,
     };
 
-    dazzleContext.applyHook('modifyDevServerConfig', async (plugin) => {
-      devServerConfiguration = await plugin.modifyDevServerConfig(devServerConfiguration);
+    await dazzleContext.applyHook('modifyDevServerConfig', async (plugin) => {
+      devServerConfiguration = await plugin.modifyDevServerConfig(dazzleContext, devServerConfiguration);
     });
 
     return {
