@@ -5,22 +5,19 @@
   "type": "module",
   "module": "./esm/index.js",
   "exports": {
-    "./foo": {
-      "types": "./dts/bar.d.ts",
-      "import": "./esm/types.js",
-      "require": "./lib/types.js"
-    },
     ".": {
       "types": "./dts/index.d.ts",
       "import": "./esm/index.js",
       "require": "./lib/index.js"
+    },
+    "./types": {
+      "types": "./dts/types.d.ts",
+      "import": "./esm/types.js",
+      "require": "./lib/types.js"
     }
   },
   "typesVersions": {
     "*": {
-      "types": [
-        "dts/types.d.ts"
-      ],
       "*": [
         "dts/*"
       ]
