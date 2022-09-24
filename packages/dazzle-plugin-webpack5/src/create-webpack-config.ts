@@ -109,8 +109,6 @@ export async function createWebpackConfig(
       };
 
       if (buildConfig.depends) {
-        console.log(buildConfig.depends);
-        console.log(buildConfig.depends[buildTarget]);
         if (buildConfig.depends[buildTarget]) {
           const depends = buildConfig.depends[buildTarget].map((dep) => (/-/.test(dep) ? dep : `${matrixName}-${dep}`));
           console.log(depends);
