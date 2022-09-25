@@ -1,27 +1,15 @@
 {
-  "name": "@elzzad/dazzle-plugin-webpack5",
+  "name": "@elzzad/dazzle-plugin-webpack5-babel",
   "version": "0.1.0-alpha.1",
-  "description": "Dazzle (formerly Razzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
   "type": "module",
+  "description": "Dazzle (formerly Razzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
+  "main": "./lib/index.js",
+  "types": "./dts/index.d.ts",
   "module": "./esm/index.js",
   "exports": {
-    ".": {
-      "types": "./dts/index.d.ts",
-      "import": "./esm/index.js",
-      "require": "./lib/index.js"
-    },
-    "./types": {
-      "types": "./dts/types.d.ts",
-      "import": "./esm/types.js",
-      "require": "./lib/types.js"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-          "dts/*"
-      ]
-    }
+    "types": "./dts/index.d.ts",
+    "import": "./esm/index.js",
+    "require": "./lib/index.js"
   },
   "scripts": {
     "type": "tsc --project tsconfig.type.json",
@@ -36,7 +24,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/elzzad/dazzle.git",
-    "directory": "packages/dazlle-plugin-webpack5"
+    "directory": "packages/dazlle-plugin-webpack5-babel"
   },
   "author": "Øyvind Saltvik",
   "license": "MIT",
@@ -56,15 +44,16 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@elzzad/dazzle": "0.1.0-alpha.1"
+    "@elzzad/dazzle": "0.1.0-alpha.1",
+    "@elzzad/dazzle-plugin-webpack5": "0.1.0-alpha.1",
+    "webpack": "^5.64.4"
   },
   "devDependencies": {
     "@elzzad/dazzle": "workspace:*",
-    "@types/yargs": "^17.0.7"
+    "@elzzad/dazzle-plugin-webpack5": "workspace:*",
+    "@types/yargs": "^17.0.7",
+    "webpack": "^5.64.4"
   },
   "dependencies": {
-    "esm-resolve": "^1.0.5",
-    "webpack": "^5.64.4",
-    "webpack-dev-server": "^4.6.0"
   }
 }
