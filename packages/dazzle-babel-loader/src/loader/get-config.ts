@@ -214,9 +214,9 @@ async function getFreshConfig(
 
   const loadedOptions = (await loadOptionsAsync(options)) || undefined;
   //  console.log(loadedOptions);
-  const partialConfig = loadPartialConfig(loadedOptions);
+  //  const partialConfig = loadPartialConfig(loadedOptions);
 
-  const config = consumeIterator(loadConfig(partialConfig?.options));
+  const config = consumeIterator(loadConfig(loadedOptions));
 
   return config;
 }
