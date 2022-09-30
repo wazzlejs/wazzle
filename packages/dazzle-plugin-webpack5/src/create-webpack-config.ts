@@ -82,6 +82,9 @@ export async function createWebpackConfig(
             : dazzleContext.paths.appServerPath
           : dazzleContext.paths.appClientPath,
 
+        resolve: {
+          extensions: ['.mjs', '.js', '.jsx', '.json', '.ts', '.tsx'],
+        },
         // Path and filename of your result bundle.
         // Webpack will bundle all JavaScript into this file
         output: {

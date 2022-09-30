@@ -213,11 +213,7 @@ async function getFreshConfig(
   //  console.log(options);
 
   const loadedOptions = (await loadOptionsAsync(options)) || undefined;
-  //  console.log(loadedOptions);
-  //  const partialConfig = loadPartialConfig(loadedOptions);
-
   const config = consumeIterator(loadConfig(loadedOptions));
-
   return config;
 }
 

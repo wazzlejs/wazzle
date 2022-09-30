@@ -34,7 +34,7 @@ class Webpack5BabelPlugin implements DazzlePlugin {
     webpackConfig?.module?.rules?.push(
       ...[
         {
-          test: /\.js$/i,
+          test: /\.[jt]sx?$/i,
           include: [dazzleContext.paths.appSrc], //.concat(additionalIncludes)
           use: [webpackContext.babelLoader],
         },
