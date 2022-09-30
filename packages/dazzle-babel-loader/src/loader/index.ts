@@ -1,8 +1,8 @@
-import transform from './transform.js';
-import { RazzleWebpack5LoaderContext, Source, SourceMap } from './types';
+import { transform } from './transform';
+import { DazzleWebpack5LoaderContext, DazzleWebpack5LoaderDefinitionFunction, Source, SourceMap } from './types';
 
-const razzleBabelLoader = async function (
-  this: RazzleWebpack5LoaderContext,
+async function dazzleBabelLoader(
+  this: DazzleWebpack5LoaderContext,
   inputSource: Source,
   inputSourceMap: SourceMap
 ): Promise<[Source, SourceMap]> {
@@ -17,25 +17,21 @@ const razzleBabelLoader = async function (
   };
 
   return [transformedSource, outputSourceMap || inputSourceMap];
-};
+}
 
-export default function razzleBabelLoaderOuter(
-  this: RazzleWebpack5LoaderContext,
-  inputSource: Source,
-  inputSourceMap: SourceMap
+const dazzleBabelLoaderOuter: DazzleWebpack5LoaderDefinitionFunction = function (
+  this: DazzleWebpack5LoaderContext,
+  inputSource,
+  inputSourceMap
 ) {
-  // console.log(this.target);
-  //console.log(inputSource);
-
   const callback = this.async();
-  razzleBabelLoader.call(this, inputSource, inputSourceMap).then(
+  dazzleBabelLoader.call(this, inputSource, inputSourceMap).then(
     ([transformedSource, outputSourceMap]) => {
-      //  console.log(transformedSource);
-
-      callback?.(null, transformedSource, outputSourceMap || inputSourceMap);
+      callback(null, transformedSource, outputSourceMap || inputSourceMap);
     },
     (err) => {
-      callback?.(err);
+      callback(err);
     }
   );
-}
+};
+export default dazzleBabelLoaderOuter;

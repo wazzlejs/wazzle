@@ -10,9 +10,9 @@ class Webpack5BabelPlugin implements DazzlePlugin {
 
   modifyWebpackContext(dazzleContext: DazzleContext, webpackContext: WebpackContext) {
     webpackContext.babelLoader = {
-      loader: 'dazzle-babel-loader',
+      loader: '@elzzad/dazzle-babel-loader',
       options: {
-        dazzleBuildNamew: webpackContext.buildName,
+        dazzleBuildName: webpackContext.buildName,
         isServer: webpackContext.isServer,
         cwd: dazzleContext.paths.appPath,
         //browserslistEnv: razzleContext.browserslistEnvs[webp.buildName] && webpackOptions.buildName,

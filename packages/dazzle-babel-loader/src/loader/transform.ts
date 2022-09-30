@@ -2,16 +2,16 @@
  * Partially adapted from @babel/core (MIT license).
  */
 
-import loadBlockHoistPlugin from "@babel/core/lib/transformation/block-hoist-plugin.js";
-import normalizeFile from "@babel/core/lib/transformation/normalize-file.js";
-import normalizeOpts from "@babel/core/lib/transformation/normalize-opts.js";
-import PluginPass from "@babel/core/lib/transformation/plugin-pass.js";
-import generate from "@babel/generator";
-import traverse from "@babel/traverse";
+import loadBlockHoistPlugin from '@babel/core/lib/transformation/block-hoist-plugin.js';
+import normalizeFile from '@babel/core/lib/transformation/normalize-file.js';
+import normalizeOpts from '@babel/core/lib/transformation/normalize-opts.js';
+import PluginPass from '@babel/core/lib/transformation/plugin-pass.js';
+import generate from '@babel/generator';
+import traverse from '@babel/traverse';
 
-import getConfig from "./get-config.js";
-import { RazzleWebpack5LoaderContext, Source, SourceMap } from "./types";
-import { consumeIterator } from "./util.js";
+import { getConfig } from './get-config.js';
+import { DazzleWebpack5LoaderContext, Source, SourceMap } from './types';
+import { consumeIterator } from './util.js';
 
 function getTraversalParams(file: any, pluginPairs: any[]) {
   const passPairs: Array<[any, any]> = [];
@@ -67,15 +67,14 @@ function transformAst(file: any, babelConfig: any) {
   }
 }
 
-export default async function transform(
-  this: RazzleWebpack5LoaderContext,
+export async function transform(
+  this: DazzleWebpack5LoaderContext,
   source: Source,
   inputSourceMap: SourceMap,
   loaderOptions: any,
   filename: string,
   target: string | [string, string]
-) {  
-
+) {
   const babelConfig = await getConfig.call(this, {
     source,
     loaderOptions,
@@ -83,10 +82,8 @@ export default async function transform(
     target,
     filename,
   });
-  
-  const file = consumeIterator(
-    normalizeFile(babelConfig.passes, normalizeOpts(babelConfig), source)
-  );
+
+  const file = consumeIterator(normalizeFile(babelConfig.passes, normalizeOpts(babelConfig), source));
 
   transformAst(file, babelConfig);
 

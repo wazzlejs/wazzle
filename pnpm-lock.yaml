@@ -28,7 +28,9 @@ importers:
   examples/basic-webpack5:
     specifiers:
       '@elzzad/dazzle': workspace:*
+      '@elzzad/dazzle-babel-loader': workspace:*
       '@elzzad/dazzle-plugin-webpack5': workspace:*
+      '@elzzad/dazzle-plugin-webpack5-babel': workspace:*
       '@elzzad/dazzle-plugin-webpack5-externals': workspace:*
       express: ^4.17.1
       react: ^17.0.2
@@ -40,7 +42,9 @@ importers:
       react-dom: 17.0.2_react@17.0.2
     devDependencies:
       '@elzzad/dazzle': link:../../packages/dazzle
+      '@elzzad/dazzle-babel-loader': link:../../packages/dazzle-babel-loader
       '@elzzad/dazzle-plugin-webpack5': link:../../packages/dazzle-plugin-webpack5
+      '@elzzad/dazzle-plugin-webpack5-babel': link:../../packages/dazzle-plugin-webpack5-babel
       '@elzzad/dazzle-plugin-webpack5-externals': link:../../packages/dazzle-plugin-webpack5-externals
       yargs: 17.5.1
 
@@ -146,9 +150,12 @@ importers:
   packages/dazzle-plugin-webpack5-babel:
     specifiers:
       '@elzzad/dazzle': workspace:*
+      '@elzzad/dazzle-babel-loader': workspace:*
       '@elzzad/dazzle-plugin-webpack5': workspace:*
       '@types/yargs': ^17.0.7
       webpack: ^5.64.4
+    dependencies:
+      '@elzzad/dazzle-babel-loader': link:../dazzle-babel-loader
     devDependencies:
       '@elzzad/dazzle': link:../dazzle
       '@elzzad/dazzle-plugin-webpack5': link:../dazzle-plugin-webpack5

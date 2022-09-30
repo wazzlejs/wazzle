@@ -2,34 +2,18 @@
   "name": "@elzzad/dazzle-babel-loader",
   "version": "0.1.0-alpha.1",
   "description": "Dazzle (formerly Razzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
-  "type": "module",
-  "module": "./esm/index.js",
+  "main": "./lib/index.js",
   "exports": {
-    ".": {
-      "types": "./dts/index.d.ts",
-      "import": "./esm/index.js",
-      "require": "./lib/index.js"
-    },
-    "./types": {
-      "types": "./dts/types.d.ts",
-      "import": "./esm/types.js",
-      "require": "./lib/types.js"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "dts/*"
-      ]
-    }
+    ".": "./lib/index.js",
+    "./preset": "./lib/preset.js",
+    "./package.json": "./package.json"
   },
   "scripts": {
     "type": "tsc --project tsconfig.type.json",
-    "build": "pnpm build:clean && pnpm build:cjs && pnpm build:esm && pnpm build:dts",
+    "build": "pnpm build:clean && pnpm build:cjs && pnpm build:dts",
     "build:clean": "git clean -dfX esm lib",
     "build:cjs": "swc src -d lib --config-file ../../.swcrc -C module.type=commonjs",
-    "build:esm": "swc src -d esm --config-file ../../.swcrc -C module.type=es6 && pnpm esm:extensions",
-    "build:dts": "tsc",
+    "build:dts": "tsc --build --force",
     "esm:extensions": "TS_NODE_PROJECT=../../tsconfig.json node -r @swc-node/register ../../.config/esm-transformer.ts",
     "test": "pnpm vitest --run"
   },

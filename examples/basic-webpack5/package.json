@@ -35,10 +35,13 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
+  "browserslist": "ie 9",
   "devDependencies": {
     "@elzzad/dazzle": "workspace:*",
     "@elzzad/dazzle-plugin-webpack5": "workspace:*",
+    "@elzzad/dazzle-plugin-webpack5-babel": "workspace:*",
     "@elzzad/dazzle-plugin-webpack5-externals": "workspace:*",
+    "@elzzad/dazzle-babel-loader": "workspace:*",
     "yargs": "^17.2.1"
   }
 }

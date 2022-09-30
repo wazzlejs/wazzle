@@ -4,7 +4,7 @@
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": true,
-    "outDir": "dts",
+    "outDir": "lib",
     "rootDir": "src",
     "baseUrl": "./",
     "typeRoots": [

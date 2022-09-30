@@ -55,5 +55,6 @@
     "webpack": "^5.64.4"
   },
   "dependencies": {
+    "@elzzad/dazzle-babel-loader": "workspace:*"
   }
 }

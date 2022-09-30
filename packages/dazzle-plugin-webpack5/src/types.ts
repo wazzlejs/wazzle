@@ -2,6 +2,9 @@ import { ConfigHook, NoPluginContextConfigHook } from '@elzzad/dazzle';
 import Webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
+export type WebpackConfig = Webpack.Configuration;
+export type WebpackDevServerConfig = WebpackDevServer.Configuration;
+
 declare module '@elzzad/dazzle/types' {
   export interface DazzlePaths {
     appSrc: string;
@@ -14,8 +17,8 @@ declare module '@elzzad/dazzle/types' {
 
   export interface ConfigurationHooks {
     modifyWebpackContext?: NoPluginContextConfigHook<WebpackContext>;
-    modifyWebpackConfig?: ConfigHook<WebpackContext, Webpack.Configuration>;
-    modifyDevServerConfig?: NoPluginContextConfigHook<WebpackDevServer.Configuration>;
+    modifyWebpackConfig?: ConfigHook<WebpackContext, WebpackConfig>;
+    modifyDevServerConfig?: NoPluginContextConfigHook<WebpackDevServerConfig>;
   }
 
   export interface DazzleContext {

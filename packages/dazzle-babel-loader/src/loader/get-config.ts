@@ -1,18 +1,13 @@
-
-import PluginTransformDefine from "babel-plugin-transform-define";
+import PluginTransformDefine from 'babel-plugin-transform-define';
 // @ts-ignore
-import { createConfigItem, loadOptionsAsync, loadPartialConfig } from "@babel/core";
-import loadConfig from "@babel/core/lib/config";
-import commonJsPlugin from "../plugins/commonjs.js";
-import noAnonymousDefaultExport from "../plugins/no-anonymous-default-export.js";
+import { createConfigItem, loadOptionsAsync, loadPartialConfig } from '@babel/core';
+import loadConfig from '@babel/core/lib/config';
+import commonJsPlugin from '../plugins/commonjs.js';
+import noAnonymousDefaultExport from '../plugins/no-anonymous-default-export.js';
 
-import {
-  RazzleWebpack5LoaderContext,
-  RazzleWebpack5LoaderOptions,
-  Source,
-  SourceMap,
-} from "./types";
-import { consumeIterator } from "./util.js";
+import { DazzleWebpack5LoaderContext, DazzleWebpack5LoaderOptions, Source, SourceMap } from './types';
+import { consumeIterator } from './util.js';
+
 /**
  * The properties defined here are the conditions with which subsets of inputs
  * can be identified that are able to share a common Babel config.  For example,
@@ -33,24 +28,25 @@ import { consumeIterator } from "./util.js";
  * transformations.
  */
 interface CharacteristicsGermaneToCaching {
-  razzleBuildName: string;
+  dazzleBuildName: string;
   isServer: boolean;
   hasModuleExports: boolean;
   fileExt: string;
 }
 
 const fileExtensionRegex = /\.([a-z]+)$/;
+
 function getCacheCharacteristics(
-  loaderOptions: RazzleWebpack5LoaderOptions,
+  loaderOptions: DazzleWebpack5LoaderOptions,
   source: Source,
   filename: string
 ): CharacteristicsGermaneToCaching {
-  const { isServer, razzleBuildName = "default" } = loaderOptions;
-  const hasModuleExports = source?.indexOf("module.exports") !== -1;
-  const fileExt = fileExtensionRegex.exec(filename)?.[1] || "unknown";
+  const { isServer, dazzleBuildName = 'default' } = loaderOptions;
+  const hasModuleExports = source?.indexOf('module.exports') !== -1;
+  const fileExt = fileExtensionRegex.exec(filename)?.[1] || 'unknown';
 
   return {
-    razzleBuildName,
+    dazzleBuildName,
     isServer,
     hasModuleExports,
     fileExt,
@@ -61,17 +57,12 @@ function getCacheCharacteristics(
  * Return an array of Babel plugins, conditioned upon loader options and
  * source file characteristics.
  */
-function getPlugins(
-  loaderOptions: RazzleWebpack5LoaderOptions,
-  cacheCharacteristics: CharacteristicsGermaneToCaching
-) {
+function getPlugins(loaderOptions: DazzleWebpack5LoaderOptions, cacheCharacteristics: CharacteristicsGermaneToCaching) {
   const { isServer, hasModuleExports } = cacheCharacteristics;
 
   const { hasReactRefresh, development } = loaderOptions;
 
-  const applyCommonJsItem = hasModuleExports
-    ? createConfigItem(commonJsPlugin, { type: "plugin" })
-    : null;
+  const applyCommonJsItem = hasModuleExports ? createConfigItem(commonJsPlugin, { type: 'plugin' }) : null;
   /*   const reactRefreshItem = hasReactRefresh
     ? createConfigItem(
         [require('react-refresh/babel'), { skipEnvCheck: true }],
@@ -79,9 +70,7 @@ function getPlugins(
       )
     : null */
   const noAnonymousDefaultExportItem =
-    hasReactRefresh && !isServer
-      ? createConfigItem([noAnonymousDefaultExport, {}], { type: "plugin" })
-      : null; /* 
+    hasReactRefresh && !isServer ? createConfigItem([noAnonymousDefaultExport, {}], { type: 'plugin' }) : null; /*
   const pageConfigItem =
     !isServer && isPageFile
       ? createConfigItem([require('../plugins/next-page-config')], {
@@ -99,13 +88,13 @@ function getPlugins(
     [
       PluginTransformDefine,
       {
-        "process.env.NODE_ENV": development ? "development" : "production",
-        "typeof window": isServer ? "undefined" : "object",
-        "process.browser": !isServer,
+        'process.env.NODE_ENV': development ? 'development' : 'production',
+        'typeof window': isServer ? 'undefined' : 'object',
+        'process.browser': !isServer,
       },
-      "razzle-js-transform-define-instance",
+      'dazzle-js-transform-define-instance',
     ],
-    { type: "plugin" }
+    { type: 'plugin' }
   );
   /*   const nextSsgItem =
     !isServer && isPageFile
@@ -135,15 +124,14 @@ function getPlugins(
 const isJsonFile = /\.(json|babelrc)$/;
 const isJsFile = /\.[c|m]js$/;
 
-
 /**
  * Generate a new, flat Babel config, ready to be handed to Babel-traverse.
  * This config should have no unresolved overrides, presets, etc.
  */
 async function getFreshConfig(
-  this: RazzleWebpack5LoaderContext,
+  this: DazzleWebpack5LoaderContext,
   cacheCharacteristics: CharacteristicsGermaneToCaching,
-  loaderOptions: RazzleWebpack5LoaderOptions,
+  loaderOptions: DazzleWebpack5LoaderOptions,
   target: string | [string, string],
   filename: string,
   inputSourceMap?: SourceMap
@@ -159,10 +147,7 @@ async function getFreshConfig(
 
     // Set the default sourcemap behavior based on Webpack's mapping flag,
     // but allow users to override if they want.
-    sourceMaps:
-      loaderOptions.sourceMaps === undefined
-        ? this.sourceMap
-        : loaderOptions.sourceMaps,
+    sourceMaps: loaderOptions.sourceMaps === undefined ? this.sourceMap : loaderOptions.sourceMaps,
 
     // Ensure that Webpack will get a full absolute path in the sourcemap
     // so that it can properly map the module back to its internal cached
@@ -172,14 +157,14 @@ async function getFreshConfig(
     plugins: [...getPlugins(loaderOptions, cacheCharacteristics)],
 
     presets: (() => {
-      return ["razzle-babel-loader/preset"];
+      return ['@elzzad/dazzle-babel-loader/preset'];
     })(),
 
     overrides: loaderOptions.overrides,
 
     caller: {
-      name: "babel-loader",
-      
+      name: 'babel-loader',
+
       supportsStaticESM: true,
       supportsDynamicImport: true,
 
@@ -196,7 +181,7 @@ async function getFreshConfig(
       isDev: development,
       hasJsxRuntime,
       hasModuleExports: cacheCharacteristics.hasModuleExports,
-      razzleBuildName: cacheCharacteristics.razzleBuildName,
+      dazzleBuildName: cacheCharacteristics.dazzleBuildName,
       fileExt: cacheCharacteristics.fileExt,
 
       ...loaderOptions.caller,
@@ -204,16 +189,16 @@ async function getFreshConfig(
   } as any;
 
   // Babel does strict checks on the config so undefined is not allowed
-  if (typeof options.target === "undefined") {
+  if (typeof options.target === 'undefined') {
     delete options.target;
   }
 
   // Babel does strict checks on the config so undefined is not allowed
-  if (typeof options.browserslistEnv === "undefined") {
+  if (typeof options.browserslistEnv === 'undefined') {
     delete options.browserslistEnv;
   }
 
-  Object.defineProperty(options.caller, "onWarning", {
+  Object.defineProperty(options.caller, 'onWarning', {
     enumerable: false,
     writable: false,
     value: (reason: any) => {
@@ -224,11 +209,10 @@ async function getFreshConfig(
     },
   });
 
-
   console.log(cacheCharacteristics);
   //  console.log(options);
 
-  const loadedOptions = await loadOptionsAsync(options) || undefined;
+  const loadedOptions = (await loadOptionsAsync(options)) || undefined;
   //  console.log(loadedOptions);
   const partialConfig = loadPartialConfig(loadedOptions);
 
@@ -240,23 +224,22 @@ async function getFreshConfig(
 /**
  * Each key returned here corresponds with a Babel config that can be shared.
  * The conditions of permissible sharing between files is dependent on specific
- * file attributes and Razzle compiler states: `CharacteristicsGermaneToCaching`.
+ * file attributes and Dazzle compiler states: `CharacteristicsGermaneToCaching`.
  */
 function getCacheKey(cacheCharacteristics: CharacteristicsGermaneToCaching) {
-  const { isServer, hasModuleExports, fileExt, razzleBuildName } =
-    cacheCharacteristics;
+  const { isServer, hasModuleExports, fileExt, dazzleBuildName } = cacheCharacteristics;
 
   const flags = 0 | (isServer ? 0b0001 : 0) | (hasModuleExports ? 0b0010 : 0);
 
-  return razzleBuildName + "_" + fileExt + flags;
+  return dazzleBuildName + '_' + fileExt + flags;
 }
 
 type BabelConfig = any;
 const configCache: Map<any, BabelConfig> = new Map();
 const configFiles: Set<string> = new Set();
 
-export default async function getConfig(
-  this: RazzleWebpack5LoaderContext,
+export async function getConfig(
+  this: DazzleWebpack5LoaderContext,
   {
     source,
     target,
@@ -265,17 +248,13 @@ export default async function getConfig(
     inputSourceMap,
   }: {
     source: Source;
-    loaderOptions: RazzleWebpack5LoaderOptions;
+    loaderOptions: DazzleWebpack5LoaderOptions;
     target: string | [string, string];
     filename: string;
     inputSourceMap?: SourceMap;
   }
 ): Promise<BabelConfig> {
-  const cacheCharacteristics = getCacheCharacteristics(
-    loaderOptions,
-    source,
-    filename
-  );
+  const cacheCharacteristics = getCacheCharacteristics(loaderOptions, source, filename);
 
   if (loaderOptions.configFile) {
     // Ensures webpack invalidates the cache for this loader when the config file changes

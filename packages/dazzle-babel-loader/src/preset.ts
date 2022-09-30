@@ -20,7 +20,7 @@ import optimizeHookDestructuring from './plugins/optimize-hook-destructuring.js'
 const isLoadIntentTest = process.env.NODE_ENV === 'test';
 const isLoadIntentDevelopment = process.env.NODE_ENV === 'development';
 
-type RazzleBabelPresetOptions = {
+type DazzleBabelPresetOptions = {
   'preset-env'?: any;
   'preset-react'?: any;
   'class-properties'?: any;
@@ -28,18 +28,23 @@ type RazzleBabelPresetOptions = {
   'preset-typescript'?: any;
 };
 
-type BabelPreset = {
+interface BabelPreset {
+  targets?: unknown;
   presets?: PluginItem[] | null;
   plugins?: PluginItem[] | null;
   sourceType?: 'script' | 'module' | 'unambiguous';
   overrides?: Array<{ test: RegExp } & Omit<BabelPreset, 'overrides'>>;
-};
+}
 
-function supportsStaticESM(caller: any): boolean {
+interface CallerOptions {
+  supportsStaticESM?: unknown;
+}
+
+function supportsStaticESM(caller: CallerOptions): boolean {
   return !!caller?.supportsStaticESM;
 }
 
-export default (api: any, options: RazzleBabelPresetOptions = {}): BabelPreset => {
+export default (api: any, options: DazzleBabelPresetOptions = {}): BabelPreset => {
   const supportsESM = api.caller(supportsStaticESM);
   const isServer = api.caller((caller: any) => !!caller && caller.isServer);
   const isCallerDevelopment = api.caller((caller: any) => caller?.isDev);
@@ -54,7 +59,7 @@ export default (api: any, options: RazzleBabelPresetOptions = {}): BabelPreset =
   const isProduction = !(isTest || isDevelopment);
 
   const isBabelLoader = api.caller(
-    (caller: any) => !!caller && (caller.name === 'babel-loader' || caller.name === 'razzle-babel-loader')
+    (caller: any) => !!caller && (caller.name === 'babel-loader' || caller.name === 'dazzle-babel-loader')
   );
 
   const useJsxRuntime =
@@ -63,13 +68,10 @@ export default (api: any, options: RazzleBabelPresetOptions = {}): BabelPreset =
       options['preset-react']?.runtime !== 'classic');
 
   const presetEnvConfig = {
-    // In the test environment 'modules' is often needed to be set to true, babel figures that out by itself using the ''auto'' option
-    // In production/development this option is set to 'false' so that webpack can handle import/export with tree-shaking
-    modules: 'auto',
     exclude: ['transform-typeof-symbol'],
     include: ['@babel/plugin-proposal-optional-chaining', '@babel/plugin-proposal-nullish-coalescing-operator'],
     ...options['preset-env'],
-  };
+  } as any;
 
   // When transpiling for the server or tests, target the current Node version
   // if not explicitly specified:
@@ -87,6 +89,7 @@ export default (api: any, options: RazzleBabelPresetOptions = {}): BabelPreset =
 
   return {
     sourceType: 'unambiguous',
+    //targets: isServer || isTest ? { node: 'current' } : undefined,
     presets: [
       [presetEnv, presetEnvConfig],
       [
@@ -102,6 +105,12 @@ export default (api: any, options: RazzleBabelPresetOptions = {}): BabelPreset =
       [presetTypescript, { allowNamespaces: true, ...options['preset-typescript'] }],
     ],
     plugins: [
+      [
+        'polyfill-corejs3',
+        {
+          method: 'usage-global',
+        },
+      ],
       !useJsxRuntime && [
         jsxPragma,
         {
@@ -132,10 +141,6 @@ export default (api: any, options: RazzleBabelPresetOptions = {}): BabelPreset =
       !isServer && [
         pluginTransformRuntime,
         {
-          corejs: false,
-          helpers: true,
-          regenerator: true,
-          useESModules: supportsESM && presetEnvConfig.modules !== 'commonjs',
           absoluteRuntime: isBabelLoader ? dirname(require.resolve('@babel/runtime/package.json')) : undefined,
           ...options['transform-runtime'],
         },
