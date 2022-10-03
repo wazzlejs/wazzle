@@ -73,20 +73,6 @@ export default (api: any, options: DazzleBabelPresetOptions = {}): BabelPreset =
     ...options['preset-env'],
   } as any;
 
-  // When transpiling for the server or tests, target the current Node version
-  // if not explicitly specified:
-  if (
-    (isServer || isTest) &&
-    (!presetEnvConfig.targets || !(typeof presetEnvConfig.targets === 'object' && 'node' in presetEnvConfig.targets))
-  ) {
-    presetEnvConfig.targets = {
-      // Targets the current process' version of Node. This requires apps be
-      // built and deployed on the same version of Node.
-      // This is the same as using "current" but explicit
-      node: process.versions.node,
-    };
-  }
-
   return {
     sourceType: 'unambiguous',
     //targets: isServer || isTest ? { node: 'current' } : undefined,

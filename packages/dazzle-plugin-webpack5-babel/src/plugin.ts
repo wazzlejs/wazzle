@@ -1,7 +1,11 @@
 import { DazzlePlugin } from '@elzzad/dazzle';
 import { WebpackContext } from '@elzzad/dazzle-plugin-webpack5/types';
 import { DazzleContext } from '@elzzad/dazzle';
-import Webpack from 'webpack';
+import Webpack, { webpack } from 'webpack';
+
+interface CouldHaveBrowsersListEnvs {
+  browserslistEnvs?: string[];
+}
 
 class Webpack5BabelPlugin implements DazzlePlugin {
   name = 'webpack5-babel';
@@ -15,15 +19,32 @@ class Webpack5BabelPlugin implements DazzlePlugin {
         dazzleBuildName: webpackContext.buildName,
         isServer: webpackContext.isServer,
         cwd: dazzleContext.paths.appPath,
-        //browserslistEnv: razzleContext.browserslistEnvs[webp.buildName] && webpackOptions.buildName,
+        browserslistEnv: this.getBrowserslistEnv(
+          dazzleContext as CouldHaveBrowsersListEnvs & DazzleContext,
+          webpackContext
+        ),
         cache: true,
         babelPresetPlugins: [],
-        hasModern: false, // !!config.experimental.modern,
-        development: webpackContext.isDev,
-        hasReactRefresh: false,
+        hasModern: false,
+        // !!config.experimental.modern, development : webpackContext.isDev, hasReactRefresh : false,
       },
     };
     return webpackContext;
+  }
+
+  private getBrowserslistEnv(
+    dazzleContext: CouldHaveBrowsersListEnvs & DazzleContext,
+    webpackContext: WebpackContext
+  ): string | undefined {
+    if (
+      webpackContext.buildName &&
+      dazzleContext.browserslistEnvs &&
+      dazzleContext.browserslistEnvs.includes(webpackContext.buildName)
+    ) {
+      return webpackContext.buildName;
+    } else {
+      return undefined;
+    }
   }
 
   modifyWebpackConfig(

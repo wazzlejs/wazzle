@@ -53,6 +53,22 @@ function getCacheCharacteristics(
   };
 }
 
+function getTargetsToUse({ browserslistEnv, isServer, dazzleBuildName }: DazzleWebpack5LoaderOptions) {
+  if (dazzleBuildName && browserslistEnv && browserslistEnv.includes(dazzleBuildName)) {
+    return undefined;
+  }
+
+  if (isServer) {
+    return {
+      node: process.versions.node,
+    };
+  }
+  if (browserslistEnv == undefined) {
+    return 'default';
+  }
+  return undefined;
+}
+
 /**
  * Return an array of Babel plugins, conditioned upon loader options and
  * source file characteristics.
@@ -136,9 +152,10 @@ async function getFreshConfig(
   filename: string,
   inputSourceMap?: SourceMap
 ) {
-  const { isServer, development, hasJsxRuntime, configFile } = loaderOptions;
+  const { isServer, development, hasJsxRuntime, configFile, browserslistEnv } = loaderOptions;
 
   const options = {
+    targets: getTargetsToUse(loaderOptions),
     babelrc: true,
     cloneInputAst: false,
     browserslistEnv: loaderOptions.browserslistEnv,
@@ -189,12 +206,16 @@ async function getFreshConfig(
   } as any;
 
   // Babel does strict checks on the config so undefined is not allowed
-  if (typeof options.target === 'undefined') {
+  if (options.target === undefined) {
     delete options.target;
   }
 
+  if (options.targets === undefined) {
+    delete options.targets;
+  }
+
   // Babel does strict checks on the config so undefined is not allowed
-  if (typeof options.browserslistEnv === 'undefined') {
+  if (options.browserslistEnv === undefined) {
     delete options.browserslistEnv;
   }
 
