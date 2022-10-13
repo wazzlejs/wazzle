@@ -13,11 +13,8 @@ const __dirname = path.dirname(__filename);
 
 // Make sure any symlinks in the project folder are resolved:
 // https://github.com/facebookincubator/create-react-app/issues/637
-const appDirectory = fs.realpathSync(
-  path.join(process.cwd(), process.env.RAZZLE_APP_PATH || '')
-);
-const resolveApp = (relativePath: string): string =>
-  path.resolve(appDirectory, relativePath);
+const appDirectory = fs.realpathSync(path.join(process.cwd(), process.env.RAZZLE_APP_PATH || ''));
+const resolveApp = (relativePath: string): string => path.resolve(appDirectory, relativePath);
 
 const envPublicUrl = process.env.PUBLIC_URL;
 
@@ -52,13 +49,11 @@ const getPublicUrl = (appPackageJson: string): string | undefined => {
 
 function getServedPath(appPackageJson: string) {
   const publicUrl = getPublicUrl(appPackageJson);
-  const servedUrl =
-    envPublicUrl || (publicUrl ? url.parse(publicUrl).pathname || '' : '/');
+  const servedUrl = envPublicUrl || (publicUrl ? url.parse(publicUrl).pathname || '' : '/');
   return ensureSlash(servedUrl, true);
 }
 
-const resolveOwn = (relativePath: string): string =>
-  path.resolve(__dirname, '..', relativePath);
+const resolveOwn = (relativePath: string): string => path.resolve(__dirname, '..', relativePath);
 
 // We support resolving modules according to `NODE_PATH`.
 // This lets you use absolute paths in imports inside large monorepos:
@@ -78,6 +73,7 @@ const nodePaths = (process.env.NODE_PATH || '')
 const defaultPaths: DazzlePaths = {
   dotenv: resolveApp('.env'),
   appPath: resolveApp('.'),
+  appPublic: resolveApp('public'),
   appConfig: resolveApp('dazzle.config'),
   appNodeModules: resolveApp('node_modules'),
   appPackageJson: resolveApp('package.json'),

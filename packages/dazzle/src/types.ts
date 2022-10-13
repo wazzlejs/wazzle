@@ -14,6 +14,7 @@ export interface DazzlePaths {
   appNodeModules: string;
   appPackageJson: string;
   appConfig: string;
+  appPublic: string;
   nodePaths: string;
   ownPath: string;
   ownNodeModules: string;
@@ -46,6 +47,15 @@ export interface DazzleContext extends ConfigurationHooks {
   pluginOptions: DazzlePluginOptions;
   paths: DazzlePaths;
   applyHook: ApplyHookFunction;
+}
+
+export interface DazzleEnvironment {
+  NODE_ENV: string;
+  PORT: number;
+  VERBOSE: boolean;
+  HOST: string;
+  ASSETS_MANIFEST: string;
+  BUILD_TARGET: string;
 }
 
 export interface CommandAdder {

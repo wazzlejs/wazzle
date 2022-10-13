@@ -1,6 +1,7 @@
 import { ConfigHook, NoPluginContextConfigHook } from '@elzzad/dazzle';
 import Webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
+import { DazzleContext } from '@elzzad/dazzle/types';
 
 export type WebpackConfig = Webpack.Configuration;
 export type WebpackDevServerConfig = WebpackDevServer.Configuration;
@@ -66,3 +67,5 @@ export interface Webpack5PluginOptions {
 export interface DefinePluginDefines {
   'process.env.NODE_ENV': string;
 }
+
+export type DazzleContextWithPossibleBrowsersList = { browserslistEnvs?: string } & DazzleContext;

@@ -49,7 +49,7 @@ class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
 
   async start(dazzleContext: DazzleContext) {
     this.ensureNodeDevelopmentEnvironmet();
-    const configs = await createWebpackConfig(this.options, dazzleContext, true, true, true);
+    const configs = await createWebpackConfig(this.options, dazzleContext, true, true);
     const compiler = Webpack(configs.configurations.map((x) => x.webpackConfig));
 
     if (configs.devServerConfiguration) {
@@ -88,8 +88,7 @@ class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
       this.options,
       dazzleContext,
       false,
-      process.env['NODE_ENV'] === 'development',
-      false
+      process.env['NODE_ENV'] === 'development'
     );
     const compiler = Webpack(configs.configurations.map((x) => x.webpackConfig));
     compiler.run((err, stats) => {

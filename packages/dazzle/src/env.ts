@@ -4,13 +4,10 @@ import fs from 'fs-extra';
 import { logger } from './logger';
 
 export default function ({ dotenv: dotenvBase }: { dotenv: string }): void {
-  const NODE_ENV = process.env.NODE_ENV;
-  if (!NODE_ENV) {
-    logger.error(
-      'The NODE_ENV environment variable is required but was not specified.'
-    );
-    process.exit(0);
+  if (!process.env.NODE_ENV) {
+    logger.warn('The NODE_ENV environment variable was not set. Defaulting to "development".');
   }
+  const NODE_ENV = process.env.NODE_ENV ?? 'development';
 
   // https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
   const dotenvFiles = [

@@ -4,7 +4,7 @@ import { Webpack5ExternalsPluginOptions } from './types';
 import Webpack from 'webpack';
 import { resolveExternal } from './utils.js';
 import { DazzleContext, DazzlePlugin } from '@elzzad/dazzle';
-import { WebpackContext } from '@elzzad/dazzle-plugin-webpack5';
+import { WebpackBuildContext } from '@elzzad/dazzle-plugin-webpack5';
 
 class Webpack5ExternalsPlugin implements DazzlePlugin {
   name = 'webpack5-externals';
@@ -23,7 +23,7 @@ class Webpack5ExternalsPlugin implements DazzlePlugin {
 
   modifyWebpackConfig(
     dazzleContext: DazzleContext,
-    webpackContext: WebpackContext,
+    webpackContext: WebpackBuildContext,
     webpackConfig: Webpack.Configuration
   ) {
     if (webpackContext.isServer) {
