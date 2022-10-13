@@ -16,8 +16,8 @@ declare module '@elzzad/dazzle/types' {
   }
 
   export interface ConfigurationHooks {
-    modifyWebpackContext?: NoPluginContextConfigHook<WebpackContext>;
-    modifyWebpackConfig?: ConfigHook<WebpackContext, WebpackConfig>;
+    modifyWebpackContext?: NoPluginContextConfigHook<WebpackBuildContext>;
+    modifyWebpackConfig?: ConfigHook<WebpackBuildContext, WebpackConfig>;
     modifyDevServerConfig?: NoPluginContextConfigHook<WebpackDevServerConfig>;
   }
 
@@ -31,13 +31,16 @@ declare module '@elzzad/dazzle/types' {
   }
 }
 
-export interface WebpackContext {
+export interface WebpackPluginContext {
+  port: number;
+}
+
+export interface WebpackBuildContext {
   matrixName: string;
   buildTargets: string[];
   buildTarget: string;
   buildOptions?: BuildOptions;
   buildName: string;
-  isDevEnv: boolean;
   isDev: boolean;
   isProd: boolean;
   isClient: boolean;

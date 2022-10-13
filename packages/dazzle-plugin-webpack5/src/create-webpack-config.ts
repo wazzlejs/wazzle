@@ -5,8 +5,9 @@ import Webpack, { Configuration } from 'webpack';
 import { Configuration as DevServerConfiguration } from 'webpack-dev-server';
 import { logger, DazzleContext, applyHook } from '@elzzad/dazzle';
 
-import { Webpack5PluginOptions, WebpackContext } from './types';
+import { Webpack5PluginOptions, WebpackBuildContext } from './types';
 import { devNull, type } from 'os';
+import { createDevServerConfigurationIfNecessary } from './features/dev-server';
 
 function resolveRequest(req: string, issuer: string) {
   const basedir = issuer.endsWith(path.posix.sep) || issuer.endsWith(path.win32.sep) ? issuer : path.dirname(issuer);
@@ -16,45 +17,35 @@ function resolveRequest(req: string, issuer: string) {
 
 interface WebpackConfigurationWithContext {
   webpackConfig: Webpack.Configuration;
-  webpackContext: WebpackContext;
+  webpackContext: WebpackBuildContext;
 }
 
 export async function createWebpackConfig(
   pluginOptions: Webpack5PluginOptions,
   dazzleContext: DazzleContext,
-  isDevServer: boolean = false,
-  isDevEnv: boolean = false,
+  devServerEnabled: boolean = false,
   isDev: boolean = false
 ): Promise<{
   configurations: WebpackConfigurationWithContext[];
   devServerConfiguration?: DevServerConfiguration;
 }> {
   const devMatrixName = dazzleContext.devMatrixName;
-  let shouldUseDevserver = isDevServer;
   const webpackConfigs: WebpackConfigurationWithContext[] = [];
 
-  const matrixNames = isDevEnv ? [devMatrixName] : Object.keys(dazzleContext.buildMatrix);
+  const matrixNames = isDev ? [devMatrixName] : Object.keys(dazzleContext.buildMatrix);
 
   for (const matrixName of matrixNames) {
     const buildConfig = dazzleContext.buildMatrix[matrixName];
     const allTargets = buildConfig.targets;
 
-    const clientOnly =
-      allTargets.some((build) => /client/.test(build)) && !allTargets.some((build) => /server/.test(build));
-    const serverOnly =
-      !allTargets.some((build) => /client/.test(build)) && allTargets.some((build) => /server/.test(build));
-
-    shouldUseDevserver = shouldUseDevserver && !serverOnly;
-
     for (const buildTarget of allTargets) {
       const isServer = /server/.test(buildTarget);
-      let webpackContext: WebpackContext = {
+      let webpackContext: WebpackBuildContext = {
         matrixName: matrixName,
         buildTarget: buildTarget,
         buildTargets: allTargets,
         buildOptions: buildConfig.buildOptions,
         buildName: `${matrixName}-${buildTarget}`,
-        isDevEnv: isDevEnv,
         isDev: isDev,
         isProd: !isDev,
         isClient: !isServer,
@@ -77,7 +68,7 @@ export async function createWebpackConfig(
         target: isServer ? 'node' : webpackContext.outputEsm ? ['web', 'es2015'] : 'web',
         // Path to your entry point. From this file Webpack will begin its work
         entry: isServer
-          ? webpackContext.isDevEnv
+          ? webpackContext.isDev
             ? dazzleContext.paths.appServerIndex
             : dazzleContext.paths.appServerPath
           : dazzleContext.paths.appClientPath,
@@ -105,7 +96,7 @@ export async function createWebpackConfig(
         // Default mode for Webpack is production.
         // Depending on mode Webpack will apply different things
         // on the final bundle.
-        mode: isDevEnv ? 'development' : 'production',
+        mode: isDev ? 'development' : 'production',
         module: {
           rules: [],
         },
@@ -125,28 +116,10 @@ export async function createWebpackConfig(
     }
   }
 
-  if (shouldUseDevserver) {
-    let devServerConfiguration: DevServerConfiguration = {
-      static: {
-        directory: path.join(dazzleContext.paths.appPath, 'public'),
-      },
-      compress: true,
-      client: {
-        logging: 'info',
-      },
-      port: 9000,
-    };
+  const devServerConfiguration = await createDevServerConfigurationIfNecessary(dazzleContext);
 
-    await dazzleContext.applyHook('modifyDevServerConfig', async (plugin) => {
-      devServerConfiguration = await plugin.modifyDevServerConfig(dazzleContext, devServerConfiguration);
-    });
-
-    return {
-      configurations: webpackConfigs,
-      devServerConfiguration: devServerConfiguration,
-    };
-  }
   return {
     configurations: webpackConfigs,
+    devServerConfiguration,
   };
 }
