@@ -6,7 +6,9 @@ export function configureWebpackBarIfNecessary(
   context: WebpackBuildContext,
   options: Webpack5PluginOptions
 ) {
-  if (options.disableWebpackBar || !context.isDev) {
+  const barDisabled = options.disableWebpackBar === true || options.disableWebpackBar === context.buildTarget;
+
+  if (barDisabled || !context.isDev) {
     return;
   }
 

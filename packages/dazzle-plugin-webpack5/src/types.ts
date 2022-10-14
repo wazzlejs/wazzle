@@ -62,7 +62,7 @@ export interface Webpack5PluginOptions {
   devMatrixName: string;
   buildMatrix: Record<string, BuildConfig>;
   outputEsm: boolean | { server: boolean; client: boolean };
-  disableWebpackBar: boolean;
+  disableWebpackBar: boolean | string;
 }
 
 export interface DefinePluginDefines {
