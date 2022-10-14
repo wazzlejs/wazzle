@@ -1,6 +1,6 @@
 import sysPath from 'path';
 import childProcess, { ChildProcess } from 'child_process';
-import webpack, { Compilation } from 'webpack';
+import webpack, { Compiler, Compilation } from 'webpack';
 
 export interface StartServerPluginOptions {
   verbose: boolean;
@@ -57,6 +57,29 @@ export default class StartServerPlugin {
     if (this.options.restartable && !options.once) {
       this.enableRestarting();
     }
+  }
+
+  apply(compiler: Compiler) {
+    const inject = this.options.inject;
+    const plugin = { name: 'StartServerPlugin' };
+    if (inject) {
+      compiler.hooks.make.tap(plugin, (compilation) => {
+        compilation.addEntry(
+          compilation.compiler.context,
+          webpack.EntryPlugin.createDependency(this.getMonitor(), {
+            name: this.options.entryName,
+          }),
+          this.options.entryName,
+          () => {}
+        );
+      });
+    }
+    compiler.hooks.afterEmit.tapAsync(plugin, this.afterEmit);
+  }
+
+  getMonitor() {
+    const loaderPath = require.resolve('./monitor-loader');
+    return `!!${loaderPath}!${loaderPath}`;
   }
 
   runWorker(callback?: () => void) {
