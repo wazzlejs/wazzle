@@ -8,6 +8,7 @@ import { logger, DazzleContext, applyHook } from '@elzzad/dazzle';
 import { Webpack5PluginOptions, WebpackBuildContext } from './types';
 import { devNull, type } from 'os';
 import { createDevServerConfigurationIfNecessary } from './features/dev-server';
+import { configureWebpackBarIfNecessary } from './features/webpack-bar';
 
 function resolveRequest(req: string, issuer: string) {
   const basedir = issuer.endsWith(path.posix.sep) || issuer.endsWith(path.win32.sep) ? issuer : path.dirname(issuer);
@@ -109,6 +110,9 @@ export async function createWebpackConfig(
           webpackConfig.dependencies = depends;
         }
       }
+
+      configureWebpackBarIfNecessary(webpackConfig, webpackContext, pluginOptions);
+
       await dazzleContext.applyHook('modifyWebpackConfig', async (plugin) => {
         webpackConfig = await plugin.modifyWebpackConfig(dazzleContext, webpackContext, webpackConfig);
       });

@@ -11,6 +11,7 @@ class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
 
   options: Webpack5PluginOptions = {
     devMatrixName: 'default',
+    disableWebpackBar: false,
     buildMatrix: {
       default: {
         targets: ['client', 'serverWeb'],
@@ -48,7 +49,7 @@ class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
   }
 
   async start(dazzleContext: DazzleContext) {
-    this.ensureNodeDevelopmentEnvironmet();
+    this.ensureNodeDevelopmentEnvironment();
     const configs = await createWebpackConfig(this.options, dazzleContext, true, true);
     const compiler = Webpack(configs.configurations.map((x) => x.webpackConfig));
 
@@ -126,7 +127,7 @@ class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
     );
   }
 
-  private ensureNodeDevelopmentEnvironmet() {
+  private ensureNodeDevelopmentEnvironment() {
     if (typeof process.env['NODE_ENV'] === 'undefined') {
       process.env['NODE_ENV'] = 'development';
     } else if (process.env['NODE_ENV'] === 'production') {

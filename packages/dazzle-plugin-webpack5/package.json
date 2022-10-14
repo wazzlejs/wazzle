@@ -63,11 +63,11 @@
     "@types/yargs": "^17.0.7"
   },
   "dependencies": {
+    "copy-webpack-plugin": "^11.0.0",
     "esm-resolve": "^1.0.5",
+    "postcss-load-config": "^4.0.1",
     "webpack": "^5.64.4",
     "webpack-dev-server": "^4.6.0",
-    "copy-webpack-plugin": "^11.0.0",
-    "postcss-load-config" :  "^4.0.1"
+    "webpackbar": "^5.0.2"
   }
-  
 }

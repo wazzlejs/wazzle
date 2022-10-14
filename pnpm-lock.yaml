@@ -153,12 +153,14 @@ importers:
       postcss-load-config: ^4.0.1
       webpack: ^5.64.4
       webpack-dev-server: ^4.6.0
+      webpackbar: ^5.0.2
     dependencies:
       copy-webpack-plugin: 11.0.0_webpack@5.74.0
       esm-resolve: 1.0.8
       postcss-load-config: 4.0.1
       webpack: 5.74.0
       webpack-dev-server: 4.11.1_webpack@5.74.0
+      webpackbar: 5.0.2_webpack@5.74.0
     devDependencies:
       '@elzzad/dazzle': link:../dazzle
       '@types/yargs': 17.0.12
@@ -2827,6 +2829,10 @@ packages:
     engines: {node: '>=0.8'}
     dev: false
 
+  /consola/2.15.3:
+    resolution: {integrity: sha512-9vAdYbHj6x2fLKC4+oPH0kFzY/orMZyG2Aj+kNylHxKGJ/Ed4dpNyAQYwJOdqO4zdM7XpVHmyejQDcQHrnuXbw==}
+    dev: false
+
   /content-disposition/0.5.4:
     resolution: {integrity: sha512-FveZTNuGw04cxlAiWbzi6zTAL/lhehaWbTtgluJh4/E95DqMwTmha3KZN1aAWA8cFIhHzMZUvLevkw5Rqk+tSQ==}
     engines: {node: '>= 0.6'}
@@ -4744,6 +4750,11 @@ packages:
       react-is: 18.2.0
     dev: true
 
+  /pretty-time/1.1.0:
+    resolution: {integrity: sha512-28iF6xPQrP8Oa6uxE6a1biz+lWeTOAPKggvjB8HAs6nVMKZwf5bG++632Dx614hIWgUPkgivRfG+a8uAXGTIbA==}
+    engines: {node: '>=4'}
+    dev: false
+
   /process-nextick-args/2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
     dev: false
@@ -5231,6 +5242,10 @@ packages:
   /statuses/2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
     engines: {node: '>= 0.8'}
+    dev: false
+
+  /std-env/3.2.1:
+    resolution: {integrity: sha512-D/uYFWkI/31OrnKmXZqGAGK5GbQRPp/BWA1nuITcc6ICblhhuQUPHS5E2GSCVS7Hwhf4ciq8qsATwBUxv+lI6w==}
     dev: false
 
   /string-length/4.0.2:
@@ -5846,6 +5861,22 @@ packages:
       - '@swc/core'
       - esbuild
       - uglify-js
+
+  /webpackbar/5.0.2_webpack@5.74.0:
+    resolution: {integrity: sha512-BmFJo7veBDgQzfWXl/wwYXr/VFus0614qZ8i9znqcl9fnEdiVkdbi0TedLQ6xAK92HZHDJ0QmyQ0fmuZPAgCYQ==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      webpack: 3 || 4 || 5
+    peerDependenciesMeta:
+      webpack:
+        optional: true
+    dependencies:
+      chalk: 4.1.2
+      consola: 2.15.3
+      pretty-time: 1.1.0
+      std-env: 3.2.1
+      webpack: 5.74.0
+    dev: false
 
   /websocket-driver/0.7.4:
     resolution: {integrity: sha512-b17KeDIQVjvb0ssuSDF2cYXSg2iztliJ4B9WdsuB6J952qCPKmnVq4DyW5motImXHDC1cBT/1UezrJVsKw5zjg==}
