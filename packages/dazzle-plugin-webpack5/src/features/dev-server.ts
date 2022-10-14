@@ -1,9 +1,10 @@
 import { DazzleContext } from '@elzzad/dazzle';
 import { Configuration as DevServerConfiguration } from 'webpack-dev-server';
-import { WebpackDevServerConfig } from '../types';
+import { Webpack5PluginOptions, WebpackDevServerConfig } from '../types';
 
 export async function createDevServerConfigurationIfNecessary(
-  dazzle: DazzleContext
+  dazzle: DazzleContext,
+  { devServerOptions: options }: Webpack5PluginOptions
 ): Promise<WebpackDevServerConfig | undefined> {
   const hasClientBuild = Object.values(dazzle.buildMatrix)
     .flatMap((x) => x.targets)
@@ -20,7 +21,8 @@ export async function createDevServerConfigurationIfNecessary(
     client: {
       logging: 'info',
     },
-    port: 9000,
+    port: options.port,
+    host: options.host,
   };
 
   await dazzle.applyHook('modifyDevServerConfig', async (plugin) => {

@@ -149,6 +149,7 @@ importers:
       '@elzzad/dazzle': workspace:*
       '@types/yargs': ^17.0.7
       copy-webpack-plugin: ^11.0.0
+      deepmerge: ^4.2.2
       esm-resolve: ^1.0.5
       postcss-load-config: ^4.0.1
       webpack: ^5.64.4
@@ -156,6 +157,7 @@ importers:
       webpackbar: ^5.0.2
     dependencies:
       copy-webpack-plugin: 11.0.0_webpack@5.74.0
+      deepmerge: 4.2.2
       esm-resolve: 1.0.8
       postcss-load-config: 4.0.1
       webpack: 5.74.0
@@ -203,6 +205,12 @@ importers:
       '@elzzad/dazzle': link:../dazzle
       '@elzzad/dazzle-plugin-webpack5': link:../dazzle-plugin-webpack5
       '@types/yargs': 17.0.12
+      webpack: 5.74.0
+
+  packages/dazzle-start-server-webpack-plugin:
+    specifiers:
+      webpack: ^5.74.0
+    devDependencies:
       webpack: 5.74.0
 
   packages/tsconfig:
@@ -2946,7 +2954,6 @@ packages:
   /deepmerge/4.2.2:
     resolution: {integrity: sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==}
     engines: {node: '>=0.10.0'}
-    dev: true
 
   /default-gateway/6.0.3:
     resolution: {integrity: sha512-fwSOJsbbNzZ/CUFpqFBqYfYNLj1NbMPm8MMCIzHjC83iSJRBEGmDUxU+WP661BaBQImeC2yHwXtz+P/O9o+XEg==}

@@ -120,7 +120,7 @@ export async function createWebpackConfig(
     }
   }
 
-  const devServerConfiguration = await createDevServerConfigurationIfNecessary(dazzleContext);
+  const devServerConfiguration = await createDevServerConfigurationIfNecessary(dazzleContext, pluginOptions);
 
   return {
     configurations: webpackConfigs,

@@ -5,24 +5,15 @@ import path from 'path';
 import Webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import { createWebpackConfig } from './create-webpack-config';
+import { loadOptions } from './options';
 
 class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
   readonly name = 'webpack5';
 
-  options: Webpack5PluginOptions = {
-    devMatrixName: 'default',
-    disableWebpackBar: false,
-    buildMatrix: {
-      default: {
-        targets: ['client', 'serverWeb'],
-        depends: { serverWeb: ['client'] },
-      },
-    },
-    outputEsm: false,
-  };
+  options: Webpack5PluginOptions;
 
   constructor(options: Partial<Webpack5PluginOptions> = {}) {
-    this.options = Object.assign(this.options);
+    this.options = loadOptions(options);
   }
 
   modifyContext(dazzleContext: DazzleContext) {
@@ -84,7 +75,7 @@ class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
     } else if (process.env['NODE_ENV'] === 'development') {
       logger.warn('Running build with NODE_ENV=development, set NODE_ENV=production');
     }
-    //          console.log(process.env["NODE_ENV"]);
+
     const configs = await createWebpackConfig(
       this.options,
       dazzleContext,

@@ -1,5 +1,5 @@
 {
-  "name": "@elzzad/dazzle-plugin-webpack5",
+  "name": "@ellzad/dazzle-start-server-webpack-plugin",
   "version": "0.1.0-alpha.1",
   "description": "Dazzle (formerly Razzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
   "type": "module",
@@ -56,19 +56,12 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@elzzad/dazzle": "0.1.0-alpha.1"
+    "@elzzad/dazzle": "0.1.0-alpha.1",
+    "webpack": "^5.0.0"
   },
   "devDependencies": {
-    "@elzzad/dazzle": "workspace:*",
-    "@types/yargs": "^17.0.7"
+    "webpack": "^5.74.0"
   },
   "dependencies": {
-    "copy-webpack-plugin": "^11.0.0",
-    "deepmerge": "^4.2.2",
-    "esm-resolve": "^1.0.5",
-    "postcss-load-config": "^4.0.1",
-    "webpack": "^5.64.4",
-    "webpack-dev-server": "^4.6.0",
-    "webpackbar": "^5.0.2"
   }
 }
