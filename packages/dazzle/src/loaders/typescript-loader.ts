@@ -273,3 +273,10 @@ async function tryRequireThenImport<T>(module: ModuleName, handleError = true): 
 
   return result || {};
 }
+
+function isPromise<T>(value: Promise<T>): value is Promise<T> {
+  return typeof (value as unknown as Promise<T>).then === "function";
+}
+function isFunction(value: unknown): value is CallableFunction {
+  return typeof value === "function";
+}
