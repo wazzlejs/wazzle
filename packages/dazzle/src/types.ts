@@ -70,3 +70,6 @@ export interface DazzlePlugin extends ConfigurationHooks {
   readonly name: string;
   addCommands?: CommandAdder;
 }
+
+
+export type DynamicImport<T> = (url: string) => Promise<{ default: T }>;
