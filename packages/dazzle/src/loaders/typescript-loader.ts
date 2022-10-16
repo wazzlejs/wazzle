@@ -1,4 +1,4 @@
-import { DazzleConfig, DynamicImport } from '../types';
+import { DazzleConfig, PotentialPromise, DynamicImport } from '../types';
 import path from 'path';
 import { pathToFileURL } from 'url';
 import { prepare } from 'rechoir';
@@ -23,6 +23,7 @@ interface RechoirError extends Error {
   failures: RechoirError[];
   error: Error;
 }
+
 async function loadConfig() {
   const interpret = require('interpret');
   const loadConfigByPath = async (configPath: string, argv: Argv = {}) => {
@@ -50,12 +51,12 @@ async function loadConfig() {
       }
     }
 
-    let options: ConfigOptions | ConfigOptions[];
+    let config: DazzleConfig;
 
-    type LoadConfigOption = PotentialPromise<DazzleConfig>;
+    type CouldBeConfigPromise = PotentialPromise<DazzleConfig>;
 
     try {
-      options = await tryRequireThenImport<LoadConfigOption | LoadConfigOption[]>(configPath, false);
+      config = await tryRequireThenImport<CouldBeConfigPromise>(configPath, false);
       // @ts-expect-error error type assertion
     } catch (error: Error) {
       logger.error(`Failed to load '${configPath}' config`);
@@ -65,43 +66,26 @@ async function loadConfig() {
       process.exit(2);
     }
 
-    if (Array.isArray(options)) {
-      // reassign the value to assert type
-      const optionsArray: ConfigOptions[] = options;
-      await Promise.all(
-        optionsArray.map(async (_, i) => {
-          if (isPromise<DazzleConfig | CallableOption>(optionsArray[i] as Promise<DazzleConfig | CallableOption>)) {
-            optionsArray[i] = await optionsArray[i];
-          }
-          // `Promise` may return `Function`
-          if (isFunction(optionsArray[i])) {
-            // when config is a function, pass the env from args to the config function
-            optionsArray[i] = await (optionsArray[i] as CallableOption)(argv.env, argv);
-          }
-        })
-      );
-      options = optionsArray;
-    } else {
-      if (isPromise<ConfigOptions>(options as Promise<ConfigOptions>)) {
-        options = await options;
+      if (isPromise<ConfigOptions>(options as Promise<DazzleConfig>)) {
+        config = await config;
       }
 
       // `Promise` may return `Function`
-      if (isFunction(options)) {
+      if (isFunction(config)) {
         // when config is a function, pass the env from args to the config function
-        options = await options(argv.env, argv);
+        config = await config(argv.env, argv);
       }
     }
 
     const isObject = (value: unknown): value is object => typeof value === 'object' && value !== null;
 
-    if (!isObject(options) && !Array.isArray(options)) {
+    if (!isObject(config)) {
       logger.error(`Invalid configuration in '${configPath}'`);
 
       process.exit(2);
     }
 
-    return { options, path: configPath };
+    return { config, path: configPath };
   };
 
   const config: DazzleCLIConfig = {

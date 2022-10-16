@@ -73,3 +73,4 @@ export interface DazzlePlugin extends ConfigurationHooks {
 
 
 export type DynamicImport<T> = (url: string) => Promise<{ default: T }>;
+export type PotentialPromise<T> = T | Promise<T>;
