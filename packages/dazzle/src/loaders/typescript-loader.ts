@@ -1,7 +1,16 @@
 import { DazzleConfig, DynamicImport } from '../types';
 import path from 'path';
+import { pathToFileURL } from "url";
 import { prepare } from 'rechoir';
 import { logger } from '../logger';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
+
+let argv = yargs(hideBin(process.argv)).scriptName('dazzle').option('c', {
+  type: 'string',
+  alias: 'config',
+  describe: 'load config file',
+});
 
 interface ImportLoaderError extends Error {
   code?: string;
@@ -43,7 +52,7 @@ async function loadConfig() {
 
     let options: ConfigOptions | ConfigOptions[];
 
-    type LoadConfigOption = PotentialPromise<WebpackConfiguration>;
+    type LoadConfigOption = PotentialPromise<DazzleConfig>;
 
     try {
       options = await tryRequireThenImport<LoadConfigOption | LoadConfigOption[]>(configPath, false);
@@ -65,11 +74,7 @@ async function loadConfig() {
       const optionsArray: ConfigOptions[] = options;
       await Promise.all(
         optionsArray.map(async (_, i) => {
-          if (
-            isPromise<WebpackConfiguration | CallableOption>(
-              optionsArray[i] as Promise<WebpackConfiguration | CallableOption>
-            )
-          ) {
+          if (isPromise<DazzleConfig | CallableOption>(optionsArray[i] as Promise<DazzleConfig | CallableOption>)) {
             optionsArray[i] = await optionsArray[i];
           }
           // `Promise` may return `Function`
@@ -103,8 +108,8 @@ async function loadConfig() {
     return { options, path: configPath };
   };
 
-  const config: WebpackCLIConfig = {
-    options: {} as WebpackConfiguration,
+  const config: DazzleCLIConfig = {
+    options: {} as DazzleConfig,
     path: new WeakMap(),
   };
 
@@ -120,7 +125,7 @@ async function loadConfig() {
 
       // TODO we should run webpack multiple times when the `--config` options have multiple values with `--merge`, need to solve for the next major release
       if ((config.options as ConfigOptions[]).length === 0) {
-        config.options = loadedConfig.options as WebpackConfiguration;
+        config.options = loadedConfig.options as DazzleConfig;
       } else {
         if (!Array.isArray(config.options)) {
           config.options = [config.options];
@@ -131,7 +136,7 @@ async function loadConfig() {
             (config.options as ConfigOptions[]).push(item);
           });
         } else {
-          config.options.push(loadedConfig.options as WebpackConfiguration);
+          config.options.push(loadedConfig.options as DazzleConfig);
         }
       }
 
@@ -172,7 +177,7 @@ async function loadConfig() {
     if (foundDefaultConfigFile) {
       const loadedConfig = await loadConfigByPath(foundDefaultConfigFile.path, options.argv);
 
-      config.options = loadedConfig.options as WebpackConfiguration[];
+      config.options = loadedConfig.options as DazzleConfig[];
 
       if (Array.isArray(config.options)) {
         config.options.forEach((item) => {
@@ -201,7 +206,7 @@ async function loadConfig() {
       }
 
       return found;
-    }) as WebpackConfiguration[];
+    }) as DazzleConfig[];
 
     if (notFoundConfigNames.length > 0) {
       logger.error(
@@ -209,30 +214,6 @@ async function loadConfig() {
       );
       process.exit(2);
     }
-  }
-
-  if (options.merge) {
-    const merge = await tryRequireThenImport<typeof webpackMerge>('webpack-merge');
-
-    // we can only merge when there are multiple configurations
-    // either by passing multiple configs by flags or passing a
-    // single config exporting an array
-    if (!Array.isArray(config.options) || config.options.length <= 1) {
-      logger.error('At least two configurations are required for merge.');
-      process.exit(2);
-    }
-
-    const mergedConfigPaths: string[] = [];
-
-    config.options = config.options.reduce((accumulator: object, options) => {
-      const configPath = config.path.get(options);
-      const mergedOptions = merge(accumulator, options);
-
-      mergedConfigPaths.push(configPath as string);
-
-      return mergedOptions;
-    }, {});
-    config.path.set(config.options, mergedConfigPaths as unknown as string);
   }
 
   return config;
@@ -244,7 +225,7 @@ async function tryRequireThenImport<T>(module: ModuleName, handleError = true): 
   try {
     result = require(module);
   } catch (error) {
-    const dynamicImportLoader: null | DynamicImport<T> = require('./utils/dynamic-import-loader')();
+    const dynamicImportLoader: null | DynamicImport<T> = require('./dynamic-import-loader')();
     if (
       ((error as ImportLoaderError).code === 'ERR_REQUIRE_ESM' || process.env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) &&
       pathToFileURL &&
@@ -275,8 +256,8 @@ async function tryRequireThenImport<T>(module: ModuleName, handleError = true): 
 }
 
 function isPromise<T>(value: Promise<T>): value is Promise<T> {
-  return typeof (value as unknown as Promise<T>).then === "function";
+  return typeof (value as unknown as Promise<T>).then === 'function';
 }
 function isFunction(value: unknown): value is CallableFunction {
-  return typeof value === "function";
+  return typeof value === 'function';
 }

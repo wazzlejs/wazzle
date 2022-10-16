@@ -16,6 +16,11 @@ export async function cli(): Promise<void> {
       type: 'boolean',
       alias: 'verbose',
       describe: 'enable debug option',
+    })
+    .option('c', {
+      type: 'string',
+      alias: 'config',
+      describe: 'load config file',
     });
 
   dazzleContext.plugins.filter(hasCommands).forEach((plugin) => {
