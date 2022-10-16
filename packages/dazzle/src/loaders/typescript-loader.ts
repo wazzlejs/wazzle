@@ -1,6 +1,6 @@
 import { DazzleConfig, DynamicImport } from '../types';
 import path from 'path';
-import { pathToFileURL } from "url";
+import { pathToFileURL } from 'url';
 import { prepare } from 'rechoir';
 import { logger } from '../logger';
 import yargs from 'yargs';
@@ -60,11 +60,7 @@ async function loadConfig() {
     } catch (error: Error) {
       logger.error(`Failed to load '${configPath}' config`);
 
-      if (isValidationError(error)) {
-        logger.error(error.message);
-      } else {
-        logger.error(error);
-      }
+      logger.error(error);
 
       process.exit(2);
     }
