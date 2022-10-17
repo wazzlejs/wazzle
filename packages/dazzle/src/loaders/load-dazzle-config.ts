@@ -7,7 +7,17 @@ import { DazzleConfig, DazzleOptions, DazzleContext, DazzlePlugin } from '../typ
 import { loadConfig } from './typescript-loader';
 import { applyHook } from '../configuration-hooks';
 
-export async function loadRazzleConfig(dazzleConfigIn?: DazzleConfig, packageJsonIn?: unknown): Promise<DazzleContext> {
+interface DazzleLoaderOptions {
+  dazzleConfigIn?: DazzleConfig;
+  packageJsonIn?: unknown;
+  configFilePath?: string;
+}
+
+export async function loadDazzleConfig({
+  dazzleConfigIn,
+  packageJsonIn,
+  configFilePath,
+}: DazzleLoaderOptions): Promise<DazzleContext> {
   let dazzleConfig: DazzleConfig = dazzleConfigIn || { plugins: [] };
   let packageJson = packageJsonIn || {};
   /* Check for dazzle.config.ts file
@@ -20,12 +30,12 @@ export async function loadRazzleConfig(dazzleConfigIn?: DazzleConfig, packageJso
     }
   } else if (fs.existsSync(defaultPaths.appConfig + '.ts')) {
     */
-    try {
-      dazzleConfig = await loadConfig();
-    } catch (e) {
-      logger.error('Invalid dazzle.config.ts file.', e);
-      process.exit(1);
-    }
+  try {
+    dazzleConfig = await loadConfig(configFilePath);
+  } catch (e) {
+    logger.error('Invalid dazzle.config.ts file.', e);
+    process.exit(1);
+  }
   //}
   if (fs.existsSync(defaultPaths.appPackageJson)) {
     try {

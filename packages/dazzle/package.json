@@ -58,7 +58,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@types/yargs": "^17.0.7",
     "chalk": "^4.1.2",
     "cosmiconfig": "^7.0.1",
     "dotenv": "^10.0.0",
@@ -66,12 +65,14 @@
     "enhanced-resolve": "^5.8.3",
     "esm-resolve": "^1.0.5",
     "fs-extra": "^10.0.0",
-    "resolve": "^1.20.0",
-    "yargs": "^17.2.1",
     "interpret": "^2.2.0",
-    "rechoir": "^0.7.0"
+    "rechoir": "^0.7.0",
+    "resolve": "^1.20.0",
+    "yargs": "^17.2.1"
   },
   "devDependencies": {
+    "@types/interpret": "^1.1.1",
+    "@types/yargs": "^17.0.7",
     "@types/fs-extra": "^9.0.13",
     "@types/rechoir": "^0.6.1"
   }

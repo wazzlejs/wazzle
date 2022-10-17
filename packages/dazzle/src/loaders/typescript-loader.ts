@@ -1,25 +1,13 @@
 import { DazzleConfig, PotentialPromise, DynamicImport } from '../types';
+import fs from 'fs';
 import path from 'path';
 import { pathToFileURL } from 'url';
 import { prepare } from 'rechoir';
 import { logger } from '../logger';
-import yargs from 'yargs';
-import { hideBin } from 'yargs/helpers';
-
-let argv = yargs()
-  .scriptName('dazzle')
-  .option('c', {
-    type: 'string',
-    alias: 'config',
-    describe: 'load config file',
-  })
-  .parse(hideBin(process.argv), {}, function () {});
+import interpret from 'interpret';
 
 interface ImportLoaderError extends Error {
   code?: string;
-}
-interface Rechoir {
-  prepare: typeof prepare;
 }
 
 interface RechoirError extends Error {
@@ -27,157 +15,116 @@ interface RechoirError extends Error {
   error: Error;
 }
 
-export async function loadConfig() {
-  const interpret = require('interpret');
-  const loadConfigByPath = async (configPath: string) => {
-    const ext = path.extname(configPath);
-    const interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
+export async function loadConfig(configPath?: string): Promise<DazzleConfig> {
+  let loadedConfig: DazzleConfig | undefined;
+  let triedConfigFiles: string[] = [];
 
-    if (interpreted) {
-      const rechoir: Rechoir = require('rechoir');
-
-      try {
-        rechoir.prepare(interpret.extensions, configPath);
-      } catch (error) {
-        if ((error as RechoirError)?.failures) {
-          logger.error(`Unable load '${configPath}'`);
-          logger.error((error as RechoirError).message);
-          (error as RechoirError).failures.forEach((failure) => {
-            logger.error(failure.error.message);
-          });
-          logger.error('Please install one of them');
-          process.exit(2);
-        }
-
-        logger.error(error as string);
-        process.exit(2);
-      }
-    }
-
-    let config: DazzleConfig;
-
-    type CouldBeConfigPromise = PotentialPromise<DazzleConfig>;
-
-    try {
-      config = await tryRequireThenImport<CouldBeConfigPromise>(configPath, false);
-      // @ts-expect-error error type assertion
-    } catch (error: Error) {
-      logger.error(`Failed to load '${configPath}' config`);
-
-      logger.error(error);
-
-      process.exit(2);
-    }
-
-    if (isPromise<CouldBeConfigPromise>(config<unknown> as Promise<DazzleConfig>)) {
-      config = await config;
-    }
-
-    // `Promise` may return `Function`
-    if (isFunction(config)) {
-      // when config is a function, pass the env from args to the config function
-      config = await config(argv.env, argv);
-    }
-  };
-
-  const isObject = (value: unknown): value is object => typeof value === 'object' && value !== null;
-
-  if (!isObject(config)) {
-    logger.error(`Invalid configuration in '${configPath}'`);
-
-    process.exit(2);
-
-    return config;
-  }
-
-  let loadedConfig: DazzleConfig | null = null;
-  let triedConfigfiles: string[];
-
-  if (argv.config) {
-    let cliConfigFile = path.resolve(argv.config);
-    triedConfigfiles.push(cliConfigFile);
+  if (configPath) {
+    let cliConfigFile = path.resolve(configPath);
+    triedConfigFiles = [cliConfigFile];
     if (!fs.existsSync(cliConfigFile)) {
       loadedConfig = await loadConfigByPath(cliConfigFile);
     }
   } else {
     // Order defines the priority, in decreasing order
-    const defaultConfigFiles = ['dazzle.config', '.dazzle/dazzle.config', '.dazzle/dazzlefile']
-      .map((filename) =>
-        // Since .cjs is not available on interpret side add it manually to default config extension list
-        [...Object.keys(interpret.extensions), '.cjs'].map((ext) => ({
-          path: path.resolve(filename + ext),
-          ext: ext,
-          module: interpret.extensions[ext],
-        }))
-      )
-      .reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
-
-    let foundDefaultConfigFile;
-
-    for (const defaultConfigFile of defaultConfigFiles) {
-      triedConfigfiles.push(defaultConfigFile.path);
-
-      if (!fs.existsSync(defaultConfigFile.path)) {
-        continue;
-      }
-
-      foundDefaultConfigFile = defaultConfigFile;
-      break;
-    }
-
-    if (foundDefaultConfigFile) {
-      const loadedConfig = await loadConfigByPath(foundDefaultConfigFile.path, options.argv);
-    }
+    triedConfigFiles = ['dazzle.config', '.dazzle/dazzle.config', '.dazzle/dazzlefile'];
+    loadedConfig = await loadFirstAvailableConfig(triedConfigFiles);
   }
 
-  if (loadedConfig == null) {
-    logger.error(
-      triedConfigfiles.map((configName) => `Configuration with the name "${configName}" was not found.`).join(' ')
-    );
-    process.exit(2);
+  if (loadedConfig === undefined) {
+    logConfigLoadingErrorAndExit(triedConfigFiles);
   }
   return loadedConfig;
 }
 
-async function tryRequireThenImport<T>(module: ModuleName, handleError = true): Promise<T> {
+function setupCustomFileLoadersIfNecessary(configPath: string) {
+  const configExtension = path.extname(configPath);
+  const interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === configExtension);
+  if (interpreted) {
+    try {
+      prepare(interpret.extensions, configPath);
+    } catch (error) {
+      if ((error as RechoirError)?.failures) {
+        logger.error(`Unable load '${configPath}'`);
+        logger.error((error as RechoirError).message);
+        (error as RechoirError).failures.forEach((failure) => {
+          logger.error(failure.error.message);
+        });
+        logger.error('Please install one of them');
+        process.exit(2);
+      }
+
+      logger.error(error as string);
+      process.exit(2);
+    }
+  }
+}
+
+function isObject(value: unknown): boolean {
+  return typeof value === 'object' && value !== null;
+}
+
+async function loadConfigByPath(configPath: string) {
+  setupCustomFileLoadersIfNecessary(configPath);
+  const config = await tryRequireThenImport(configPath);
+  if (!isObject(config)) {
+    logger.error(`Invalid configuration in '${configPath}'`);
+    process.exit(2);
+  }
+  return config;
+}
+
+async function loadFirstAvailableConfig(configPaths: string[]) {
+  const extensions = [...Object.keys(interpret.extensions), '.cjs'];
+  const configPathsWithExtensions = configPaths.flatMap((configPath) =>
+    extensions.map((extension) => `${configPath}.${extension}`)
+  );
+  for (const configPath of configPathsWithExtensions) {
+    if (fs.existsSync(configPath)) {
+      return await loadConfigByPath(configPath);
+    }
+  }
+  return undefined;
+}
+
+function logConfigLoadingErrorAndExit(triedConfigs: string[]): never {
+  logger.error(
+    triedConfigs.map((configName) => `Configuration with the name "${configName}" was not found.`).join(' ')
+  );
+  process.exit(2);
+}
+
+async function tryRequireThenImport(module: string): Promise<DazzleConfig> {
   let result;
 
   try {
     result = require(module);
+    // For babel/typescript
+    if (result && typeof result === 'object' && 'default' in result) {
+      result = (await result.default) || {};
+    }
+
+    return result || {};
   } catch (error) {
-    const dynamicImportLoader: null | DynamicImport<T> = require('./dynamic-import-loader')();
     if (
       ((error as ImportLoaderError).code === 'ERR_REQUIRE_ESM' || process.env.DAZZLE_CLI_FORCE_LOAD_ESM_CONFIG) &&
-      pathToFileURL &&
-      dynamicImportLoader
+      pathToFileURL
     ) {
       const urlForConfig = pathToFileURL(module);
-
-      result = await dynamicImportLoader(urlForConfig);
+      result = await import(urlForConfig.toString());
       result = result.default;
-
       return result;
     }
 
-    if (handleError) {
-      logger.error(error);
-      process.exit(2);
-    } else {
-      throw error;
-    }
+    logger.error(`Failed to load '${module}'`, error);
+    process.exit(2);
   }
-
-  // For babel/typescript
-  if (result && typeof result === 'object' && 'default' in result) {
-    result = result.default || {};
-  }
-
-  return result || {};
 }
 
 function isPromise<T>(value: Promise<T>): value is Promise<T> {
   return typeof (value as unknown as Promise<T>).then === 'function';
 }
+
 function isFunction(value: unknown): value is CallableFunction {
   return typeof value === 'function';
 }
