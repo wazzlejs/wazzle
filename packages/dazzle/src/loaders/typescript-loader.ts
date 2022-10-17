@@ -6,11 +6,11 @@ import { logger } from '../logger';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
-let argv = yargs(hideBin(process.argv)).scriptName('dazzle').option('c', {
+let argv = yargs().scriptName('dazzle').option('c', {
   type: 'string',
   alias: 'config',
   describe: 'load config file',
-});
+}).parse(hideBin(process.argv), {}, function () {});
 
 interface ImportLoaderError extends Error {
   code?: string;
@@ -26,7 +26,7 @@ interface RechoirError extends Error {
 
 async function loadConfig() {
   const interpret = require('interpret');
-  const loadConfigByPath = async (configPath: string, argv: Argv = {}) => {
+  const loadConfigByPath = async (configPath: string) => {
     const ext = path.extname(configPath);
     const interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
 
@@ -66,7 +66,7 @@ async function loadConfig() {
       process.exit(2);
     }
 
-      if (isPromise<ConfigOptions>(options as Promise<DazzleConfig>)) {
+      if (isPromise<ConfigOptions>(config as Promise<DazzleConfig>)) {
         config = await config;
       }
 
@@ -83,54 +83,23 @@ async function loadConfig() {
       logger.error(`Invalid configuration in '${configPath}'`);
 
       process.exit(2);
-    }
+      )
 
     return { config, path: configPath };
   };
 
-  const config: DazzleCLIConfig = {
-    options: {} as DazzleConfig,
-    path: new WeakMap(),
-  };
+  let loadedConfig: DazzleConfig | null = null;
+  let triedConfigfiles: string[];
 
-  if (options.config && options.config.length > 0) {
-    const loadedConfigs = await Promise.all(
-      options.config.map((configPath: string) => loadConfigByPath(path.resolve(configPath), options.argv))
-    );
 
-    config.options = [];
-
-    loadedConfigs.forEach((loadedConfig) => {
-      const isArray = Array.isArray(loadedConfig.options);
-
-      // TODO we should run webpack multiple times when the `--config` options have multiple values with `--merge`, need to solve for the next major release
-      if ((config.options as ConfigOptions[]).length === 0) {
-        config.options = loadedConfig.options as DazzleConfig;
-      } else {
-        if (!Array.isArray(config.options)) {
-          config.options = [config.options];
-        }
-
-        if (isArray) {
-          (loadedConfig.options as ConfigOptions[]).forEach((item) => {
-            (config.options as ConfigOptions[]).push(item);
-          });
-        } else {
-          config.options.push(loadedConfig.options as DazzleConfig);
-        }
-      }
-
-      if (isArray) {
-        (loadedConfig.options as ConfigOptions[]).forEach((options) => {
-          config.path.set(options, loadedConfig.path);
-        });
-      } else {
-        config.path.set(loadedConfig.options, loadedConfig.path);
-      }
-    });
-
-    config.options = config.options.length === 1 ? config.options[0] : config.options;
-  } else {
+  if (argv.config) {
+    let cliConfigFile = path.resolve(argv.config);
+    triedConfigfiles.push(cliConfigFile)
+    if (!fs.existsSync(cliConfigFile)) {
+      loadedConfig = await loadConfigByPath(cliConfigFile);
+    }
+  }
+  else {
     // Order defines the priority, in decreasing order
     const defaultConfigFiles = ['dazzle.config', '.dazzle/dazzle.config', '.dazzle/dazzlefile']
       .map((filename) =>
@@ -146,6 +115,8 @@ async function loadConfig() {
     let foundDefaultConfigFile;
 
     for (const defaultConfigFile of defaultConfigFiles) {
+      triedConfigfiles.push(defaultConfigFile.path)
+      
       if (!fs.existsSync(defaultConfigFile.path)) {
         continue;
       }
@@ -156,47 +127,16 @@ async function loadConfig() {
 
     if (foundDefaultConfigFile) {
       const loadedConfig = await loadConfigByPath(foundDefaultConfigFile.path, options.argv);
-
-      config.options = loadedConfig.options as DazzleConfig[];
-
-      if (Array.isArray(config.options)) {
-        config.options.forEach((item) => {
-          config.path.set(item, loadedConfig.path);
-        });
-      } else {
-        config.path.set(loadedConfig.options, loadedConfig.path);
-      }
     }
   }
 
-  if (options.configName) {
-    const notFoundConfigNames: string[] = [];
-
-    config.options = options.configName.map((configName: string) => {
-      let found;
-
-      if (Array.isArray(config.options)) {
-        found = config.options.find((options) => options.name === configName);
-      } else {
-        found = config.options.name === configName ? config.options : undefined;
-      }
-
-      if (!found) {
-        notFoundConfigNames.push(configName);
-      }
-
-      return found;
-    }) as DazzleConfig[];
-
-    if (notFoundConfigNames.length > 0) {
+    if (loadedConfig == null) {
       logger.error(
-        notFoundConfigNames.map((configName) => `Configuration with the name "${configName}" was not found.`).join(' ')
+        triedConfigfiles.map((configName) => `Configuration with the name "${configName}" was not found.`).join(' ')
       );
       process.exit(2);
     }
-  }
-
-  return config;
+  return loadedConfig;
 }
 
 async function tryRequireThenImport<T>(module: ModuleName, handleError = true): Promise<T> {
@@ -207,7 +147,7 @@ async function tryRequireThenImport<T>(module: ModuleName, handleError = true): 
   } catch (error) {
     const dynamicImportLoader: null | DynamicImport<T> = require('./dynamic-import-loader')();
     if (
-      ((error as ImportLoaderError).code === 'ERR_REQUIRE_ESM' || process.env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) &&
+      ((error as ImportLoaderError).code === 'ERR_REQUIRE_ESM' || process.env.DAZZLE_CLI_FORCE_LOAD_ESM_CONFIG) &&
       pathToFileURL &&
       dynamicImportLoader
     ) {
