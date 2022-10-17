@@ -6,11 +6,14 @@ import { logger } from '../logger';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
-let argv = yargs().scriptName('dazzle').option('c', {
-  type: 'string',
-  alias: 'config',
-  describe: 'load config file',
-}).parse(hideBin(process.argv), {}, function () {});
+let argv = yargs()
+  .scriptName('dazzle')
+  .option('c', {
+    type: 'string',
+    alias: 'config',
+    describe: 'load config file',
+  })
+  .parse(hideBin(process.argv), {}, function () {});
 
 interface ImportLoaderError extends Error {
   code?: string;
@@ -24,7 +27,7 @@ interface RechoirError extends Error {
   error: Error;
 }
 
-async function loadConfig() {
+export async function loadConfig() {
   const interpret = require('interpret');
   const loadConfigByPath = async (configPath: string) => {
     const ext = path.extname(configPath);
@@ -46,7 +49,7 @@ async function loadConfig() {
           process.exit(2);
         }
 
-        logger.error(error);
+        logger.error(error as string);
         process.exit(2);
       }
     }
@@ -66,40 +69,37 @@ async function loadConfig() {
       process.exit(2);
     }
 
-      if (isPromise<ConfigOptions>(config as Promise<DazzleConfig>)) {
-        config = await config;
-      }
-
-      // `Promise` may return `Function`
-      if (isFunction(config)) {
-        // when config is a function, pass the env from args to the config function
-        config = await config(argv.env, argv);
-      }
+    if (isPromise<CouldBeConfigPromise>(config<unknown> as Promise<DazzleConfig>)) {
+      config = await config;
     }
 
-    const isObject = (value: unknown): value is object => typeof value === 'object' && value !== null;
-
-    if (!isObject(config)) {
-      logger.error(`Invalid configuration in '${configPath}'`);
-
-      process.exit(2);
-      )
-
-    return { config, path: configPath };
+    // `Promise` may return `Function`
+    if (isFunction(config)) {
+      // when config is a function, pass the env from args to the config function
+      config = await config(argv.env, argv);
+    }
   };
+
+  const isObject = (value: unknown): value is object => typeof value === 'object' && value !== null;
+
+  if (!isObject(config)) {
+    logger.error(`Invalid configuration in '${configPath}'`);
+
+    process.exit(2);
+
+    return config;
+  }
 
   let loadedConfig: DazzleConfig | null = null;
   let triedConfigfiles: string[];
 
-
   if (argv.config) {
     let cliConfigFile = path.resolve(argv.config);
-    triedConfigfiles.push(cliConfigFile)
+    triedConfigfiles.push(cliConfigFile);
     if (!fs.existsSync(cliConfigFile)) {
       loadedConfig = await loadConfigByPath(cliConfigFile);
     }
-  }
-  else {
+  } else {
     // Order defines the priority, in decreasing order
     const defaultConfigFiles = ['dazzle.config', '.dazzle/dazzle.config', '.dazzle/dazzlefile']
       .map((filename) =>
@@ -115,8 +115,8 @@ async function loadConfig() {
     let foundDefaultConfigFile;
 
     for (const defaultConfigFile of defaultConfigFiles) {
-      triedConfigfiles.push(defaultConfigFile.path)
-      
+      triedConfigfiles.push(defaultConfigFile.path);
+
       if (!fs.existsSync(defaultConfigFile.path)) {
         continue;
       }
@@ -130,12 +130,12 @@ async function loadConfig() {
     }
   }
 
-    if (loadedConfig == null) {
-      logger.error(
-        triedConfigfiles.map((configName) => `Configuration with the name "${configName}" was not found.`).join(' ')
-      );
-      process.exit(2);
-    }
+  if (loadedConfig == null) {
+    logger.error(
+      triedConfigfiles.map((configName) => `Configuration with the name "${configName}" was not found.`).join(' ')
+    );
+    process.exit(2);
+  }
   return loadedConfig;
 }
 
