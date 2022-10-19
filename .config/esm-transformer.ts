@@ -9,7 +9,7 @@ type LoadedFile = {
 
 const ignorePaths = ['yargs/helpers'];
 
-function resolveImport(mod: string, source: string) {
+function resolveImport(mod: string, source: string, type: string) {
   if (mod.endsWith('.js')) {
     return mod;
   } else if (mod.startsWith('@') && mod.split('/').length < 3) {
@@ -31,6 +31,7 @@ function resolveImport(mod: string, source: string) {
     `${mod}.ts`,
     `${mod}.d.ts`,
     `${mod}.js`,
+    `${mod}.cjs`,
     `${mod}/index.ts`,
     `${mod}/index.d.ts`,
     `${mod}/index.js`,
@@ -39,7 +40,7 @@ function resolveImport(mod: string, source: string) {
   for (const candidate of potentialPaths) {
     const resolved = resolve(dirname(source), candidate);
     if (fs.existsSync(resolved) && !fs.statSync(resolved).isDirectory()) {
-      return candidate.replace(/(?:\.d\)?\.ts)$/, '.js');
+      return candidate.replace(/(?:\.d\)?\.ts)$/, `.${type}`)
     }
   }
 
@@ -52,7 +53,7 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
       if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) {
         const { moduleSpecifier } = node;
         if (moduleSpecifier && ts.isStringLiteralLike(moduleSpecifier)) {
-          const mod = resolveImport(moduleSpecifier.text, sourceFile.fileName);
+          const mod = resolveImport(moduleSpecifier.text, sourceFile.fileName, 'js');
 
           if (ts.isImportDeclaration(node)) {
             return ts.factory.updateImportDeclaration(
@@ -77,6 +78,27 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
         }
       }
 
+      if (ts.isCallExpression(node)) {
+        const { expression,  arguments: args } = node;
+        if (expression.kind == ts.SyntaxKind.Identifier
+          && expression.getText(sourceFile) == 'require' &&
+          args.length == 1 &&
+          args![0].kind == ts.SyntaxKind.StringLiteral
+          ) {
+          const mod = resolveImport(args![0].getText(sourceFile).slice(1, -1), sourceFile.fileName, 'cjs');
+          console.log(args![0].getText(sourceFile))
+
+          return ts.factory.updateCallExpression(
+            node,
+            expression,
+            undefined,
+            [
+              ts.factory.createStringLiteral(mod, true)
+            ]
+          );
+        }
+      }
+
       return ts.visitEachChild(node, visitor, context);
     };
 
@@ -95,13 +117,14 @@ function getFiles(dir: string, root = false): string[] {
       return getFiles(fullPath);
     }
 
-    return fullPath.endsWith('.js') ? [fullPath] : [];
+    return /\.c?js$/.test(fullPath) ? [fullPath] : [];
   });
 
   return paths.flatMap((entry) => entry);
 }
 
 function loadFile(file: string): LoadedFile {
+  console.log(file)
   const printer = ts.createPrinter();
 
   const source = ts.createSourceFile(
@@ -118,7 +141,7 @@ function loadFile(file: string): LoadedFile {
 }
 
 function getAllFiles() {
-  return getFiles(join(process.cwd(), `esm`), true).map((entry) =>
+  return getFiles(join(process.cwd(), `esm`), true).concat(getFiles(join(process.cwd(), `lib`), true)).map((entry) =>
     loadFile(entry)
   );
 }

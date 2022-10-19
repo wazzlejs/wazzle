@@ -19,5 +19,6 @@ export function loadOptions(options: Partial<Webpack5PluginOptions>): Webpack5Pl
     },
   };
 
+  
   return merge(initialOptions, options);
 }
