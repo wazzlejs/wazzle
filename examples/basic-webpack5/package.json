@@ -16,7 +16,8 @@
     "build:dev": "NODE_ENV=development dazzle build",
     "dev": "NODE_ENV=development dazzle start",
     "start": "node build/server.cjs",
-    "testimport": "dotenv -v NODE_ENV=development node test.cjs"
+    "cjs": "dotenv -e .env_cjs -v NODE_ENV=development node test.cjs",
+    "mjs": "dotenv -e .env_mjs -v NODE_ENV=development node test.js"
   },
   "repository": {
     "type": "git",
