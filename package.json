@@ -12,7 +12,9 @@
     "@swc-node/register": "^1.5.1",
     "@swc/cli": "^0.1.57",
     "jest": "^29.0.1",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
+    "renamer": "^4.0.0",
     "turbo": "^1.4.6",
     "typescript": "4.8.3"
   },

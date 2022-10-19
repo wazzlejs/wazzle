@@ -3,17 +3,19 @@
   "version": "0.1.0-alpha.1",
   "description": "Dazzle (formerly Razzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
   "main": "./lib/index.js",
+  "types": "./dts/index.d.ts",
   "exports": {
     ".": "./lib/index.js",
     "./preset": "./lib/preset.js",
     "./package.json": "./package.json"
   },
   "scripts": {
-    "type": "tsc --project tsconfig.type.json",
-    "build": "pnpm build:clean && pnpm build:cjs && pnpm build:dts",
+    "rename": "renamer --find js --replace cjs \"lib/**\"",
+    "build": "run-s build:clean build:cjs build:esm build:dts rename",
     "build:clean": "git clean -dfX esm lib",
     "build:cjs": "swc src -d lib --config-file ../../.swcrc -C module.type=commonjs",
-    "build:dts": "tsc --build --force",
+    "build:esm": "swc src -d esm --config-file ../../.swcrc -C module.type=es6 && pnpm esm:extensions",
+    "build:dts": "tsc",
     "esm:extensions": "TS_NODE_PROJECT=../../tsconfig.json node -r @swc-node/register ../../.config/esm-transformer.ts",
     "test": "pnpm vitest --run"
   },
