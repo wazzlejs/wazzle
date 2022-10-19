@@ -4,18 +4,9 @@
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": true,
-    "outDir": "lib",
-    "rootDir": "src",
-    "baseUrl": "./",
-    "typeRoots": [
-      "src/typings",
-      "node_modules/@types"
-    ],
-    "paths": {
-      "*": [
-        "src/type-shims/*"
-      ]
-    }
+    "esModuleInterop": true,
+    "outDir": "dts",
+    "rootDir": "src"
   },
   "include": [
     "src/**/*.ts"
