@@ -15,7 +15,7 @@ class LocalPlugin implements DazzlePlugin {
 
 const config: DazzleConfig = {
   plugins: [webpack5Plugin(), webpack5BabelPlugin(), new LocalPlugin()],
-  modifyWebpackConfig(config) {
+  modifyWebpackConfig(context: DazzleContext, webpackContext: WebpackContext, config: WebpackConfig): WebpackConfig {
     console.log('HERE IS THE CONFIG', config);
     return config;
   },

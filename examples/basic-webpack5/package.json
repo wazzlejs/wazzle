@@ -15,7 +15,8 @@
     "build:prod": "NODE_ENV=production dazzle build",
     "build:dev": "NODE_ENV=development dazzle build",
     "dev": "NODE_ENV=development dazzle start",
-    "start": "node build/server.cjs"
+    "start": "node build/server.cjs",
+    "testimport": "dotenv -v NODE_ENV=development node test.js"
   },
   "repository": {
     "type": "git",
@@ -37,11 +38,12 @@
   },
   "browserslist": "ie 9",
   "devDependencies": {
+    "dotenv-cli": "^6.0.0",
     "@elzzad/dazzle": "workspace:*",
+    "@elzzad/dazzle-babel-loader": "workspace:*",
     "@elzzad/dazzle-plugin-webpack5": "workspace:*",
     "@elzzad/dazzle-plugin-webpack5-babel": "workspace:*",
     "@elzzad/dazzle-plugin-webpack5-externals": "workspace:*",
-    "@elzzad/dazzle-babel-loader": "workspace:*",
     "yargs": "^17.2.1"
   }
 }
