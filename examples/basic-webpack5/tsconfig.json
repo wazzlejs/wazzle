@@ -1,0 +1,12 @@
+{
+  "ts-node": {
+    "transpileOnly": true,
+    "moduleTypes": {
+      "dazzle.config.ts": "cjs"
+    }
+  },
+  "compilerOptions": {
+    "module": "es2020",
+    "target": "es2020"
+  }
+}
