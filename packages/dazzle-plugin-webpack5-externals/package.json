@@ -15,7 +15,7 @@
   "exports": {
     "types": "./dts/index.d.ts",
     "import": "./esm/index.js",
-    "require": "./lib/index.js"
+    "require": "./lib/index.cjs"
   },
   "type": "module",
   "scripts": {

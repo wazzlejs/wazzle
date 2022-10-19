@@ -9,7 +9,7 @@
   "exports": {
     "types": "./dts/index.d.ts",
     "import": "./esm/index.js",
-    "require": "./lib/index.js"
+    "require": "./lib/index.cjs"
   },
   "scripts": {
     "type": "tsc --project tsconfig.type.json",

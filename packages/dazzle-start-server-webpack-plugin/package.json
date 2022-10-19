@@ -8,7 +8,7 @@
     ".": {
       "types": "./dts/index.d.ts",
       "import": "./esm/index.js",
-      "require": "./lib/index.js"
+      "require": "./lib/index.cjs"
     },
     "./types": {
       "types": "./dts/types.d.ts",
