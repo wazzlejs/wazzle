@@ -13,7 +13,7 @@
     "./types": {
       "types": "./dts/types.d.ts",
       "import": "./esm/types.js",
-      "require": "./lib/types.js"
+      "require": "./lib/types.cjs"
     }
   },
   "typesVersions": {
@@ -26,7 +26,7 @@
   "scripts": {
     "type": "tsc --project tsconfig.type.json",
     "rename": "renamer --find js --replace cjs \"lib/**\"",
-    "build": "run-s build:clean build:cjs build:esm build:dts rename",
+    "build": "run-s build:clean build:cjs build:esm build:dts rename esm:extensions",
     "build:clean": "git clean -dfX esm lib",
     "build:cjs": "swc src -d lib --config-file ../../.swcrc -C module.type=commonjs",
     "build:esm": "swc src -d esm --config-file ../../.swcrc -C module.type=es6",

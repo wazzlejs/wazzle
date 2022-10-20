@@ -13,7 +13,7 @@
     "./types": {
       "types": "./dts/types.d.ts",
       "import": "./esm/types.js",
-      "require": "./lib/types.js"
+      "require": "./lib/types.cjs"
     }
   },
   "typesVersions": {

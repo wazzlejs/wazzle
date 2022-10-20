@@ -5,8 +5,8 @@ import url from 'url';
 import { logger } from './logger';
 import { DazzlePaths } from './types';
 
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const ___filename = url.fileURLToPath(import.meta.url);
+const ___dirname = path.dirname(___filename);
 
 // import clearConsole from 'react-dev-utils/clearConsole';
 // import logger from 'razzle-dev-utils/logger';
@@ -53,7 +53,7 @@ function getServedPath(appPackageJson: string) {
   return ensureSlash(servedUrl, true);
 }
 
-const resolveOwn = (relativePath: string): string => path.resolve(__dirname, '..', relativePath);
+const resolveOwn = (relativePath: string): string => path.resolve(___dirname, '..', relativePath);
 
 // We support resolving modules according to `NODE_PATH`.
 // This lets you use absolute paths in imports inside large monorepos:
