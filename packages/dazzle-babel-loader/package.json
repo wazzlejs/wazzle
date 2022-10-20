@@ -3,7 +3,7 @@
   "version": "0.1.0-alpha.1",
   "description": "Dazzle (formerly Razzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
   "main": "./lib/index.js",
-  "types": "./dts/index.d.ts",
+  "types": "./lib/index.d.ts",
   "exports": {
     ".": "./lib/index.js",
     "./preset": "./lib/preset.js",
