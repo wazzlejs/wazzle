@@ -39,16 +39,20 @@ importers:
       '@types/node': ^18.11.2
       dotenv-cli: ^6.0.0
       express: ^4.17.1
+      interpret: ^2.2.0
       react: ^17.0.2
       react-dom: ^17.0.2
+      rechoir: ^0.7.0
       ts-node: ^10.9.1
       typescript: ^4.8.4
       yargs: ^17.2.1
     dependencies:
       '@types/node': 18.11.2
       express: 4.18.1
+      interpret: 2.2.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
+      rechoir: 0.7.1
       ts-node: 10.9.1_id5sxmpllzol2kp2zgqrnepaum
       typescript: 4.8.4
     devDependencies:
