@@ -1,3 +1,4 @@
-import { cli } from '../esm/index.js';
+import pkg from '../lib/index.cjs';
 
-await cli();
+const {cli} = pkg;
+cli();
