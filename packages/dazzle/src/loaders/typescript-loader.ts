@@ -79,7 +79,7 @@ async function loadConfigByPath(configPath: string) {
 async function loadFirstAvailableConfig(configPaths: string[]) {
   const extensions = [...Object.keys(interpret.extensions), '.cjs'];
   const configPathsWithExtensions = configPaths.flatMap((configPath) =>
-    extensions.map((extension) => `${configPath}.${extension}`)
+    extensions.map((extension) => `${configPath}${extension}`)
   );
   for (const configPath of configPathsWithExtensions) {
     if (fs.existsSync(configPath)) {
