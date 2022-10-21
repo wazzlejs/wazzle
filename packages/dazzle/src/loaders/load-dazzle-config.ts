@@ -6,6 +6,7 @@ import defaultPaths from '../paths';
 import { DazzleConfig, DazzleOptions, DazzleContext, DazzlePlugin } from '../types';
 import { loadConfig } from './typescript-loader';
 import { applyHook } from '../configuration-hooks';
+import path from 'path/win32';
 
 interface DazzleLoaderOptions {
   dazzleConfigIn?: DazzleConfig;
@@ -31,7 +32,7 @@ export async function loadDazzleConfig({
   } else if (fs.existsSync(defaultPaths.appConfig + '.ts')) {
     */
   try {
-    dazzleConfig = await loadConfig(configFilePath);
+    dazzleConfig = await loadConfig(defaultPaths.appPath, configFilePath);
   } catch (e) {
     logger.error('Invalid dazzle.config.ts file.', e);
     process.exit(1);

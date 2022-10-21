@@ -15,19 +15,21 @@ interface RechoirError extends Error {
   error: Error;
 }
 
-export async function loadConfig(configPath?: string): Promise<DazzleConfig> {
+export async function loadConfig(appPath: string, configPath?: string): Promise<DazzleConfig> {
   let loadedConfig: DazzleConfig | undefined;
   let triedConfigFiles: string[] = [];
 
   if (configPath) {
-    let cliConfigFile = path.resolve(configPath);
+    let cliConfigFile = path.resolve(path.join(appPath, configPath));
     triedConfigFiles = [cliConfigFile];
     if (!fs.existsSync(cliConfigFile)) {
       loadedConfig = await loadConfigByPath(cliConfigFile);
     }
   } else {
     // Order defines the priority, in decreasing order
-    triedConfigFiles = ['dazzle.config', '.dazzle/dazzle.config', '.dazzle/dazzlefile'];
+    triedConfigFiles = ['dazzle.config', '.dazzle/dazzle.config', '.dazzle/dazzlefile'].map((pth) =>
+      path.join(appPath, pth)
+    );
     loadedConfig = await loadFirstAvailableConfig(triedConfigFiles);
   }
 
