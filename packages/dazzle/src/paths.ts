@@ -36,7 +36,7 @@ const getPublicUrl = (appPackageJson: string): string | undefined => {
 
   if (fs.existsSync(appPackageJson)) {
     try {
-      const packageJson = require(appPackageJson);
+      const packageJson = JSON.parse(fs.readFileSync(defaultPaths.appPackageJson).toString());;
       return packageJson.homepage;
     } catch (e) {
       logger.error('Invalid package.json.', e);
