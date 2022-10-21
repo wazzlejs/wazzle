@@ -98,14 +98,13 @@ function logConfigLoadingErrorAndExit(triedConfigs: string[]): never {
 
 async function tryRequireThenImport(module: string): Promise<DazzleConfig> {
   let result;
-
   try {
     result = require(module);
     // For babel/typescript
     if (result && typeof result === 'object' && 'default' in result) {
       result = (await result.default) || {};
     }
-
+    
     return result || {};
   } catch (error) {
     if (
