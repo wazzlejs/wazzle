@@ -91,7 +91,7 @@ async function loadFirstAvailableConfig(configPaths: string[]) {
 
 function logConfigLoadingErrorAndExit(triedConfigs: string[]): never {
   logger.error(
-    triedConfigs.map((configName) => `Configuration with the name "${configName}" was not found.`).join(' ')
+    `Configuration(s) with the name "${triedConfigs.join(', ')}" was not found.`
   );
   process.exit(2);
 }
