@@ -13,7 +13,7 @@ const ___dirname = path.dirname(___filename);
 
 // Make sure any symlinks in the project folder are resolved:
 // https://github.com/facebookincubator/create-react-app/issues/637
-const appDirectory = fs.realpathSync(path.join(process.cwd(), process.env.RAZZLE_APP_PATH || ''));
+const appDirectory = fs.realpathSync(path.join(process.cwd(), process.env.DAZZLE_APP_PATH || ''));
 const resolveApp = (relativePath: string): string => path.resolve(appDirectory, relativePath);
 
 const envPublicUrl = process.env.PUBLIC_URL;
