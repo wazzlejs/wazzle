@@ -15,9 +15,7 @@
     "build:prod": "NODE_ENV=production dazzle build",
     "build:dev": "NODE_ENV=development dazzle build",
     "dev": "NODE_ENV=development dazzle start",
-    "start": "node build/server.cjs",
-    "cjs": "dotenv -e .env_cjs -v NODE_ENV=development node test.cjs",
-    "mjs": "dotenv -e .env_mjs -v NODE_ENV=development node test.js"
+    "start": "node build/server.cjs"
   },
   "repository": {
     "type": "git",
