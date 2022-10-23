@@ -124,7 +124,7 @@ function getFiles(dir: string, root = false): string[] {
 }
 
 function loadFile(file: string): LoadedFile {
-  console.log(file)
+  // console.log(file)
   const printer = ts.createPrinter();
 
   const source = ts.createSourceFile(
