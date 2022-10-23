@@ -20,9 +20,9 @@ export async function loadConfig(appPath: string, configPath?: string): Promise<
   let triedConfigFiles: string[] = [];
 
   if (configPath) {
-    let cliConfigFile = path.resolve(path.join(appPath, configPath));
+    let cliConfigFile = path.join(appPath, configPath);
     triedConfigFiles = [cliConfigFile];
-    if (!fs.existsSync(cliConfigFile)) {
+    if (fs.existsSync(cliConfigFile)) {
       loadedConfig = await loadConfigByPath(cliConfigFile);
     }
   } else {
@@ -104,7 +104,7 @@ async function tryRequireThenImport(module: string): Promise<DazzleConfig> {
     if (result && typeof result === 'object' && 'default' in result) {
       result = (await result.default) || {};
     }
-    
+
     return result || {};
   } catch (error) {
     if (

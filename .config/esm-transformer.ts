@@ -86,7 +86,7 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
           args![0].kind == ts.SyntaxKind.StringLiteral
           ) {
           const mod = resolveImport(args![0].getText(sourceFile).slice(1, -1), sourceFile.fileName, 'cjs');
-          console.log(args![0].getText(sourceFile))
+          // console.log(args![0].getText(sourceFile))
 
           return ts.factory.updateCallExpression(
             node,
