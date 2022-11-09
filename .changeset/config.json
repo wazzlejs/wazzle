@@ -2,7 +2,7 @@
     "commit": false,
     "updateInternalDependencies": "minor",
     "linked": [],
-    "fixed": [["babel-preset-dazzle","create-dazzle-app","dazzle", "dazzle-*"]],
+    "fixed": [["babel-preset-dazzle","dazzle", "dazzle-*"]],
     "access": "public",
     "baseBranch": "main",
     "ignore": ["tsconfig"],
