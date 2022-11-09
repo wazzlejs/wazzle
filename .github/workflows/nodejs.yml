@@ -3,15 +3,15 @@ name: Run tests on push
 on: [push]
 
 jobs:
-  build:
-
-    runs-on: ${{ matrix.os }}
+  test:
 
     strategy:
       fail-fast: false
       matrix:
         node-version: [12.x, 13.x, 14.x]
         os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    runs-on: ${{ matrix.os }}
 
     name: Test on node ${{ matrix.node-version }} and ${{ matrix.os }} 
 
@@ -50,9 +50,9 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-    - name: Run tests
-      id: test_run
-      run: pnpm test --runInBand --coverage
-      env:
-        CI: true
-        WARNINGS_ERRORS_DISABLE: true
+      - name: Run tests
+        id: test_run
+        run: pnpm test --runInBand --coverage
+        env:
+          CI: true
+          WARNINGS_ERRORS_DISABLE: true
