@@ -8,12 +8,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [12, 13, 14]
+        node: [12, 13, 14]
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     runs-on: ${{ matrix.os }}
 
-    name: Test on node ${{ matrix.node-version }} and ${{ matrix.os }} 
+    name: Test on node ${{ matrix.node }} and ${{ matrix.os }} 
 
     steps:
       - name: Checkout Repo
@@ -22,10 +22,10 @@ jobs:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
 
-      - name: Setup Node.js {{ matrix.node-version }}
+      - name: Setup Node.js {{ matrix.node }}
         uses: actions/setup-node@v3
         with:
-          node-version: {{ matrix.node-version }}
+          node-version: {{ matrix.node }}
 
       - uses: pnpm/action-setup@v2
         name: Install pnpm
@@ -44,9 +44,9 @@ jobs:
         name: Setup pnpm cache
         with:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-{{ matrix.node-version }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-{{ matrix.node }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-{{ matrix.node-version }}-pnpm-store-
+            ${{ runner.os }}-{{ matrix.node }}-pnpm-store-
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
