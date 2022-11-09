@@ -16,7 +16,6 @@ jobs:
     name: Test on node ${{ matrix.node-version }} and ${{ matrix.os }} 
 
     steps:
-    steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
         with:
