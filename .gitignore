@@ -48,6 +48,7 @@ build
 **/.idea
 
 .vercel
+.turbo
 
 packages/*/lib
 packages/*/esm
