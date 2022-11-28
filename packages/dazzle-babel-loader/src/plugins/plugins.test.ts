@@ -13,8 +13,6 @@ const testPlugin = (plugin, code) => {
   return result.code;
 };
 
-describe('plugin', () => {
-  describe('simple usage', () => {
     it('should transform es6', () => {
       const result = testPlugin(
         commonjs,
@@ -34,6 +32,4 @@ describe('plugin', () => {
         exports["default"] = _default;"
       `);
     });
-    
-  });
-});
+  

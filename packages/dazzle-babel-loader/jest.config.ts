@@ -6,5 +6,6 @@ const config: Config.InitialOptions = {
   transform: {
     "^.+\\.tsx?$": "ts-jest",
   },
+  testPathIgnorePatterns: ["/lib/", "/esm/"]
 };
 export default config;
