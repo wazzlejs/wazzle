@@ -32,7 +32,7 @@
     "build:esm": "swc src -d esm --config-file ../../.swcrc -C module.type=es6",
     "build:dts": "tsc",
     "esm:extensions": "cross-env TS_NODE_PROJECT=../../tsconfig.json node -r @swc-node/register ../../.config/esm-transformer.ts",
-    "test": "pnpm vitest --run"
+    "test": "pnpm jest --passWithNoTests"
   },
   "repository": {
     "type": "git",

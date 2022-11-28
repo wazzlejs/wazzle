@@ -16,7 +16,8 @@
     "lint:fix": "yarn lint --fix",
     "verify": "run-p prettier lint",
     "verify:fix": "yarn prettier:fix && yarn lint:fix",
-    "build": "tsc --build"
+    "build": "tsc --build",
+    "test": "pnpm jest --passWithNoTests"
   },
   "repository": {
     "type": "git",
