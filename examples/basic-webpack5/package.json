@@ -19,17 +19,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jaredpalmer/razzle.git"
+    "url": "git+https://github.com/jaredpalmer/dazzle.git"
   },
   "keywords": [
-    "razzle"
+    "dazzle"
   ],
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jaredpalmer/razzle/issues"
+    "url": "https://github.com/jaredpalmer/dazzle/issues"
   },
-  "homepage": "https://github.com/jaredpalmer/razzle#readme",
+  "homepage": "https://github.com/jaredpalmer/dazzle#readme",
   "dependencies": {
     "@types/node": "^18.11.2",
     "express": "^4.17.1",

@@ -20,7 +20,7 @@ about: Create a report to help make Dazzle better
 
 ### Suggested solution(s)
 
-<!-- How could we solve this bug? What changes would need to made to Razzle? -->
+<!-- How could we solve this bug? What changes would need to made to dazzle? -->
 
 ### Additional context
 

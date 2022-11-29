@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       npm_tag:
-        description: 'The npm tag for create razzle app'
+        description: 'The npm tag for create dazzle app'
         default: 'development'
       jest_filter:
         description: 'The filter for jest tests'

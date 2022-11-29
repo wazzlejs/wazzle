@@ -1,7 +1,7 @@
 {
   "name": "@elzzad/dazzle-plugin-webpack5",
   "version": "0.1.0-alpha.1",
-  "description": "Dazzle (formerly Razzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
+  "description": "Dazzle (formerly dazzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
   "type": "module",
   "module": "./esm/index.js",
   "exports": {

@@ -3,5 +3,5 @@ build
 my-app*
 test/fixtures
 test/tests
-packages/create-razzle-app/templates
+packages/create-dazzle-app/templates
 examples

@@ -9,7 +9,7 @@ const ___filename = url.fileURLToPath(import.meta.url);
 const ___dirname = path.dirname(___filename);
 
 // import clearConsole from 'react-dev-utils/clearConsole';
-// import logger from 'razzle-dev-utils/logger';
+// import logger from 'dazzle-dev-utils/logger';
 
 // Make sure any symlinks in the project folder are resolved:
 // https://github.com/facebookincubator/create-react-app/issues/637
