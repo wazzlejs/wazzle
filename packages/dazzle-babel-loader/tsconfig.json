@@ -1,17 +1,14 @@
 {
-  "extends": "../tsconfig/base.json",
   "compilerOptions": {
     "noEmit": false,
-    "rootDir": "src",
-    "outDir": "./lib",
-    "target": "es5",
-    "module": "commonjs",
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dts",
+    "rootDir": "src"
   },
   "include": [
-    "**/*.ts", 
+    "src/**/*.ts"
   ],
-  "exclude": [
-    "lib/*"
-  ]
-
+  "extends": "../tsconfig/base.json",
 }

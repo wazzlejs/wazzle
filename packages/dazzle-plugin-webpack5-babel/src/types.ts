@@ -1,4 +1,4 @@
-import { DazzleWebpack5LoaderOptions } from '@elzzad/dazzle-babel-loader';
+import { DazzleWebpack5LoaderOptions } from '@elzzad/dazzle-babel-loader/types';
 
 export type DefinePluginDefines = {};
 
