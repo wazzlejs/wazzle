@@ -56,7 +56,7 @@ jobs:
 
       - name: Run tests
         id: test_run
-        run: pnpm test --runInBand --coverage
+        run: pnpm test
         env:
           CI: true
           WARNINGS_ERRORS_DISABLE: true
