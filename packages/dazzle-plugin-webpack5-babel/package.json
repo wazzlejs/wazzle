@@ -45,12 +45,14 @@
   },
   "peerDependencies": {
     "@elzzad/dazzle": "0.1.0-alpha.1",
+    "@elzzad/dazzle-babel-loader": "0.1.0-alpha.1",
     "@elzzad/dazzle-plugin-webpack5": "0.1.0-alpha.1",
     "webpack": "^5.64.4"
   },
   "devDependencies": {
     "@elzzad/dazzle": "workspace:*",
     "@elzzad/dazzle-plugin-webpack5": "workspace:*",
+    "@elzzad/dazzle-babel-loader": "workspace:*",
     "@types/yargs": "^17.0.7",
     "webpack": "^5.64.4"
   },

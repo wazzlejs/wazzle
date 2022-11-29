@@ -4,7 +4,7 @@
     "noEmit": true,
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "experimentalDecorators": false,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
