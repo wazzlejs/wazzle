@@ -31,7 +31,7 @@
     "build:esm": "swc src -d esm --config-file ../../.swcrc -C module.type=es6",
     "build:dts": "tsc --project tsconfig.json",
     "esm:extensions": "cross-env  TS_NODE_PROJECT=../../tsconfig.json node -r @swc-node/register ../../.config/esm-transformer.ts",
-    "test": "pnpm jest --passWithNoTests"
+    "test": "pnpm jest --passWithNoTests --config=../../jest.config.mjs"
   },
   "repository": {
     "type": "git",
