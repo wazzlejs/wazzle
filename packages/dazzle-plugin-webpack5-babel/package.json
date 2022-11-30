@@ -29,13 +29,9 @@
   "author": "Øyvind Saltvik",
   "license": "MIT",
   "keywords": [
-    "inferno",
     "isomorphic",
-    "preact",
     "dazzle",
     "react",
-    "reason",
-    "reasonml",
     "ssr",
     "universal",
     "webpack"

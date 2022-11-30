@@ -29,13 +29,9 @@
     "test": "pnpm jest --passWithNoTests --config=../../jest.config.mjs"
   },
   "keywords": [
-    "inferno",
     "isomorphic",
-    "preact",
     "dazzle",
     "react",
-    "reason",
-    "reasonml",
     "ssr",
     "universal",
     "webpack"
