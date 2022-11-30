@@ -2,29 +2,23 @@
   "name": "@elzzad/dazzle-babel-loader",
   "version": "0.1.0-alpha.1",
   "description": "Dazzle (formerly dazzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
-  "main": "./lib/index.cjs",
-  "types": "./dts/index.d.ts",
-  "module": "./esm/index.js",
   "exports": {
     ".": {
       "types": "./dts/index.d.ts",
       "import": "./esm/index.js",
       "require": "./lib/index.cjs"
     },
-    "./types": {
-      "types": "./dts/types.d.ts",
-      "import": "./esm/types.js",
-      "require": "./lib/types.cjs"
-    },
-    "./loader/types": {
-      "types": "./dts/loader/types.d.ts",
-      "import": "./esm/loader/types.js",
-      "require": "./lib/loader/types.cjs"
-    },
     "./preset": {
       "types": "./dts/preset.d.ts",
       "import": "./esm/preset.js",
       "require": "./lib/preset.cjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dts/*"
+      ]
     }
   },
   "scripts": {
