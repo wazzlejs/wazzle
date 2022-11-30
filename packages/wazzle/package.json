@@ -1,7 +1,7 @@
 {
   "name": "@wazzle/wazzle",
   "version": "0.1.0-alpha.1",
-  "description": "Wazzle (formerly wazzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
+  "description": "Wazzle (formerly razzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
   "type": "module",
   "module": "./esm/index.js",
   "exports": {
