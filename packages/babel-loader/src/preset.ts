@@ -20,7 +20,7 @@ import optimizeHookDestructuring from './plugins/optimize-hook-destructuring.js'
 const isLoadIntentTest = process.env.NODE_ENV === 'test';
 const isLoadIntentDevelopment = process.env.NODE_ENV === 'development';
 
-type DazzleBabelPresetOptions = {
+type WazzleBabelPresetOptions = {
   'preset-env'?: any;
   'preset-react'?: any;
   'class-properties'?: any;
@@ -44,7 +44,7 @@ function supportsStaticESM(caller: CallerOptions): boolean {
   return !!caller?.supportsStaticESM;
 }
 
-export default (api: any, options: DazzleBabelPresetOptions = {}): BabelPreset => {
+export default (api: any, options: WazzleBabelPresetOptions = {}): BabelPreset => {
   const supportsESM = api.caller(supportsStaticESM);
   const isServer = api.caller((caller: any) => !!caller && caller.isServer);
   const isCallerDevelopment = api.caller((caller: any) => caller?.isDev);

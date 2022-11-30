@@ -3,7 +3,7 @@ import path from 'path';
 import buildResolver from 'esm-resolve';
 import Webpack, { Configuration } from 'webpack';
 import { Configuration as DevServerConfiguration } from 'webpack-dev-server';
-import { logger, DazzleContext, applyHook } from '@wazzle/wazzle';
+import { logger, WazzleContext, applyHook } from '@wazzle/wazzle';
 
 import { Webpack5PluginOptions, WebpackBuildContext } from './types';
 import { devNull, type } from 'os';
@@ -23,7 +23,7 @@ interface WebpackConfigurationWithContext {
 
 export async function createWebpackConfig(
   pluginOptions: Webpack5PluginOptions,
-  dazzleContext: DazzleContext,
+  dazzleContext: WazzleContext,
   devServerEnabled: boolean = false,
   isDev: boolean = false
 ): Promise<{

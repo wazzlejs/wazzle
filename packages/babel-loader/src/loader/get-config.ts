@@ -5,7 +5,7 @@ import loadConfig from '@babel/core/lib/config';
 import commonJsPlugin from '../plugins/commonjs.js';
 import noAnonymousDefaultExport from '../plugins/no-anonymous-default-export.js';
 
-import { DazzleWebpack5LoaderContext, DazzleWebpack5LoaderOptions, Source, SourceMap } from './types';
+import { WazzleWebpack5LoaderContext, WazzleWebpack5LoaderOptions, Source, SourceMap } from './types';
 import { consumeIterator } from './util.js';
 
 /**
@@ -37,7 +37,7 @@ interface CharacteristicsGermaneToCaching {
 const fileExtensionRegex = /\.([a-z]+)$/;
 
 function getCacheCharacteristics(
-  loaderOptions: DazzleWebpack5LoaderOptions,
+  loaderOptions: WazzleWebpack5LoaderOptions,
   source: Source,
   filename: string
 ): CharacteristicsGermaneToCaching {
@@ -53,7 +53,7 @@ function getCacheCharacteristics(
   };
 }
 
-function getTargetsToUse({ browserslistEnv, isServer, dazzleBuildName }: DazzleWebpack5LoaderOptions) {
+function getTargetsToUse({ browserslistEnv, isServer, dazzleBuildName }: WazzleWebpack5LoaderOptions) {
   if (dazzleBuildName && browserslistEnv && browserslistEnv.includes(dazzleBuildName)) {
     return undefined;
   }
@@ -73,7 +73,7 @@ function getTargetsToUse({ browserslistEnv, isServer, dazzleBuildName }: DazzleW
  * Return an array of Babel plugins, conditioned upon loader options and
  * source file characteristics.
  */
-function getPlugins(loaderOptions: DazzleWebpack5LoaderOptions, cacheCharacteristics: CharacteristicsGermaneToCaching) {
+function getPlugins(loaderOptions: WazzleWebpack5LoaderOptions, cacheCharacteristics: CharacteristicsGermaneToCaching) {
   const { isServer, hasModuleExports } = cacheCharacteristics;
 
   const { hasReactRefresh, development } = loaderOptions;
@@ -145,9 +145,9 @@ const isJsFile = /\.[c|m]js$/;
  * This config should have no unresolved overrides, presets, etc.
  */
 async function getFreshConfig(
-  this: DazzleWebpack5LoaderContext,
+  this: WazzleWebpack5LoaderContext,
   cacheCharacteristics: CharacteristicsGermaneToCaching,
-  loaderOptions: DazzleWebpack5LoaderOptions,
+  loaderOptions: WazzleWebpack5LoaderOptions,
   target: string | [string, string],
   filename: string,
   inputSourceMap?: SourceMap
@@ -241,7 +241,7 @@ async function getFreshConfig(
 /**
  * Each key returned here corresponds with a Babel config that can be shared.
  * The conditions of permissible sharing between files is dependent on specific
- * file attributes and Dazzle compiler states: `CharacteristicsGermaneToCaching`.
+ * file attributes and Wazzle compiler states: `CharacteristicsGermaneToCaching`.
  */
 function getCacheKey(cacheCharacteristics: CharacteristicsGermaneToCaching) {
   const { isServer, hasModuleExports, fileExt, dazzleBuildName } = cacheCharacteristics;
@@ -256,7 +256,7 @@ const configCache: Map<any, BabelConfig> = new Map();
 const configFiles: Set<string> = new Set();
 
 export async function getConfig(
-  this: DazzleWebpack5LoaderContext,
+  this: WazzleWebpack5LoaderContext,
   {
     source,
     target,
@@ -265,7 +265,7 @@ export async function getConfig(
     inputSourceMap,
   }: {
     source: Source;
-    loaderOptions: DazzleWebpack5LoaderOptions;
+    loaderOptions: WazzleWebpack5LoaderOptions;
     target: string | [string, string];
     filename: string;
     inputSourceMap?: SourceMap;

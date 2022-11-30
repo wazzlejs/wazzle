@@ -1,21 +1,21 @@
 import { webpack5Plugin, WebpackContext, WebpackConfig } from '@wazzle/webpack5';
-import { DazzleConfig, DazzleContext, DazzlePlugin } from '@wazzle/wazzle';
+import { WazzleConfig, WazzleContext, WazzlePlugin } from '@wazzle/wazzle';
 import { webpack5BabelPlugin } from '@wazzle/webpack5-babel';
 
 console.log('...........we are running this');
 
-class LocalPlugin implements DazzlePlugin {
+class LocalPlugin implements WazzlePlugin {
   name = 'local-plugin';
 
-  modifyWebpackConfig(context: DazzleContext, webpackContext: WebpackContext, config: WebpackConfig): WebpackConfig {
+  modifyWebpackConfig(context: WazzleContext, webpackContext: WebpackContext, config: WebpackConfig): WebpackConfig {
     console.log('THE CONFIG IS', JSON.stringify(config));
     return config;
   }
 }
 
-const config: DazzleConfig = {
+const config: WazzleConfig = {
   plugins: [webpack5Plugin(), webpack5BabelPlugin(), new LocalPlugin()],
-  modifyWebpackConfig(context: DazzleContext, webpackContext: WebpackContext, config: WebpackConfig): WebpackConfig {
+  modifyWebpackConfig(context: WazzleContext, webpackContext: WebpackContext, config: WebpackConfig): WebpackConfig {
     console.log('HERE IS THE CONFIG', config);
     return config;
   },

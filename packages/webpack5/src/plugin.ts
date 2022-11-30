@@ -1,4 +1,4 @@
-import { logger, DazzlePlugin, DazzleContext, ProvidesCommands } from '@wazzle/wazzle';
+import { logger, WazzlePlugin, WazzleContext, ProvidesCommands } from '@wazzle/wazzle';
 import { Webpack5PluginOptions } from './types';
 import { Argv } from 'yargs';
 import path from 'path';
@@ -7,7 +7,7 @@ import WebpackDevServer from 'webpack-dev-server';
 import { createWebpackConfig } from './create-webpack-config';
 import { loadOptions } from './options';
 
-class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
+class Webpack5Plugin implements WazzlePlugin, ProvidesCommands {
   readonly name = 'webpack5';
 
   options: Webpack5PluginOptions;
@@ -16,7 +16,7 @@ class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
     this.options = loadOptions(options);
   }
 
-  modifyContext(dazzleContext: DazzleContext) {
+  modifyContext(dazzleContext: WazzleContext) {
     dazzleContext.pluginOptions.webpack5 = Object.assign({}, this.options);
     const appPath = dazzleContext.paths.appPath;
     const appSrc = path.join(appPath, 'src');
@@ -39,7 +39,7 @@ class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
     return dazzleContext;
   }
 
-  async start(dazzleContext: DazzleContext) {
+  async start(dazzleContext: WazzleContext) {
     this.ensureNodeDevelopmentEnvironment();
     const configs = await createWebpackConfig(this.options, dazzleContext, true, true);
     const compiler = Webpack(configs.configurations.map((x) => x.webpackConfig));
@@ -69,7 +69,7 @@ class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
     }
   }
 
-  async build(dazzleContext: DazzleContext) {
+  async build(dazzleContext: WazzleContext) {
     if (typeof process.env['NODE_ENV'] === 'undefined') {
       process.env['NODE_ENV'] = 'production';
     } else if (process.env['NODE_ENV'] === 'development') {
@@ -92,7 +92,7 @@ class Webpack5Plugin implements DazzlePlugin, ProvidesCommands {
     });
   }
 
-  addCommands(argv: Argv, dazzleContext: DazzleContext) {
+  addCommands(argv: Argv, dazzleContext: WazzleContext) {
     argv.command(
       'start',
       'start the webpack dev server',

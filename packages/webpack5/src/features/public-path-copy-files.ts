@@ -1,9 +1,9 @@
-import { DazzleContext } from '@wazzle/wazzle';
+import { WazzleContext } from '@wazzle/wazzle';
 import { WebpackConfig } from '../types';
 import CopyPlugin from 'copy-webpack-plugin';
 import fs from 'fs';
 
-export function configurePublicPathCopyToOutput({ paths }: DazzleContext, { plugins }: WebpackConfig) {
+export function configurePublicPathCopyToOutput({ paths }: WazzleContext, { plugins }: WebpackConfig) {
   if (!fs.existsSync(paths.appPublic)) {
     return;
   }

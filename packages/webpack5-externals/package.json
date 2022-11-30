@@ -1,7 +1,7 @@
 {
   "name": "@wazzle/webpack5-externals",
   "version": "0.1.0-alpha.1",
-  "description": "Dazzle (formerly dazzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
+  "description": "Wazzle (formerly dazzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
   "license": "MIT",
   "author": "Øyvind Saltvik",
   "repository": {

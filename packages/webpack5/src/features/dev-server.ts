@@ -1,9 +1,9 @@
-import { DazzleContext } from '@wazzle/wazzle';
+import { WazzleContext } from '@wazzle/wazzle';
 import { Configuration as DevServerConfiguration } from 'webpack-dev-server';
 import { Webpack5PluginOptions, WebpackDevServerConfig } from '../types';
 
 export async function createDevServerConfigurationIfNecessary(
-  dazzle: DazzleContext,
+  dazzle: WazzleContext,
   { devServerOptions: options }: Webpack5PluginOptions
 ): Promise<WebpackDevServerConfig | undefined> {
   const hasClientBuild = Object.values(dazzle.buildMatrix)

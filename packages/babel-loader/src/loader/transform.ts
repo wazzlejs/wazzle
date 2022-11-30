@@ -10,7 +10,7 @@ import generate from '@babel/generator';
 import traverse from '@babel/traverse';
 
 import { getConfig } from './get-config.js';
-import { DazzleWebpack5LoaderContext, Source, SourceMap } from './types';
+import { WazzleWebpack5LoaderContext, Source, SourceMap } from './types';
 import { consumeIterator } from './util.js';
 
 function getTraversalParams(file: any, pluginPairs: any[]) {
@@ -68,7 +68,7 @@ function transformAst(file: any, babelConfig: any) {
 }
 
 export async function transform(
-  this: DazzleWebpack5LoaderContext,
+  this: WazzleWebpack5LoaderContext,
   source: Source,
   inputSourceMap: SourceMap,
   loaderOptions: any,

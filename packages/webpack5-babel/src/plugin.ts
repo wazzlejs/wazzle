@@ -1,15 +1,15 @@
-import { DazzlePlugin } from '@wazzle/wazzle';
+import { WazzlePlugin } from '@wazzle/wazzle';
 import { WebpackBuildContext } from '@wazzle/webpack5';
-import { DazzleContext } from '@wazzle/wazzle/types';
+import { WazzleContext } from '@wazzle/wazzle/types';
 import Webpack, { webpack } from 'webpack';
-import { DazzleContextWithPossibleBrowsersList } from '@wazzle/webpack5';
+import { WazzleContextWithPossibleBrowsersList } from '@wazzle/webpack5';
 
-class Webpack5BabelPlugin implements DazzlePlugin {
+class Webpack5BabelPlugin implements WazzlePlugin {
   name = 'webpack5-babel';
 
   constructor() {}
 
-  modifyWebpackContext(dazzleContext: DazzleContext, webpackContext: WebpackBuildContext) {
+  modifyWebpackContext(dazzleContext: WazzleContext, webpackContext: WebpackBuildContext) {
     webpackContext.babelLoader = {
       loader: '@wazzle/babel-loader',
       options: {
@@ -27,7 +27,7 @@ class Webpack5BabelPlugin implements DazzlePlugin {
   }
 
   private getBrowserslistEnv(
-    dazzleContext: DazzleContextWithPossibleBrowsersList,
+    dazzleContext: WazzleContextWithPossibleBrowsersList,
     webpackContext: WebpackBuildContext
   ): string | undefined {
     if (
@@ -42,7 +42,7 @@ class Webpack5BabelPlugin implements DazzlePlugin {
   }
 
   modifyWebpackConfig(
-    dazzleContext: DazzleContext,
+    dazzleContext: WazzleContext,
     webpackContext: WebpackBuildContext,
     webpackConfig: Webpack.Configuration
   ) {

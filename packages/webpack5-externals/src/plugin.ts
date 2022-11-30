@@ -3,10 +3,10 @@ import path from 'path';
 import { Webpack5ExternalsPluginOptions } from './types';
 import Webpack from 'webpack';
 import { resolveExternal } from './utils.js';
-import { DazzleContext, DazzlePlugin } from '@wazzle/wazzle';
+import { WazzleContext, WazzlePlugin } from '@wazzle/wazzle';
 import { WebpackBuildContext } from '@wazzle/webpack5';
 
-class Webpack5ExternalsPlugin implements DazzlePlugin {
+class Webpack5ExternalsPlugin implements WazzlePlugin {
   name = 'webpack5-externals';
   options: Webpack5ExternalsPluginOptions = {
     esmExternals: false,
@@ -16,13 +16,13 @@ class Webpack5ExternalsPlugin implements DazzlePlugin {
     this.options = Object.assign(this.options, options);
   }
 
-  modifyContext(dazzleContext: DazzleContext) {
+  modifyContext(dazzleContext: WazzleContext) {
     dazzleContext.pluginOptions.webpack5Externals = Object.assign({}, this.options);
     return dazzleContext;
   }
 
   modifyWebpackConfig(
-    dazzleContext: DazzleContext,
+    dazzleContext: WazzleContext,
     webpackContext: WebpackBuildContext,
     webpackConfig: Webpack.Configuration
   ) {

@@ -1,10 +1,10 @@
 import browserslist from 'browserslist';
-import { DazzlePlugin, DazzleContext } from '@wazzle/wazzle';
+import { WazzlePlugin, WazzleContext } from '@wazzle/wazzle';
 
-class Webpack5BrowserslistPlugin implements DazzlePlugin {
+class Webpack5BrowserslistPlugin implements WazzlePlugin {
   name = 'webpack5-browserslist';
 
-  modifyContext(context: DazzleContext) {
+  modifyContext(context: WazzleContext) {
     let foundEnvs: string[] = [];
 
     const matrixNames = Object.keys(context.buildMatrix);

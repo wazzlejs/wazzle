@@ -1,6 +1,6 @@
 import webpack from 'webpack';
 
-export interface DazzleWebpack5LoaderOptions {
+export interface WazzleWebpack5LoaderOptions {
   dazzleBuildName?: string;
   browserslistEnv?: string;
   hasJsxRuntime?: boolean;
@@ -17,15 +17,15 @@ export interface DazzleWebpack5LoaderOptions {
   babelPresetPlugins: unknown[];
 }
 
-export interface DazzleWebpack5LoaderDefinitionFunction
+export interface WazzleWebpack5LoaderDefinitionFunction
   extends webpack.LoaderDefinitionFunction<
-    DazzleWebpack5LoaderOptions,
+    WazzleWebpack5LoaderOptions,
     {
       target: string | [string, string];
     }
   > {}
 
-export type DazzleWebpack5LoaderContext = ThisParameterType<DazzleWebpack5LoaderDefinitionFunction>;
+export type WazzleWebpack5LoaderContext = ThisParameterType<WazzleWebpack5LoaderDefinitionFunction>;
 
-export type SourceMap = Parameters<DazzleWebpack5LoaderContext['callback']>[2];
-export type Source = Parameters<DazzleWebpack5LoaderContext['callback']>[1];
+export type SourceMap = Parameters<WazzleWebpack5LoaderContext['callback']>[2];
+export type Source = Parameters<WazzleWebpack5LoaderContext['callback']>[1];

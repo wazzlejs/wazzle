@@ -1,13 +1,13 @@
 import { ConfigHook, NoPluginContextConfigHook } from '@wazzle/wazzle';
 import Webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import { DazzleContext } from '@wazzle/wazzle/types';
+import { WazzleContext } from '@wazzle/wazzle/types';
 
 export type WebpackConfig = Webpack.Configuration;
 export type WebpackDevServerConfig = WebpackDevServer.Configuration;
 
 declare module '@wazzle/wazzle/types' {
-  export interface DazzlePaths {
+  export interface WazzlePaths {
     appSrc: string;
     appBuild: string;
     appBuildPublic: string;
@@ -22,12 +22,12 @@ declare module '@wazzle/wazzle/types' {
     modifyDevServerConfig?: NoPluginContextConfigHook<WebpackDevServerConfig>;
   }
 
-  export interface DazzleContext {
+  export interface WazzleContext {
     devMatrixName: string;
     buildMatrix: Record<string, BuildConfig>;
   }
 
-  export interface DazzlePluginOptions {
+  export interface WazzlePluginOptions {
     webpack5: Readonly<Webpack5PluginOptions>;
   }
 }
@@ -75,4 +75,4 @@ export interface DefinePluginDefines {
   'process.env.NODE_ENV': string;
 }
 
-export type DazzleContextWithPossibleBrowsersList = { browserslistEnvs?: string } & DazzleContext;
+export type WazzleContextWithPossibleBrowsersList = { browserslistEnvs?: string } & WazzleContext;

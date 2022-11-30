@@ -1,8 +1,8 @@
 import '@wazzle/webpack5';
-import { DazzlePluginOptions } from '@wazzle/wazzle';
+import { WazzlePluginOptions } from '@wazzle/wazzle';
 
 declare module '@wazzle/wazzle/types' {
-  export interface DazzlePluginOptions {
+  export interface WazzlePluginOptions {
     webpack5Externals: Readonly<Webpack5ExternalsPluginOptions>;
   }
 }

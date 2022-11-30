@@ -1,8 +1,8 @@
 import { transform } from './transform';
-import { DazzleWebpack5LoaderContext, DazzleWebpack5LoaderDefinitionFunction, Source, SourceMap } from './types';
+import { WazzleWebpack5LoaderContext, WazzleWebpack5LoaderDefinitionFunction, Source, SourceMap } from './types';
 
 async function dazzleBabelLoader(
-  this: DazzleWebpack5LoaderContext,
+  this: WazzleWebpack5LoaderContext,
   inputSource: Source,
   inputSourceMap: SourceMap
 ): Promise<[Source, SourceMap]> {
@@ -19,8 +19,8 @@ async function dazzleBabelLoader(
   return [transformedSource, outputSourceMap || inputSourceMap];
 }
 
-const dazzleBabelLoaderOuter: DazzleWebpack5LoaderDefinitionFunction = function (
-  this: DazzleWebpack5LoaderContext,
+const dazzleBabelLoaderOuter: WazzleWebpack5LoaderDefinitionFunction = function (
+  this: WazzleWebpack5LoaderContext,
   inputSource,
   inputSourceMap
 ) {
