@@ -27,7 +27,7 @@ export async function loadConfig(appPath: string, configPath?: string): Promise<
     }
   } else {
     // Order defines the priority, in decreasing order
-    triedConfigFiles = ['dazzle.config', '.dazzle/dazzle.config', '.dazzle/dazzlefile'].map((pth) =>
+    triedConfigFiles = ['wazzle.config', '.wazzle/wazzle.config', '.dazzle/dazzlefile'].map((pth) =>
       path.join(appPath, pth)
     );
     loadedConfig = await loadFirstAvailableConfig(triedConfigFiles);

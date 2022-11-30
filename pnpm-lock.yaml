@@ -67,7 +67,7 @@ importers:
       typescript: 4.9.3
     devDependencies:
       '@wazzle/babel-loader': link:../../packages/babel-loader
-      '@wazzle/wazzle': link:../../packages/dazzle
+      '@wazzle/wazzle': link:../../packages/wazzle
       '@wazzle/webpack5': link:../../packages/webpack5
       '@wazzle/webpack5-babel': link:../../packages/webpack5-babel
       '@wazzle/webpack5-externals': link:../../packages/webpack5-externals
@@ -127,11 +127,20 @@ importers:
       babel-plugin-transform-react-remove-prop-types: 0.4.24
       chalk: 4.1.2
     devDependencies:
-      '@wazzle/wazzle': link:../dazzle
+      '@wazzle/wazzle': link:../wazzle
       '@wazzle/webpack5': link:../webpack5
       webpack: 5.75.0
 
-  packages/dazzle:
+  packages/start-server-webpack-plugin:
+    specifiers:
+      webpack: ^5.74.0
+    devDependencies:
+      webpack: 5.75.0
+
+  packages/tsconfig:
+    specifiers: {}
+
+  packages/wazzle:
     specifiers:
       '@types/fs-extra': ^9.0.13
       '@types/interpret': ^1.1.1
@@ -166,15 +175,6 @@ importers:
       '@types/rechoir': 0.6.1
       '@types/yargs': 17.0.15
 
-  packages/start-server-webpack-plugin:
-    specifiers:
-      webpack: ^5.74.0
-    devDependencies:
-      webpack: 5.75.0
-
-  packages/tsconfig:
-    specifiers: {}
-
   packages/webpack5:
     specifiers:
       '@types/yargs': ^17.0.7
@@ -196,7 +196,7 @@ importers:
       webpackbar: 5.0.2_webpack@5.75.0
     devDependencies:
       '@types/yargs': 17.0.15
-      '@wazzle/wazzle': link:../dazzle
+      '@wazzle/wazzle': link:../wazzle
 
   packages/webpack5-babel:
     specifiers:
@@ -209,7 +209,7 @@ importers:
       '@wazzle/babel-loader': link:../babel-loader
     devDependencies:
       '@types/yargs': 17.0.15
-      '@wazzle/wazzle': link:../dazzle
+      '@wazzle/wazzle': link:../wazzle
       '@wazzle/webpack5': link:../webpack5
       webpack: 5.75.0
 
@@ -222,7 +222,7 @@ importers:
     dependencies:
       browserslist: 4.21.4
     devDependencies:
-      '@wazzle/wazzle': link:../dazzle
+      '@wazzle/wazzle': link:../wazzle
       '@wazzle/webpack5': link:../webpack5
       webpack: 5.75.0
 
@@ -234,7 +234,7 @@ importers:
       webpack: ^5.64.4
     devDependencies:
       '@types/yargs': 17.0.15
-      '@wazzle/wazzle': link:../dazzle
+      '@wazzle/wazzle': link:../wazzle
       '@wazzle/webpack5': link:../webpack5
       webpack: 5.75.0
 
