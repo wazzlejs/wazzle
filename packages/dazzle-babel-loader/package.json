@@ -27,13 +27,7 @@
       "require": "./lib/preset.cjs"
     }
   },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "dts/*"
-      ]
-    }
-  },  "scripts": {
+  "scripts": {
     "rename": "renamer --find js --replace cjs \"lib/**\"",
     "build": "run-s build:clean build:cjs build:esm build:dts rename esm:extensions",
     "build:clean": "git clean -dfX esm lib",

@@ -1,5 +1,5 @@
 import { DazzlePlugin } from '@elzzad/dazzle';
-import { WebpackBuildContext } from '@elzzad/dazzle-plugin-webpack5/types';
+import { WebpackBuildContext } from '@elzzad/dazzle-plugin-webpack5';
 import { DazzleContext } from '@elzzad/dazzle/types';
 import Webpack, { webpack } from 'webpack';
 import { DazzleContextWithPossibleBrowsersList } from '@elzzad/dazzle-plugin-webpack5';
