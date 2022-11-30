@@ -2,9 +2,9 @@
     "commit": false,
     "updateInternalDependencies": "minor",
     "linked": [],
-    "fixed": [["@elzzad/dazzle", "@elzzad/dazzle-*"]],
+    "fixed": [["@wazzle/wazzle", "@wazzle/*"]],
     "access": "public",
     "baseBranch": "main",
     "ignore": ["tsconfig"],
-    "changelog": ["@changesets/changelog-github", { "repo": "elzzad/dazzle" }]
+    "changelog": ["@changesets/changelog-github", { "repo": "elzzad/wazzle" }]
   }

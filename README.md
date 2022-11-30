@@ -1,11 +1,11 @@
 
-Universal JavaScript applications are tough to setup. Either you buy into a framework like Next.js or Nuxt, fork a boilerplate, or set things up yourself. Aiming to fill this void, Dazzle is a tool that abstracts all the complex configuration needed for building SPA's and SSR applications into a single dependency--giving you the awesome developer experience of [create-react-app](https://github.com/facebookincubator/create-react-app), but then leaving the rest of your app's architectural decisions about frameworks, routing, and data fetching up to you. With this approach, Dazzle not only works with React, but also Preact, Vue, Svelte, and Angular, and most importantly......whatever comes next.
+Universal JavaScript applications are tough to setup. Either you buy into a framework like Next.js or Nuxt, fork a boilerplate, or set things up yourself. Aiming to fill this void, Wazzle is a tool that abstracts all the complex configuration needed for building SPA's and SSR applications into a single dependency--giving you the awesome developer experience of [create-react-app](https://github.com/facebookincubator/create-react-app), but then leaving the rest of your app's architectural decisions about frameworks, routing, and data fetching up to you. With this approach, Wazzle not only works with React, but also Preact, Vue, Svelte, and Angular, and most importantly......whatever comes next.
 
 ## Getting Started
 
 ## Examples
 
-Dazzle has many examples, we might have one that fits your needs
+Wazzle has many examples, we might have one that fits your needs
 
 See: [The examples](https://github.com/elzzad/dazzle/tree/main/examples)
 

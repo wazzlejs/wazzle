@@ -1,5 +1,5 @@
-import { webpack5Plugin } from "@elzzad/dazzle-plugin-webpack5";
-import { webpack5BabelPlugin } from '@elzzad/dazzle-plugin-webpack5-babel';
+import { webpack5Plugin } from "@wazzle/webpack5";
+import { webpack5BabelPlugin } from '@wazzle/webpack5-babel';
 
 class LocalPlugin {
     name = 'local-plugin';

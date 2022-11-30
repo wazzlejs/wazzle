@@ -1,4 +1,4 @@
-import { ConfigurationHooks, DazzleContext } from './types';
+import { ConfigurationHooks, WazzleContext } from './types';
 import { logger } from './logger';
 
 export type ApplyHookFunction = <THook extends keyof ConfigurationHooks>(
@@ -17,7 +17,7 @@ function hasHook<THook extends keyof ConfigurationHooks>(hook: THook) {
   };
 }
 
-export const applyHook: ApplyHookFunction = async function (this: DazzleContext, hook, action) {
+export const applyHook: ApplyHookFunction = async function (this: WazzleContext, hook, action) {
   logger.debug('Applying hook', hook);
   const pluginsWithHooks = (this.plugins as NamedThingWithHooks[]).filter(hasHook(hook));
   for (const plugin of pluginsWithHooks) {

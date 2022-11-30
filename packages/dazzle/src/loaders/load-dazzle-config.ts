@@ -3,23 +3,23 @@ import '@swc-node/register';
 import setupEnvironment from '../env';
 import { logger } from '../logger';
 import defaultPaths from '../paths';
-import { DazzleConfig, DazzleOptions, DazzleContext, DazzlePlugin } from '../types';
+import { WazzleConfig, WazzleOptions, WazzleContext, WazzlePlugin } from '../types';
 import { loadConfig } from './typescript-loader';
 import { applyHook } from '../configuration-hooks';
 import path from 'path/win32';
 
-interface DazzleLoaderOptions {
-  dazzleConfigIn?: DazzleConfig;
+interface WazzleLoaderOptions {
+  dazzleConfigIn?: WazzleConfig;
   packageJsonIn?: unknown;
   configFilePath?: string;
 }
 
-export async function loadDazzleConfig({
+export async function loadWazzleConfig({
   dazzleConfigIn,
   packageJsonIn,
   configFilePath,
-}: DazzleLoaderOptions): Promise<DazzleContext> {
-  let dazzleConfig: DazzleConfig = dazzleConfigIn || { plugins: [] };
+}: WazzleLoaderOptions): Promise<WazzleContext> {
+  let dazzleConfig: WazzleConfig = dazzleConfigIn || { plugins: [] };
   let packageJson = packageJsonIn || {};
   /* Check for dazzle.config.ts file
   if (fs.existsSync(defaultPaths.appConfig + '.mjs')) {
@@ -49,11 +49,11 @@ export async function loadDazzleConfig({
 
   setupEnvironment(defaultPaths);
 
-  const dazzleOptions: DazzleOptions = Object.assign({ verbose: false, debug: false }, dazzleConfig.options || {});
+  const dazzleOptions: WazzleOptions = Object.assign({ verbose: false, debug: false }, dazzleConfig.options || {});
 
-  const dazzleContext: DazzleContext = Object.assign(
+  const dazzleContext: WazzleContext = Object.assign(
     {
-      name: 'DazzleContext',
+      name: 'WazzleContext',
       paths: defaultPaths,
       dazzleOptions: dazzleOptions,
       pluginOptions: {},

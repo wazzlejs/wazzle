@@ -1,0 +1,66 @@
+{
+  "name": "@wazzle/webpack5-browserslist",
+  "version": "0.1.0-alpha.1",
+  "description": "Dazzle (formerly dazzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
+  "type": "module",
+  "module": "./esm/index.js",
+  "exports": {
+    ".": {
+      "types": "./dts/index.d.ts",
+      "import": "./esm/index.js",
+      "require": "./lib/index.js"
+    },
+    "./types": {
+      "types": "./dts/types.d.ts",
+      "import": "./esm/types.js",
+      "require": "./lib/index.cjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+          "dts/*"
+      ]
+    }
+  },
+  "scripts": {
+    "rename": "renamer --find js --replace cjs \"lib/**\"",
+    "build": "run-s build:clean build:cjs build:esm build:dts rename esm:extensions",
+    "build:clean": "git clean -dfX esm lib",
+    "build:cjs": "swc src -d lib --config-file ../../.swcrc -C module.type=commonjs",
+    "build:esm": "swc src -d esm --config-file ../../.swcrc -C module.type=es6",
+    "build:dts": "tsc --project tsconfig.json",
+    "esm:extensions": "cross-env  TS_NODE_PROJECT=../../tsconfig.json node -r @swc-node/register ../../.config/esm-transformer.ts",
+    "test": "pnpm jest --passWithNoTests --config=../../jest.config.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elzzad/dazzle.git",
+    "directory": "packages/dazlle-plugin-webpack5"
+  },
+  "author": "Øyvind Saltvik",
+  "license": "MIT",
+  "keywords": [
+    "isomorphic",
+    "dazzle",
+    "react",
+    "ssr",
+    "universal",
+    "webpack"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@wazzle/wazzle": "0.1.0-alpha.1",
+    "@wazzle/webpack5": "0.1.0-alpha.1"
+  },
+  "devDependencies": {
+    "@wazzle/wazzle": "workspace:*",
+    "@wazzle/webpack5": "workspace:*",
+    "webpack": "^5.74.0"
+  },
+  "dependencies": {
+    "browserslist": "^4.21.4"
+  }
+}

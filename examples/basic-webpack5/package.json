@@ -11,25 +11,25 @@
   "type": "module",
   "description": "basic webpack5 example",
   "scripts": {
-    "test": "dazzle jest",
-    "build:prod": "NODE_ENV=production dazzle build",
-    "build:dev": "NODE_ENV=development dazzle build",
-    "dev": "NODE_ENV=development dazzle start",
+    "test": "wazzle jest",
+    "build:prod": "NODE_ENV=production wazzle build",
+    "build:dev": "NODE_ENV=development wazzle build",
+    "dev": "NODE_ENV=development wazzle start",
     "start": "node build/server.cjs"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jaredpalmer/dazzle.git"
+    "url": "git+https://github.com/jaredpalmer/wazzle.git"
   },
   "keywords": [
-    "dazzle"
+    "wazzle"
   ],
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jaredpalmer/dazzle/issues"
+    "url": "https://github.com/jaredpalmer/wazzle/issues"
   },
-  "homepage": "https://github.com/jaredpalmer/dazzle#readme",
+  "homepage": "https://github.com/jaredpalmer/wazzle#readme",
   "dependencies": {
     "@types/node": "^18.11.2",
     "express": "^4.17.1",
@@ -42,11 +42,11 @@
   },
   "browserslist": "ie 9",
   "devDependencies": {
-    "@elzzad/dazzle": "workspace:*",
-    "@elzzad/dazzle-babel-loader": "workspace:*",
-    "@elzzad/dazzle-plugin-webpack5": "workspace:*",
-    "@elzzad/dazzle-plugin-webpack5-babel": "workspace:*",
-    "@elzzad/dazzle-plugin-webpack5-externals": "workspace:*",
+    "@wazzle/wazzle": "workspace:*",
+    "@wazzle/babel-loader": "workspace:*",
+    "@wazzle/webpack5": "workspace:*",
+    "@wazzle/webpack5-babel": "workspace:*",
+    "@wazzle/webpack5-externals": "workspace:*",
     "dotenv-cli": "^6.0.0",
     "yargs": "^17.2.1"
   }

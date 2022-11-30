@@ -1,14 +1,14 @@
 import { Argv } from 'yargs';
 import { ApplyHookFunction } from './configuration-hooks';
 
-export type DazzleOptions = {
+export type WazzleOptions = {
   verbose: boolean;
   debug: boolean;
 };
 
-export interface DazzlePluginOptions {}
+export interface WazzlePluginOptions {}
 
-export interface DazzlePaths {
+export interface WazzlePaths {
   dotenv: string;
   appPath: string;
   appNodeModules: string;
@@ -20,36 +20,36 @@ export interface DazzlePaths {
   ownNodeModules: string;
 }
 
-export interface DazzleConfig extends ConfigurationHooks {
-  options?: Partial<DazzleOptions>;
-  plugins: DazzlePlugin[];
+export interface WazzleConfig extends ConfigurationHooks {
+  options?: Partial<WazzleOptions>;
+  plugins: WazzlePlugin[];
 }
 
 export interface ConfigurationHooks {
-  modifyContext?: (context: DazzleContext) => DazzleContext;
+  modifyContext?: (context: WazzleContext) => WazzleContext;
 }
 
 export type ConfigHook<TPluginContext, TConfig> = (
-  dazzleContext: Readonly<DazzleContext>,
+  dazzleContext: Readonly<WazzleContext>,
   pluginContext: TPluginContext,
   config: TConfig
 ) => TConfig | Promise<TConfig>;
 
 export type NoPluginContextConfigHook<TConfig> = (
-  dazzleContext: Readonly<DazzleContext>,
+  dazzleContext: Readonly<WazzleContext>,
   config: TConfig
 ) => TConfig | Promise<TConfig>;
 
-export interface DazzleContext extends ConfigurationHooks {
+export interface WazzleContext extends ConfigurationHooks {
   name: string;
-  dazzleOptions: DazzleOptions;
-  plugins: DazzlePlugin[];
-  pluginOptions: DazzlePluginOptions;
-  paths: DazzlePaths;
+  dazzleOptions: WazzleOptions;
+  plugins: WazzlePlugin[];
+  pluginOptions: WazzlePluginOptions;
+  paths: WazzlePaths;
   applyHook: ApplyHookFunction;
 }
 
-export interface DazzleEnvironment {
+export interface WazzleEnvironment {
   NODE_ENV: string;
   PORT: number;
   VERBOSE: boolean;
@@ -59,14 +59,14 @@ export interface DazzleEnvironment {
 }
 
 export interface CommandAdder {
-  (argv: Argv, dazzleContext: DazzleContext): void;
+  (argv: Argv, dazzleContext: WazzleContext): void;
 }
 
 export interface ProvidesCommands {
   addCommands: CommandAdder;
 }
 
-export interface DazzlePlugin extends ConfigurationHooks {
+export interface WazzlePlugin extends ConfigurationHooks {
   readonly name: string;
   addCommands?: CommandAdder;
 }

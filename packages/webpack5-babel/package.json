@@ -1,0 +1,58 @@
+{
+  "name": "@wazzle/webpack5-babel",
+  "version": "0.1.0-alpha.1",
+  "type": "module",
+  "description": "Dazzle (formerly dazzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
+  "main": "./lib/index.cjs",
+  "types": "./dts/index.d.ts",
+  "module": "./esm/index.js",
+  "exports": {
+    "types": "./dts/index.d.ts",
+    "import": "./esm/index.js",
+    "require": "./lib/index.cjs"
+  },
+  "scripts": {
+    "rename": "renamer --find js --replace cjs \"lib/**\"",
+    "build": "run-s build:clean build:cjs build:esm build:dts rename esm:extensions",
+    "build:clean": "git clean -dfX esm lib",
+    "build:cjs": "swc src -d lib --config-file ../../.swcrc -C module.type=commonjs",
+    "build:esm": "swc src -d esm --config-file ../../.swcrc -C module.type=es6",
+    "build:dts": "tsc --project tsconfig.json",
+    "esm:extensions": "cross-env  TS_NODE_PROJECT=../../tsconfig.json node -r @swc-node/register ../../.config/esm-transformer.ts",
+    "test": "pnpm jest --passWithNoTests --config=../../jest.config.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elzzad/dazzle.git",
+    "directory": "packages/dazlle-plugin-webpack5-babel"
+  },
+  "author": "Øyvind Saltvik",
+  "license": "MIT",
+  "keywords": [
+    "isomorphic",
+    "dazzle",
+    "react",
+    "ssr",
+    "universal",
+    "webpack"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@wazzle/wazzle": "0.1.0-alpha.1",
+    "@wazzle/babel-loader": "0.1.0-alpha.1",
+    "@wazzle/webpack5": "0.1.0-alpha.1",
+    "webpack": "^5.64.4"
+  },
+  "devDependencies": {
+    "@wazzle/wazzle": "workspace:*",
+    "@wazzle/webpack5": "workspace:*",
+    "@wazzle/babel-loader": "workspace:*",
+    "@types/yargs": "^17.0.7",
+    "webpack": "^5.64.4"
+  },
+  "dependencies": {
+    "@wazzle/babel-loader": "workspace:*"
+  }
+}

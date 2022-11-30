@@ -1,12 +1,12 @@
 
-# Contributing to Dazzle
+# Contributing to Wazzle
 
-Hi there! Thanks for your interest in Dazzle. This guide will help you get started contributing.
+Hi there! Thanks for your interest in Wazzle. This guide will help you get started contributing.
 
 <!-- INSERT doctoc generated TOC please keep comment here to allow auto update -->
 <!-- START doctoc generated instructions please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN yarn build-docs TO UPDATE -->
-- [Contributing to Dazzle](#contributing-to-dazzle)
+- [Contributing to Wazzle](#contributing-to-dazzle)
   - [Developing locally](#developing-locally)
 - [optionally install add-dependencies](#optionally-install-add-dependencies)
     - [Commands](#commands)
@@ -37,12 +37,12 @@ Hi there! Thanks for your interest in Dazzle. This guide will help you get start
   - [Getting help](#getting-help)
 <!-- END doctoc generated instructions please keep comment here to allow auto update -->
 
-Dazzle is monorepo made up of a several npm packages powered by Turborepo.
+Wazzle is monorepo made up of a several npm packages powered by Turborepo.
 
 - `examples`: All examples go in here.
 - `packages`: This is where the magic happens
-  - `babel-preset-dazzle`: Dazzle's default Babel preset.
-  - `create-dazzle-app`: Dazzle's CLI tool responsible for initialization of new projects
+  - `babel-preset-dazzle`: Wazzle's default Babel preset.
+  - `create-dazzle-app`: Wazzle's CLI tool responsible for initialization of new projects
   - `dazzle`: The core library
   - `dazzle-dev-utils`: Utilities and helpers
 - `scripts`: Utility scripts related to cleaning and bootstrapping the repo

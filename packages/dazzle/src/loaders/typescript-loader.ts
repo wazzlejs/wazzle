@@ -1,4 +1,4 @@
-import { DazzleConfig, PotentialPromise, DynamicImport } from '../types';
+import { WazzleConfig, PotentialPromise, DynamicImport } from '../types';
 import fs from 'fs';
 import path from 'path';
 import { pathToFileURL } from 'url';
@@ -15,8 +15,8 @@ interface RechoirError extends Error {
   error: Error;
 }
 
-export async function loadConfig(appPath: string, configPath?: string): Promise<DazzleConfig> {
-  let loadedConfig: DazzleConfig | undefined;
+export async function loadConfig(appPath: string, configPath?: string): Promise<WazzleConfig> {
+  let loadedConfig: WazzleConfig | undefined;
   let triedConfigFiles: string[] = [];
 
   if (configPath) {
@@ -96,7 +96,7 @@ function logConfigLoadingErrorAndExit(triedConfigs: string[]): never {
   process.exit(2);
 }
 
-async function tryRequireThenImport(module: string): Promise<DazzleConfig> {
+async function tryRequireThenImport(module: string): Promise<WazzleConfig> {
   let result;
   try {
     result = require(module);

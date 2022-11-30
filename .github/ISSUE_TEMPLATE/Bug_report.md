@@ -1,6 +1,6 @@
 ---
 name: "\U0001F41B Bug report"
-about: Create a report to help make Dazzle better
+about: Create a report to help make Wazzle better
 ---
 
 ## 🐛 Bug report
@@ -32,8 +32,8 @@ about: Create a report to help make Dazzle better
 
 | Software         | Version(s) |
 | ---------------- | ---------- |
-| Dazzle           |
-| Dazzle Plugins   |
+| Wazzle           |
+| Wazzle Plugins   |
 | Node             |
 | Browser          |
 | npm/pnpm/yarn    |

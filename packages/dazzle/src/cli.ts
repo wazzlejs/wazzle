@@ -1,7 +1,7 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { loadDazzleConfig } from './loaders/load-dazzle-config';
-import { DazzlePlugin, ProvidesCommands } from './types';
+import { loadWazzleConfig } from './loaders/load-dazzle-config';
+import { WazzlePlugin, ProvidesCommands } from './types';
 
 export async function cli(): Promise<void> {
   const argParser = yargs(hideBin(process.argv))
@@ -13,7 +13,7 @@ export async function cli(): Promise<void> {
     })
     .string('c');
   const options = await argParser.argv;
-  const dazzleContext = await loadDazzleConfig({ configFilePath: options.c });
+  const dazzleContext = await loadWazzleConfig({ configFilePath: options.c });
 
   argParser.options({
     d: {
@@ -34,6 +34,6 @@ export async function cli(): Promise<void> {
   await argParser.parse();
 }
 
-function hasCommands(plugin: DazzlePlugin): plugin is DazzlePlugin & ProvidesCommands {
+function hasCommands(plugin: WazzlePlugin): plugin is WazzlePlugin & ProvidesCommands {
   return plugin.addCommands !== undefined;
 }

@@ -1,6 +1,6 @@
 ---
 name: "\U0001F680Feature request"
-about: Suggest an idea for Dazzle
+about: Suggest an idea for Wazzle
 ---
 
 ## 🚀 Feature request

@@ -3,7 +3,7 @@ import path from 'path';
 import url from 'url';
 
 import { logger } from './logger';
-import { DazzlePaths } from './types';
+import { WazzlePaths } from './types';
 
 const ___filename = url.fileURLToPath(import.meta.url);
 const ___dirname = path.dirname(___filename);
@@ -70,7 +70,7 @@ const nodePaths = (process.env.NODE_PATH || '')
   .map((folder) => path.resolve(appDirectory, folder))
   .join(path.delimiter);
 
-const defaultPaths: DazzlePaths = {
+const defaultPaths: WazzlePaths = {
   dotenv: resolveApp('.env'),
   appPath: resolveApp('.'),
   appPublic: resolveApp('public'),

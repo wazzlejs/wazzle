@@ -1,7 +1,7 @@
 {
-  "name": "@wazzle/wazzle",
+  "name": "@wazzle/webpack5",
   "version": "0.1.0-alpha.1",
-  "description": "Wazzle (formerly wazzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
+  "description": "Dazzle (formerly dazzle) is a plugin based configuration utility to create server-rendered universal JavaScript applications with no configuration",
   "type": "module",
   "module": "./esm/index.js",
   "exports": {
@@ -23,14 +23,11 @@
       ]
     }
   },
-  "bin": {
-    "wazzle": "./bin/wazzle.js"
-  },
   "scripts": {
     "rename": "renamer --find js --replace cjs \"lib/**\"",
     "build": "run-s build:clean build:cjs build:esm build:dts rename esm:extensions",
     "build:clean": "git clean -dfX esm lib",
-    "build:cjs": "swc src -d lib --config-file ../../.swcrc -C module.type=commonjs,module.ignoreDynamic=true",
+    "build:cjs": "swc src -d lib --config-file ../../.swcrc -C module.type=commonjs",
     "build:esm": "swc src -d esm --config-file ../../.swcrc -C module.type=es6",
     "build:dts": "tsc --project tsconfig.json",
     "esm:extensions": "cross-env TS_NODE_PROJECT=../../tsconfig.json node -r @swc-node/register ../../.config/esm-transformer.ts",
@@ -38,18 +35,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elzzad/wazzle.git"
+    "url": "git+https://github.com/elzzad/dazzle.git",
+    "directory": "packages/dazlle-plugin-webpack5"
   },
   "author": "Øyvind Saltvik",
   "license": "MIT",
   "keywords": [
-    "inferno",
     "isomorphic",
-    "preact",
-    "wazzle",
+    "dazzle",
     "react",
-    "reason",
-    "reasonml",
     "ssr",
     "universal",
     "webpack"
@@ -57,23 +51,20 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "chalk": "^4.1.2",
-    "cosmiconfig": "^7.0.1",
-    "dotenv": "^10.0.0",
-    "dotenv-expand": "^5.1.0",
-    "enhanced-resolve": "^5.8.3",
-    "esm-resolve": "^1.0.5",
-    "fs-extra": "^10.0.0",
-    "interpret": "^2.2.0",
-    "rechoir": "^0.7.0",
-    "resolve": "^1.20.0",
-    "yargs": "^17.2.1"
+  "peerDependencies": {
+    "@wazzle/wazzle": "0.1.0-alpha.1"
   },
   "devDependencies": {
-    "@types/interpret": "^1.1.1",
-    "@types/yargs": "^17.0.7",
-    "@types/fs-extra": "^9.0.13",
-    "@types/rechoir": "^0.6.1"
+    "@wazzle/wazzle": "workspace:*",
+    "@types/yargs": "^17.0.7"
+  },
+  "dependencies": {
+    "copy-webpack-plugin": "^11.0.0",
+    "deepmerge": "^4.2.2",
+    "esm-resolve": "^1.0.5",
+    "postcss-load-config": "^4.0.1",
+    "webpack": "^5.64.4",
+    "webpack-dev-server": "^4.6.0",
+    "webpackbar": "^5.0.2"
   }
 }

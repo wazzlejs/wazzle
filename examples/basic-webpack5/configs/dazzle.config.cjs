@@ -1,7 +1,7 @@
 "use strict";
 
-var webpack5Plugin = require("@elzzad/dazzle-plugin-webpack5").webpack5Plugin;
-var webpack5BabelPlugin = require("@elzzad/dazzle-plugin-webpack5-babel").webpack5BabelPlugin;
+var webpack5Plugin = require("@wazzle/webpack5").webpack5Plugin;
+var webpack5BabelPlugin = require("@wazzle/webpack5-babel").webpack5BabelPlugin;
 
 var LocalPlugin = {
   name: "local-plugin",
