@@ -13,23 +13,22 @@ const testPlugin = (plugin, code) => {
   return result.code;
 };
 
-    it('should transform es6', () => {
-      const result = testPlugin(
-        commonjs,
-        `
+it('should transform es6', () => {
+  const result = testPlugin(
+    commonjs,
+    `
         export default true;
       `
-      );
+  );
 
-      expect(result).toMatchInlineSnapshot(`
-        ""use strict";
+  expect(result).toMatchInlineSnapshot(`
+    "\\"use strict\\";
 
-        Object.defineProperty(exports, "__esModule", {
-          value: true
-        });
-        exports["default"] = void 0;
-        var _default = true;
-        exports["default"] = _default;"
-      `);
+    Object.defineProperty(exports, \\"__esModule\\", {
+      value: true
     });
-  
+    exports[\\"default\\"] = void 0;
+    var _default = true;
+    exports[\\"default\\"] = _default;"
+  `);
+});
