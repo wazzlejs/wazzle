@@ -5,6 +5,7 @@ import Webpack from 'webpack';
 import { resolveExternal } from './utils.js';
 import { WazzleContext, WazzlePlugin } from '@wazzle/wazzle';
 import { WebpackBuildContext } from '@wazzle/webpack5';
+import { Hook } from '@wazzle/wazzle';
 
 class Webpack5ExternalsPlugin implements WazzlePlugin {
   name = 'webpack5-externals';
@@ -21,11 +22,7 @@ class Webpack5ExternalsPlugin implements WazzlePlugin {
     return dazzleContext;
   }
 
-  modifyWebpackConfig(
-    dazzleContext: WazzleContext,
-    webpackContext: WebpackBuildContext,
-    webpackConfig: Webpack.Configuration
-  ) {
+  modifyWebpackConfig: Hook<'modifyWebpackConfig'> = ({ webpackConfig, webpackContext, wazzleContext }) => {
     if (webpackContext.isServer) {
       const looseEsmExternals = this.options?.esmExternals === 'loose';
       const options = this.options;
@@ -98,7 +95,7 @@ class Webpack5ExternalsPlugin implements WazzlePlugin {
         };
 
         const resolveResult = await resolveExternal(
-          dazzleContext.paths.appPath,
+          wazzleContext.paths.appPath,
           options.esmExternals,
           context,
           request,
@@ -221,7 +218,7 @@ class Webpack5ExternalsPlugin implements WazzlePlugin {
       ] , */
     }
     return webpackConfig;
-  }
+  };
 }
 
 export function webpack5ExternalsPlugin(

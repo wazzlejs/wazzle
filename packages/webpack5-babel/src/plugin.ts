@@ -1,6 +1,6 @@
 import { WazzlePlugin } from '@wazzle/wazzle';
 import { WebpackBuildContext } from '@wazzle/webpack5';
-import { WazzleContext } from '@wazzle/wazzle/types';
+import { Hook, WazzleContext } from '@wazzle/wazzle/types';
 import Webpack, { webpack } from 'webpack';
 import { WazzleContextWithPossibleBrowsersList } from '@wazzle/webpack5';
 
@@ -9,14 +9,14 @@ class Webpack5BabelPlugin implements WazzlePlugin {
 
   constructor() {}
 
-  modifyWebpackContext(dazzleContext: WazzleContext, webpackContext: WebpackBuildContext) {
+  modifyWebpackContext: Hook<'modifyWebpackContext'> = ({ wazzleContext, webpackContext }) => {
     webpackContext.babelLoader = {
       loader: '@wazzle/babel-loader',
       options: {
         dazzleBuildName: webpackContext.buildName,
         isServer: webpackContext.isServer,
-        cwd: dazzleContext.paths.appPath,
-        browserslistEnv: this.getBrowserslistEnv(dazzleContext, webpackContext),
+        cwd: wazzleContext.paths.appPath,
+        browserslistEnv: this.getBrowserslistEnv(wazzleContext, webpackContext),
         cache: true,
         babelPresetPlugins: [],
         hasModern: false,
@@ -24,7 +24,7 @@ class Webpack5BabelPlugin implements WazzlePlugin {
       },
     };
     return webpackContext;
-  }
+  };
 
   private getBrowserslistEnv(
     dazzleContext: WazzleContextWithPossibleBrowsersList,
@@ -41,22 +41,18 @@ class Webpack5BabelPlugin implements WazzlePlugin {
     }
   }
 
-  modifyWebpackConfig(
-    dazzleContext: WazzleContext,
-    webpackContext: WebpackBuildContext,
-    webpackConfig: Webpack.Configuration
-  ) {
+  modifyWebpackConfig: Hook<'modifyWebpackConfig'> = ({ wazzleContext, webpackContext, webpackConfig }) => {
     webpackConfig?.module?.rules?.push(
       ...[
         {
           test: /\.[jt]sx?$/i,
-          include: [dazzleContext.paths.appSrc], //.concat(additionalIncludes)
+          include: [wazzleContext.paths.appSrc], //.concat(additionalIncludes)
           use: [webpackContext.babelLoader],
         },
       ]
     );
     return webpackConfig;
-  }
+  };
 }
 
 export function webpack5BabelPlugin(): Webpack5BabelPlugin {

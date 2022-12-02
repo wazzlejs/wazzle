@@ -9,32 +9,32 @@ import { applyHook } from '../configuration-hooks';
 import path from 'path/win32';
 
 interface WazzleLoaderOptions {
-  dazzleConfigIn?: WazzleConfig;
+  wazzleConfigIn?: WazzleConfig;
   packageJsonIn?: unknown;
   configFilePath?: string;
 }
 
 export async function loadWazzleConfig({
-  dazzleConfigIn,
+  wazzleConfigIn,
   packageJsonIn,
   configFilePath,
 }: WazzleLoaderOptions): Promise<WazzleContext> {
-  let dazzleConfig: WazzleConfig = dazzleConfigIn || { plugins: [] };
+  let wazzleConfig: WazzleConfig = wazzleConfigIn || { plugins: [] };
   let packageJson = packageJsonIn || {};
-  /* Check for dazzle.config.ts file
+  /* Check for wazzle.config.ts file
   if (fs.existsSync(defaultPaths.appConfig + '.mjs')) {
     try {
-      dazzleConfig = (await import(defaultPaths.appConfig + '.mjs')).default;
+      wazzleConfig = (await import(defaultPaths.appConfig + '.mjs')).default;
     } catch (e) {
-      logger.error('Invalid dazzle.config.mjs file.', e);
+      logger.error('Invalid wazzle.config.mjs file.', e);
       process.exit(1);
     }
   } else if (fs.existsSync(defaultPaths.appConfig + '.ts')) {
     */
   try {
-    dazzleConfig = await loadConfig(defaultPaths.appPath, configFilePath);
+    wazzleConfig = await loadConfig(defaultPaths.appPath, configFilePath);
   } catch (e) {
-    logger.error('Invalid dazzle.config.ts file.', e);
+    logger.error('Invalid wazzle.config.ts file.', e);
     process.exit(1);
   }
   //}
@@ -49,19 +49,22 @@ export async function loadWazzleConfig({
 
   setupEnvironment(defaultPaths);
 
-  const dazzleOptions: WazzleOptions = Object.assign({ verbose: false, debug: false }, dazzleConfig.options || {});
+  const wazzleOptions: WazzleOptions = Object.assign({ verbose: false, debug: false }, wazzleConfig.options || {});
 
-  const dazzleContext: WazzleContext = Object.assign(
+  const wazzleContext: WazzleContext = Object.assign(
     {
       name: 'WazzleContext',
       paths: defaultPaths,
-      dazzleOptions: dazzleOptions,
+      wazzleOptions: wazzleOptions,
       pluginOptions: {},
       applyHook: applyHook,
     },
-    dazzleConfig
+    wazzleConfig
   );
 
-  await dazzleContext.applyHook('modifyContext', async (plugin) => await plugin.modifyContext(dazzleContext));
-  return dazzleContext;
+  await wazzleContext.applyHook(
+    'modifyWazzleContext',
+    async (plugin) => await plugin.modifyWazzleContext({ wazzleContext })
+  );
+  return wazzleContext;
 }

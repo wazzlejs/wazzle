@@ -23,20 +23,20 @@ interface WebpackConfigurationWithContext {
 
 export async function createWebpackConfig(
   pluginOptions: Webpack5PluginOptions,
-  dazzleContext: WazzleContext,
+  wazzleContext: WazzleContext,
   devServerEnabled: boolean = false,
   isDev: boolean = false
 ): Promise<{
   configurations: WebpackConfigurationWithContext[];
   devServerConfiguration?: DevServerConfiguration;
 }> {
-  const devMatrixName = dazzleContext.devMatrixName;
+  const devMatrixName = wazzleContext.devMatrixName;
   const webpackConfigs: WebpackConfigurationWithContext[] = [];
 
-  const matrixNames = isDev ? [devMatrixName] : Object.keys(dazzleContext.buildMatrix);
+  const matrixNames = isDev ? [devMatrixName] : Object.keys(wazzleContext.buildMatrix);
 
   for (const matrixName of matrixNames) {
-    const buildConfig = dazzleContext.buildMatrix[matrixName];
+    const buildConfig = wazzleContext.buildMatrix[matrixName];
     const allTargets = buildConfig.targets;
 
     for (const buildTarget of allTargets) {
@@ -60,8 +60,8 @@ export async function createWebpackConfig(
         definePluginOptions: { 'process.env.NODE_ENV': 'development' },
       };
 
-      await dazzleContext.applyHook('modifyWebpackContext', async (plugin) => {
-        webpackContext = await plugin.modifyWebpackContext(dazzleContext, webpackContext);
+      await wazzleContext.applyHook('modifyWebpackContext', async (plugin) => {
+        webpackContext = await plugin.modifyWebpackContext({ wazzleContext, webpackContext });
       });
 
       let webpackConfig: Configuration = {
@@ -70,9 +70,9 @@ export async function createWebpackConfig(
         // Path to your entry point. From this file Webpack will begin its work
         entry: isServer
           ? webpackContext.isDev
-            ? dazzleContext.paths.appServerIndex
-            : dazzleContext.paths.appServerPath
-          : dazzleContext.paths.appClientPath,
+            ? wazzleContext.paths.appServerIndex
+            : wazzleContext.paths.appServerPath
+          : wazzleContext.paths.appClientPath,
 
         resolve: {
           extensions: ['.mjs', '.js', '.jsx', '.json', '.ts', '.tsx'],
@@ -80,7 +80,7 @@ export async function createWebpackConfig(
         // Path and filename of your result bundle.
         // Webpack will bundle all JavaScript into this file
         output: {
-          path: isServer ? dazzleContext.paths.appBuild : dazzleContext.paths.appBuildPublic,
+          path: isServer ? wazzleContext.paths.appBuild : wazzleContext.paths.appBuildPublic,
           publicPath: '',
           filename: isServer ? 'server.cjs' : 'client.js',
           module: webpackContext.outputEsm,
@@ -113,14 +113,14 @@ export async function createWebpackConfig(
 
       configureWebpackBarIfNecessary(webpackConfig, webpackContext, pluginOptions);
 
-      await dazzleContext.applyHook('modifyWebpackConfig', async (plugin) => {
-        webpackConfig = await plugin.modifyWebpackConfig(dazzleContext, webpackContext, webpackConfig);
+      await wazzleContext.applyHook('modifyWebpackConfig', async (plugin) => {
+        webpackConfig = await plugin.modifyWebpackConfig({ wazzleContext, webpackContext, webpackConfig });
       });
       webpackConfigs.push({ webpackConfig, webpackContext });
     }
   }
 
-  const devServerConfiguration = await createDevServerConfigurationIfNecessary(dazzleContext, pluginOptions);
+  const devServerConfiguration = await createDevServerConfigurationIfNecessary(wazzleContext, pluginOptions);
 
   return {
     configurations: webpackConfigs,

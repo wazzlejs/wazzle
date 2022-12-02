@@ -1,4 +1,4 @@
-import { ConfigHook, NoPluginContextConfigHook } from '@wazzle/wazzle';
+import { ConfigHook, PickHook } from '@wazzle/wazzle';
 import Webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import { WazzleContext } from '@wazzle/wazzle/types';
@@ -17,9 +17,30 @@ declare module '@wazzle/wazzle/types' {
   }
 
   export interface ConfigurationHooks {
-    modifyWebpackContext?: NoPluginContextConfigHook<WebpackBuildContext>;
-    modifyWebpackConfig?: ConfigHook<WebpackBuildContext, WebpackConfig>;
-    modifyDevServerConfig?: NoPluginContextConfigHook<WebpackDevServerConfig>;
+    modifyWebpackContext?: ConfigHook<
+      { webpackContext: WebpackBuildContext; wazzleContext: WazzleContext },
+      WebpackBuildContext
+    >;
+    modifyWebpackConfig?: ConfigHook<
+      { wazzleContext: WazzleContext; webpackContext: WebpackBuildContext; webpackConfig: WebpackConfig },
+      WebpackConfig
+    >;
+    modifyDevServerConfig?: ConfigHook<
+      { wazzleContext: WazzleContext; devServerConfig: WebpackDevServerConfig },
+      WebpackDevServerConfig
+    >;
+  }
+
+  export interface ModifyWebpackContext {
+    modifyWebpackContext: Hook<'modifyWebpackContext'>;
+  }
+
+  export interface ModifyWebpackConfig {
+    modifyWebpackConfig: Hook<'modifyWebpackConfig'>;
+  }
+
+  export interface ModifyDevServerConfig {
+    modifyDevServerConfig: Hook<'modifyDevServerConfig'>;
   }
 
   export interface WazzleContext {

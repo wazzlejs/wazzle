@@ -3,19 +3,19 @@ import { Configuration as DevServerConfiguration } from 'webpack-dev-server';
 import { Webpack5PluginOptions, WebpackDevServerConfig } from '../types';
 
 export async function createDevServerConfigurationIfNecessary(
-  dazzle: WazzleContext,
+  wazzleContext: WazzleContext,
   { devServerOptions: options }: Webpack5PluginOptions
 ): Promise<WebpackDevServerConfig | undefined> {
-  const hasClientBuild = Object.values(dazzle.buildMatrix)
+  const hasClientBuild = Object.values(wazzleContext.buildMatrix)
     .flatMap((x) => x.targets)
     .some((target) => /client/.test(target));
   if (!hasClientBuild) {
     return undefined;
   }
 
-  let devServerConfiguration: DevServerConfiguration = {
+  let devServerConfig: DevServerConfiguration = {
     static: {
-      directory: dazzle.paths.appPublic,
+      directory: wazzleContext.paths.appPublic,
     },
     compress: true,
     client: {
@@ -25,8 +25,8 @@ export async function createDevServerConfigurationIfNecessary(
     host: options.host,
   };
 
-  await dazzle.applyHook('modifyDevServerConfig', async (plugin) => {
-    devServerConfiguration = await plugin.modifyDevServerConfig(dazzle, devServerConfiguration);
+  await wazzleContext.applyHook('modifyDevServerConfig', async (plugin) => {
+    devServerConfig = await plugin.modifyDevServerConfig({ wazzleContext, devServerConfig });
   });
-  return devServerConfiguration;
+  return devServerConfig;
 }

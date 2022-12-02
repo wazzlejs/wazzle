@@ -1,6 +1,6 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { loadWazzleConfig } from './loaders/load-dazzle-config';
+import { loadWazzleConfig } from './loaders/load-wazzle-config';
 import { WazzlePlugin, ProvidesCommands } from './types';
 
 export async function cli(): Promise<void> {

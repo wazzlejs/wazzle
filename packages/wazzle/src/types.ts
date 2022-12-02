@@ -25,24 +25,26 @@ export interface WazzleConfig extends ConfigurationHooks {
   plugins: WazzlePlugin[];
 }
 
+export interface WazzleHookContext {
+  wazzleContext: WazzleContext;
+}
 export interface ConfigurationHooks {
-  modifyContext?: (context: WazzleContext) => WazzleContext;
+  modifyWazzleContext?: ConfigHook<WazzleHookContext, WazzleContext>;
 }
 
-export type ConfigHook<TPluginContext, TConfig> = (
-  dazzleContext: Readonly<WazzleContext>,
-  pluginContext: TPluginContext,
-  config: TConfig
-) => TConfig | Promise<TConfig>;
+export interface ModifyWazzleContext {
+  modifyWazzleContext: Hook<'modifyWazzleContext'>;
+}
 
-export type NoPluginContextConfigHook<TConfig> = (
-  dazzleContext: Readonly<WazzleContext>,
-  config: TConfig
-) => TConfig | Promise<TConfig>;
+export type Hook<THook extends keyof ConfigurationHooks> = Required<ConfigurationHooks>[THook];
+export type PossiblePromise<T> = T | Promise<T>;
+
+export type PickHook<THook, TKey extends keyof THook> = Required<Pick<THook, TKey>>;
+export type ConfigHook<TContext, TReturn> = (context: TContext) => PossiblePromise<TReturn>;
 
 export interface WazzleContext extends ConfigurationHooks {
   name: string;
-  dazzleOptions: WazzleOptions;
+  wazzleOptions: WazzleOptions;
   plugins: WazzlePlugin[];
   pluginOptions: WazzlePluginOptions;
   paths: WazzlePaths;
@@ -70,7 +72,6 @@ export interface WazzlePlugin extends ConfigurationHooks {
   readonly name: string;
   addCommands?: CommandAdder;
 }
-
 
 export type DynamicImport<T> = (url: string) => Promise<{ default: T }>;
 export type PotentialPromise<T> = T | Promise<T>;

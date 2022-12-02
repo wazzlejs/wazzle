@@ -1,4 +1,12 @@
-import { logger, WazzlePlugin, WazzleContext, ProvidesCommands } from '@wazzle/wazzle';
+import {
+  logger,
+  WazzlePlugin,
+  WazzleContext,
+  ProvidesCommands,
+  Hook,
+  ModifyWazzleContext,
+  ConfigHook,
+} from '@wazzle/wazzle';
 import { Webpack5PluginOptions } from './types';
 import { Argv } from 'yargs';
 import path from 'path';
@@ -7,7 +15,7 @@ import WebpackDevServer from 'webpack-dev-server';
 import { createWebpackConfig } from './create-webpack-config';
 import { loadOptions } from './options';
 
-class Webpack5Plugin implements WazzlePlugin, ProvidesCommands {
+class Webpack5Plugin implements WazzlePlugin, ProvidesCommands, ModifyWazzleContext {
   readonly name = 'webpack5';
 
   options: Webpack5PluginOptions;
@@ -16,13 +24,13 @@ class Webpack5Plugin implements WazzlePlugin, ProvidesCommands {
     this.options = loadOptions(options);
   }
 
-  modifyContext(dazzleContext: WazzleContext) {
-    dazzleContext.pluginOptions.webpack5 = Object.assign({}, this.options);
-    const appPath = dazzleContext.paths.appPath;
+  modifyWazzleContext: Hook<'modifyWazzleContext'> = ({ wazzleContext }) => {
+    wazzleContext.pluginOptions.webpack5 = Object.assign({}, this.options);
+    const appPath = wazzleContext.paths.appPath;
     const appSrc = path.join(appPath, 'src');
     const appBuild = path.join(appPath, 'build');
 
-    Object.assign(dazzleContext.paths, {
+    Object.assign(wazzleContext.paths, {
       appSrc: appSrc,
       appBuild: appBuild,
       appBuildPublic: path.join(appBuild, 'public'),
@@ -31,13 +39,13 @@ class Webpack5Plugin implements WazzlePlugin, ProvidesCommands {
       appClientPath: path.join(appSrc, 'client'),
     });
 
-    Object.assign(dazzleContext, {
+    Object.assign(wazzleContext, {
       buildMatrix: this.options.buildMatrix,
       devMatrixName: this.options.devMatrixName,
     });
 
-    return dazzleContext;
-  }
+    return wazzleContext;
+  };
 
   async start(dazzleContext: WazzleContext) {
     this.ensureNodeDevelopmentEnvironment();
